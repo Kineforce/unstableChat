@@ -12,11 +12,16 @@ function sendMessageToChat(){
             data:{message:input_box_message},
             dataType:'text',
             success:function(response){
-                location.reload();
+                document.getElementById("input_box").value = "";
+                $(document).ready(function() { /// Wait till page is loaded
+                    $('.message_box').load('./chat_box.php .inner_message');
+                 }); 
             }
         });
     }
 }
+
+
 
 document.getElementById("logout").addEventListener("click", function(){
 

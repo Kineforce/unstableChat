@@ -32,12 +32,7 @@ $style = 'style="color: ';
 
     <div class="chat">
         <div class="message_box">
-            <?php while($data = sqlsrv_fetch_array($result)) {
-                $loop_style = $style . $data['messageColor'] . '"';
-                echo "<div class='inner_message' ".$loop_style.">
-                    ".$data['userName']." : ".$data['messageText']."
-                </div>";               
-            }?>
+            
         </div>    
         <div class="insert_box">
             <span id="input_msg" >Insert your message: </span>
