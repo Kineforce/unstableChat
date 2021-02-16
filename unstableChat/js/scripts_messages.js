@@ -13,7 +13,7 @@ function sendMessageToChat(){
             dataType:'text',
             success:function(response){
                 document.getElementById("input_box").value = "";
-                $(document).ready(function() { /// Wait till page is loaded
+                $(document).ready(function() { 
                     $('.message_box').load('./chat_box.php .inner_message');
                  }); 
             }
@@ -21,6 +21,15 @@ function sendMessageToChat(){
     }
 }
 
+
+
+setInterval(function(){
+    $('.message_box').load('./chat_box.php .inner_message');
+}, 1000);
+
+setInterval(function(){
+    document.getElementsByClassName('message_box')[0].scrollTo(0,document.body.scrollHeight);
+}, 100);
 
 
 document.getElementById("logout").addEventListener("click", function(){
