@@ -5,27 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="static/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>unstableChat</title>
 </head>
 <body>
 
 <div class="container">
-    <div class="message_box">
-        <div class="inner_message">
-        </div>
-    </div>    
-    <div class="chat">
-        <div class="insert_box">
-            <span id="input_msg" >Insert your message: </span>
-            <input type="text" name="message" id="input_box" placeholder="start typing...">
-            <button name="data" id="send_msg">Send it!</button>
-        </div>
-    </div>
+    <form id="login_form" method="post" action="./login.php">
+        <label id="label_login" for="login"><h1>Enter your identity</h1></label>
+        <input type="text" name="userName" id="login_input" placeholder="type your user here!">
+        <span id="feedback_message"></span>
+        <input type="submit" id="submit_login" value="Send it!">
+    </form>
 </div>
 
 
-<script src="js/scripts.js"></script>
+<script src="js/scripts_index.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,59 @@
+body {
+    background-color: darkslateblue;
+}
+
+.container {
+    position: relative;
+    margin: auto;
+    margin-left: 30%;
+    margin-top: 10%;
+}
+
+#login_form {
+    height: 500px;
+    width: 500px;
+}   
+
+#label_login {
+    position: absolute;
+    margin-left: 250px;
+    color: palevioletred;
+}
+
+#login_input::placeholder{
+    color: darkslateblue;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+#login_input {
+    position: relative;
+    font-size: 20px;
+    margin-left: 200px;
+    margin-top: 200px;
+    width: 360px;
+    height: 40px;
+    color: darkslateblue;
+    border-radius: 10px;
+}
+
+#login_input:required {
+    background-color: rgb(61, 40, 245);
+}
+
+#feedback_message {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 12.6rem;
+    color: white;
+}
+
+#submit_login {
+    position: absolute;
+    font-size: 20px;
+    top: 20rem;
+    left: 21rem;
+    background-color: darkslateblue;
+    color: white;
+}
+
