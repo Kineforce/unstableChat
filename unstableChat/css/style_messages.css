@@ -75,6 +75,7 @@ body {
 
 }
 
+
 #send_msg {
     position: absolute;
     top: 15px;
@@ -97,10 +98,9 @@ body {
 .message_box {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 600px;
     border: 2px solid white;
-    overflow-y: visible;
-    overflow-x: hidden;
+    overflow: auto;
 }
 
 .inner_message {

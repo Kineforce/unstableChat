@@ -32,7 +32,6 @@ $style = 'style="color: ';
 
     <div class="chat">
         <div class="message_box">
-            
         </div>    
         <div class="insert_box">
             <span id="input_msg" >Insert your message: </span>
