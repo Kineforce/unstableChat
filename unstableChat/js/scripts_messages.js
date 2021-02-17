@@ -4,25 +4,6 @@
     }
 })(jQuery);
 
-
-function looping(){
-    if ($('.message_box').hasScrollBar() == true){
-        var chat_box = document.getElementsByClassName('message_box')[0];
-        chat_box.scrollTo(0, chat_box.scrollHeight);
-    }else {
-        setTimeout(function(){
-            looping();
-        }, 10)
-    }
-    
-}
-
-looping();
-
-setInterval(function(){
-    $('.message_box').load('./chat_box.php .inner_message');
-}, 200);
-
 var checkbottom;
 
 setInterval(function(){
@@ -39,7 +20,44 @@ setInterval(function(){
         }
     })
 
+    console.log(checkbottom);
+
 }, 500);
+
+function sleep(ms) {
+
+    return new Promise(resolve => setTimeout(resolve, ms));
+
+}
+
+async function looping(){
+    if ($('.message_box').hasScrollBar() == true){
+        var chat_box = document.getElementsByClassName('message_box')[0];
+
+        var i = 0;
+
+        while (checkbottom != "bottom"){
+            chat_box.scrollTop = i;
+            i += 3;
+            await sleep(1);
+        }
+
+ 
+    }else {
+        setTimeout(function(){
+            looping();
+        }, 10)
+    }
+    
+}
+
+looping();
+
+setInterval(function(){
+    $('.message_box').load('./chat_box.php .inner_message');
+}, 200);
+
+
 
 window.setInterval(function(){
 
