@@ -99,7 +99,6 @@ body {
     position: absolute;
     width: 100%;
     height: 600px;
-    border: 2px solid white;
     overflow: auto;
 }
 
@@ -107,7 +106,7 @@ body {
     position: relative;
     overflow-wrap: break-word;
     margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 15px;
     font-family: monospace;
     width: 560px;
@@ -134,5 +133,21 @@ body {
 
 .logout span:hover {
     cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: darkslateblue;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 

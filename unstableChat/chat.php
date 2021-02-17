@@ -5,15 +5,6 @@ session_start();
 
 if ($_SESSION['username'] != ""){
 
-include_once 'conn.php';
-
-$query = "SELECT * FROM STORED_MESSAGES";
-
-$result = sqlsrv_query($conn, $query);
-
-$style = 'style="color: ';
-
-
 ?>    
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +20,6 @@ $style = 'style="color: ';
 <body>
 
 <div class="container">
-
     <div class="chat">
         <div class="message_box">
         </div>    
@@ -45,19 +35,18 @@ $style = 'style="color: ';
     </div>
 </div>
 
-
 <script src="js/scripts_messages.js"></script>
 
 </body>
 </html>
 
 <?php
+
 }else {
 
     header("Location: http://localhost:8000/");
     exit();
 
 }
-
 
 ?>

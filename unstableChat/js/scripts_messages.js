@@ -21,7 +21,7 @@ looping();
 
 setInterval(function(){
     $('.message_box').load('./chat_box.php .inner_message');
-}, 100);
+}, 200);
 
 var checkbottom;
 
