@@ -1,6 +1,7 @@
 <?php
 
 $username = $_POST['userName'];
+$color    = $_POST['color'];
 
 if ($username == ""){
 
@@ -22,6 +23,7 @@ if (isset($username) && $username != ""){
         $response_array['status'] = 'success';
         session_start();
         $_SESSION['username'] = $username;
+        $_SESSION['color'] = $color;
 
     } else {
         $response_array['status'] = 'usernameAlreadyTaken';

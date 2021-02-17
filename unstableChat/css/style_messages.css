@@ -118,7 +118,7 @@ body {
     font-size: 15px;
     font-family: monospace;
     color: black;
-    top: 5px;
+    top: 3px;
     left: 400px;
     background-color: white;
     width: 100px;
@@ -135,3 +135,4 @@ body {
 .logout span:hover {
     cursor: pointer;
 }
+
