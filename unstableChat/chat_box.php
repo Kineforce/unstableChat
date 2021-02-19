@@ -9,7 +9,8 @@ include_once 'conn.php';
 
 $query = "  SELECT * 
             FROM STORED_MESSAGES AS STOR
-            JOIN USERS           AS US ON US.USERNAME = STOR.USERNAME";
+            JOIN USERS           AS US ON US.USERNAME = STOR.USERNAME
+            ORDER BY messageID";
 
 $result = sqlsrv_query($conn, $query);
 
