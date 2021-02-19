@@ -22,6 +22,7 @@ $('#pass_form').submit(function(e) {
                 if (data.status == 'success'){
 
                     document.getElementById('feedback_message').innerHTML = 'Redirecting to unstableChat!';
+
                     setTimeout(function(){ 
                         window.location.href = './chat.php';
                     }, 3000);
@@ -29,7 +30,6 @@ $('#pass_form').submit(function(e) {
                 }else if (data.status = 'wrongpassword') {
 
                     document.getElementById('feedback_message').innerHTML = 'Wrong password!';
-                    console.log(data.dbhash);
                     
                     setTimeout(function(){ 
                         window.location.href = './';

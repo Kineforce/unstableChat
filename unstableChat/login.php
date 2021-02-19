@@ -6,6 +6,13 @@ $username = isset($_POST['userName'])? $_POST['userName']: '';
 $color    = isset($_POST['color'])? $_POST['color']: '';
 $password = isset($_POST['userPass'])? $_POST['userPass']: '';
 
+if ($color != ''){
+    $_SESSION['color_real'] = $color;
+}
+
+$response_array['color'] = $_SESSION['color'];
+
+
 if ($username == ""){
 
     $response_array['status'] = 'invalidUser';
@@ -24,15 +31,17 @@ if (isset($username) && $username != ""){
 
     if (!$row){
        
-        $response_array['status'] = 'gotopwd';
         $_SESSION['itexists'] = 'false';
         $_SESSION['username'] = $username;
         $_SESSION['color'] = $color;
+
+        $response_array['status'] = 'gotopwd';
 
     } else {
 
         $_SESSION['username'] = $username;
         $_SESSION['itexists'] = 'true';
+
         $response_array['status'] = 'gotopwd';
 
     }
@@ -47,12 +56,12 @@ if ($password != ""){
 
     if($userexists == 'false'){
 
-        $insert_query = "INSERT INTO USERS (userName, userPwd)
-                         VALUES (? , ?)";
+        $insert_query = "INSERT INTO USERS (userName, userPwd, userColor)
+                         VALUES (?, ?, ?)";
 
         $password = password_hash($password, PASSWORD_DEFAULT);                 
 
-        $result = sqlsrv_query($conn, $insert_query, array($username, $password));
+        $result = sqlsrv_query($conn, $insert_query, array($username, $password, $_SESSION['color']));
 
         $response_array['status'] = 'success';
 
@@ -76,10 +85,7 @@ if ($password != ""){
         } else {
     
             $response_array['status'] = 'wrongpassword';
-            $response_array['dbhash'] = $password;
-    
-            session_destroy();
-    
+        
         }
     }  
 }
@@ -87,5 +93,6 @@ if ($password != ""){
 header('Content-type: application/json');
 echo json_encode($response_array);
 
+exit();
 
 ?>

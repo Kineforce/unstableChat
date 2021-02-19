@@ -32,7 +32,7 @@ if ($_SESSION['username'] != ""){
         </div>
         <div class="username_info">
             <span class="username_info_span">You are logged in as: <?=$_SESSION['username']?></span>
-            <div class="logout"><span id="logout">Logout<span></div>
+            <button class="logout" id="logout">Logout</button>
         </div>
     </div>
 </div>

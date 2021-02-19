@@ -38,8 +38,9 @@ if ($_SESSION['username'] != ""){
 }else {
 
 header("Location: http://localhost:8000/");
-exit();
 
 }
+exit();
+
 
 ?>
