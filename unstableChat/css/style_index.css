@@ -47,7 +47,7 @@ body {
     position: absolute;
     margin-top: 10px;
     margin-left: 12.6rem;
-    color: white;
+    color: whitesmoke;
 }
 
 #submit_login {
@@ -67,3 +67,45 @@ body {
     border: none;
 }
 
+#pass_form {
+    height: 500px;
+    width: 500px;
+}   
+
+#label_pwd {
+    position: absolute;
+    margin-left: 250px;
+    color: palevioletred;
+}
+
+#pwd_input::placeholder{
+    color: darkslateblue;
+    font-size: 20px;
+    padding-left: 0px;
+}
+
+#pwd_input {
+    position: relative;
+    font-size: 20px;
+    margin-left: 200px;
+    margin-top: 200px;
+    width: 360px;
+    height: 40px;
+    color: darkslateblue;
+    border-radius: 10px;
+    padding-left: 20px;
+
+}
+
+#pwd_input:required {
+    background-color: rgb(61, 40, 245);
+}
+
+#submit_pwd {
+    position: absolute;
+    font-size: 20px;
+    top: 20rem;
+    left: 21rem;
+    background-color: darkslateblue;
+    color: white;
+}

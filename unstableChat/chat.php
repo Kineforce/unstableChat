@@ -2,6 +2,8 @@
 
 session_start();
 
+$_SESSION['change'] = 0;
+
 
 if ($_SESSION['username'] != ""){
 

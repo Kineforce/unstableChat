@@ -15,6 +15,8 @@ if ($_SESSION['username'] != ""){
 
     $result = sqlsrv_query($conn, $query, array($username, $messageText, $messageColor));
 
+    $_COOKIE['new_message'] = true;
+
 }else {
     header("Location: http://localhost:8000/");
     exit();

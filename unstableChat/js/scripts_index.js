@@ -30,11 +30,12 @@ $("#login_form").submit(function(e) {
             processData: false,
             contentType: false,
             success: function(data) {
-                if (data.status == 'success'){
-                    document.getElementById('feedback_message').innerHTML = 'Redirecting to unstableChat!';
-                    setTimeout(function(){ 
-                        window.location.href = './chat.php';
-                    }, 3000);
+                if (data.status == 'gotopwd'){
+   
+                    window.location.href = './pwd.php';
+
+                }else if (data.status == 'password'){
+                    console.log("Password validated!");
                 }else if (data.status == 'invalidUser'){
                     document.getElementById('feedback_message').innerHTML = 'Please, fulfill a valid username!';
                 }else if (data.status == 'usernameAlreadyTaken'){
@@ -45,4 +46,3 @@ $("#login_form").submit(function(e) {
         });
     }
 });
-

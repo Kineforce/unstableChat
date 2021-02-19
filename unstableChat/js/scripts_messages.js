@@ -8,7 +8,6 @@ var checkbottom;
 
 setInterval(function(){
 
-
     $('.message_box').on('scroll', function() {
         var check = $(this).scrollTop() + $(this).innerHeight() >= $(this) 
     [0].scrollHeight;
@@ -38,7 +37,7 @@ async function looping(){
 
         while (checkbottom != "bottom"){
             chat_box.scrollTop = i;
-            i += 3;
+            i += 50;
             await sleep(1);
         }
 
@@ -52,6 +51,7 @@ async function looping(){
 }
 
 looping();
+
 
 setInterval(function(){
     $('.message_box').load('./chat_box.php .inner_message');
