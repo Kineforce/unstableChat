@@ -19,9 +19,7 @@ setInterval(function(){
         }
     })
 
-    console.log(checkbottom);
-
-}, 500);
+}, 200);
 
 function sleep(ms) {
 
@@ -45,19 +43,61 @@ async function looping(){
     }else {
         setTimeout(function(){
             looping();
-        }, 10)
+        }, 200)
     }
     
 }
 
 looping();
 
+if (sessionStorage.getItem('js_isUpdated') === null){
+    sessionStorage.setItem('js_isUpdated', 1);
+    $('.message_box').load('./chat_box.php .inner_message');
+
+}else {
+    $('.message_box').load('./chat_box.php .inner_message');
+
+}
+
+var input_box_message = document.getElementById("input_box").value;
+
+(function update() {
+
+    $.ajax({
+        url:'./verify.php',
+        type:'post',
+        data:{message:input_box_message},
+        dataType:'json',
+        success:function(response){
+            sessionStorage.setItem('realTime', response.realTime);
+        }
+    }).then(function() {
+        setTimeout(update, 200);
+    })
+})();
 
 setInterval(function(){
-    $('.message_box').load('./chat_box.php .inner_message');
+
+    js_session = sessionStorage.getItem('js_isUpdated');
+    realTime = sessionStorage.getItem('realTime');
+
+    var aux = true;
+
+    if (sessionStorage.getItem('js_isUpdated') == 1){
+        aux = false;
+
+    }
+
+    if (js_session == realTime){
+        $('.message_box').load('./chat_box.php .inner_message');
+
+        if (aux == false){
+            sessionStorage.setItem("js_isUpdated", 0);
+        }else{
+            sessionStorage.setItem("js_isUpdated", 1);
+        }
+    }   
 }, 200);
-
-
 
 window.setInterval(function(){
 
@@ -73,14 +113,13 @@ function sendMessageToChat(){
     var input_box_message = document.getElementById("input_box").value;
 
     if (!input_box_message){
-        console.log("Empty");
     }else {
 
         $.ajax({
             url:'./insert_msg.php',
             type:'post',
             data:{message:input_box_message},
-            dataType:'text',
+            dataType:'json',
             success:function(response){
                 document.getElementById("input_box").value = "";
             }

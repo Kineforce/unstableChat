@@ -10,30 +10,15 @@ if ($_SESSION['username'] != ""){
 
      header('Content-type: application/json');
 
-     $query_2 = "SELECT * FROM UPDATE_DIV";
+     $query = "SELECT * FROM UPDATE_DIV";
  
-     $result_2 = sqlsrv_query($conn, $query_2);
+     $result = sqlsrv_query($conn, $query);
  
-     $data = sqlsrv_fetch_array($result_2);
+     $data = sqlsrv_fetch_array($result);
  
-     if ($data['database_session'] == 1){
- 
-         $query_2 = "UPDATE UPDATE_DIV SET DATABASE_SESSION = 0";
- 
-         $result_2 = sqlsrv_query($conn, $query_2);
- 
-     }
- 
-     if ($data['database_session'] == 0){
- 
-         $query_2 = "UPDATE UPDATE_DIV SET DATABASE_SESSION = 1";
- 
-         $result_2 = sqlsrv_query($conn, $query_2);
- 
- 
-     }
- 
-     $response_array['cookie_value'] = $data['database_session'];
+     $response_array['realTime'] = $data['database_session'];
+
+     echo json_encode($response_array);
 
 }else {
     header("Location: http://localhost:8000/");
@@ -41,3 +26,4 @@ if ($_SESSION['username'] != ""){
 }
 
 ?>
+
