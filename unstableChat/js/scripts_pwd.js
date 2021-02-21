@@ -33,7 +33,7 @@ $('#pass_form').submit(function(e) {
                     
                     setTimeout(function(){ 
                         window.location.href = './';
-                    }, 3000);
+                    }, 2000);
                 }
             }
         })

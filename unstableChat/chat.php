@@ -5,7 +5,7 @@ session_start();
 $_SESSION['change'] = 0;
 
 
-if ($_SESSION['username'] != ""){
+if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
 
 ?>    
 <!DOCTYPE html>

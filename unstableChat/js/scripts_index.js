@@ -38,10 +38,9 @@ $("#login_form").submit(function(e) {
                     console.log("Password validated!");
                 }else if (data.status == 'invalidUser'){
                     document.getElementById('feedback_message').innerHTML = 'Please, fulfill a valid username!';
-                }else if (data.status == 'usernameAlreadyTaken'){
-                    document.getElementById('feedback_message').innerHTML = 'This username was already taken!';
+                }else {
+                    document.getElementById('feedback_message').innerHTML = 'Contact support!';
                 }
-
             } 
         });
     }

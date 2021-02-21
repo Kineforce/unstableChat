@@ -10,9 +10,6 @@ if ($color != ''){
     $_SESSION['color_real'] = $color;
 }
 
-$response_array['color'] = $_SESSION['color'];
-
-
 if ($username == ""){
 
     $response_array['status'] = 'invalidUser';
