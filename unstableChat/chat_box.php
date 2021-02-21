@@ -29,7 +29,9 @@ $style = 'style="color: ';
 <?php
 }else {
 
-    header("Location: http://localhost:8000/");
+    $base_url = $_SERVER['HTTP_HOST'];
+
+    header("Location: $base_url");
     exit();
 
 }

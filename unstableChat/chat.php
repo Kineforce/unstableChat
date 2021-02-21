@@ -2,9 +2,6 @@
 
 session_start();
 
-$_SESSION['change'] = 0;
-
-
 if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
 
 ?>    
@@ -46,7 +43,9 @@ if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
 
 }else {
 
-    header("Location: http://localhost:8000/");
+    $base_url = $_SERVER['HTTP_HOST'];
+
+    header("Location: $base_url");
     exit();
 
 }
