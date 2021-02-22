@@ -1,9 +1,6 @@
 <?php
 
-session_start();
-
-if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
-
+if (isset($_SESSION['username'])){
 
     $serverName = "PROMITERE\\SQLEXPRESS"; 
     $connectionInfo = array( "Database"=>"messages");
@@ -18,7 +15,7 @@ if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
 
     $base_url = $_SERVER['HTTP_HOST'];
 
-    header("Location: $base_url");
+    header("Location: http://$base_url");
     exit();
 
 }

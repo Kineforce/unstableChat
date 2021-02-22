@@ -31,9 +31,7 @@ $("#login_form").submit(function(e) {
             contentType: false,
             success: function(data) {
                 if (data.status == 'gotopwd'){
-
                     window.location.href = './pwd.php';
-
                 }else if (data.status == 'password'){
                     console.log("Password validated!");
                 }else if (data.status == 'invalidUser'){

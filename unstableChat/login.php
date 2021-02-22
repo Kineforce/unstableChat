@@ -2,12 +2,23 @@
 
 session_start();
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+    
+    $base_url = $_SERVER['HTTP_HOST'];
+
+    header("Location: http://$base_url");
+    exit();
+
+}
+
 $username = isset($_POST['userName'])? $_POST['userName']: '';
 $color    = isset($_POST['color'])? $_POST['color']: '';
 $password = isset($_POST['userPass'])? $_POST['userPass']: '';
 
-if ($color != ''){
+if ($color != ""){
+
     $_SESSION['color_real'] = $color;
+
 }
 
 if ($username == ""){
@@ -17,7 +28,9 @@ if ($username == ""){
 }
 
 if (isset($username) && $username != ""){
-    
+
+    $_SESSION['username'] = $username;
+
     include_once("conn.php");
 
     $query = "SELECT * FROM users WHERE USERNAME = ?;";
@@ -29,19 +42,16 @@ if (isset($username) && $username != ""){
     if (!$row){
        
         $_SESSION['itexists'] = 'false';
-        $_SESSION['username'] = $username;
         $_SESSION['color'] = $color;
-
-        $response_array['status'] = 'gotopwd';
 
     } else {
 
-        $_SESSION['username'] = $username;
         $_SESSION['itexists'] = 'true';
 
-        $response_array['status'] = 'gotopwd';
-
     }
+
+    $response_array['status'] = 'gotopwd';
+
 }
 
 if ($password != ""){

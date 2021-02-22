@@ -18,22 +18,20 @@ $('#pass_form').submit(function(e) {
             data: formData,
             processData: false,
             contentType: false,
+            dataType: 'json',
             success: function(data) {
                 if (data.status == 'success'){
-
                     document.getElementById('feedback_message').innerHTML = 'Redirecting to unstableChat!';
-
                     setTimeout(function(){ 
                         window.location.href = './chat.php';
                     }, 3000);
-
                 }else if (data.status = 'wrongpassword') {
-
                     document.getElementById('feedback_message').innerHTML = 'Wrong password!';
-                    
                     setTimeout(function(){ 
                         window.location.href = './';
                     }, 2000);
+                } else {
+                    document.getElementById('feedback_message').innerHTML = 'Contact support!';
                 }
             }
         })

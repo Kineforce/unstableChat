@@ -2,7 +2,7 @@
 
 session_start();
 
-if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
+if (isset($_SESSION['username'])){
 
     include_once 'conn.php';
 
@@ -24,7 +24,7 @@ if (isset($_SESSION['username'])? $_SESSION['username']: "" != ""){
 
     $base_url = $_SERVER['HTTP_HOST'];
 
-    header("Location: $base_url");
+    header("Location: http://$base_url");
     exit();
     
 }

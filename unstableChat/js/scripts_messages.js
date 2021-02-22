@@ -144,6 +144,7 @@ document.getElementById("send_msg").addEventListener("click", function(){
     sendMessageToChat();
 })
 
+
 document.addEventListener("keyup", function(event){
 
     if (event.key == "Enter"){
