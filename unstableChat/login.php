@@ -41,6 +41,8 @@ if (isset($_POST['pwd'])){
                 $result = sqlsrv_query($conn, $insert_query, array($username, $password, $_SESSION['color']));
     
                 $response_array['status'] = 'success';
+                
+                $_SESSION['isValidated'] = true;
     
                 $_SESSION['token'] = md5(session_id() . time());
                 
@@ -63,6 +65,7 @@ if (isset($_POST['pwd'])){
             if ($password == true){
     
                 $response_array['status'] = 'success';
+                $_SESSION['isValidated'] = true;
             
             } else {
         
@@ -76,7 +79,7 @@ if (isset($_POST['pwd'])){
         $response_array['status'] = "nopassword";
     
     }
-    
+
 } else {
 
     if (isset($username) && $username != ""){

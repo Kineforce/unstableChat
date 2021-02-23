@@ -2,7 +2,7 @@
 
 session_start();
 
-if (isset($_SESSION['username'])){
+if (isset($_SESSION['isValidated'])){
 
 include_once 'conn.php';
 
