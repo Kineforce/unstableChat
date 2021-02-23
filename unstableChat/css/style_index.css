@@ -109,3 +109,30 @@ body {
     background-color: darkslateblue;
     color: white;
 }
+
+
+@media only screen and (max-width: 600px) {
+
+    body {
+        background-color: lightblue;
+    }
+
+    .container {
+        right: 210px;
+    }
+
+    #label_login h1 {
+        font-size: 20px;
+        width: 350px;
+        
+    }
+
+    #colorpicker {
+        position: absolute;
+        left: 120px;
+        bottom: 263px;
+        background-color: darkslateblue;
+        border: none;
+    }
+
+}
