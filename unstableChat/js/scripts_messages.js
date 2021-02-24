@@ -50,6 +50,7 @@ async function looping(){
 
 looping();
 
+/*
 if (sessionStorage.getItem('js_isUpdated') === null){
     sessionStorage.setItem('js_isUpdated', 1);
     $('.message_box').load('./chat_box.php .inner_message');
@@ -97,6 +98,13 @@ setInterval(function(){
             sessionStorage.setItem("js_isUpdated", 1);
         }
     }   
+}, 200);
+*/
+
+setInterval(function(){
+
+    $('.message_box').load('./chat_box.php .inner_message');   
+
 }, 200);
 
 window.setInterval(function(){
