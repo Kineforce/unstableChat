@@ -10,13 +10,13 @@ if (isset($_SESSION['isValidated'])){
 
      header('Content-type: application/json');
 
-     $query = "SELECT * FROM UPDATE_DIV";
+     $query = $db->prepare("SELECT * FROM UPDATE_DIV");
  
-     $result = sqlsrv_query($conn, $query);
+     $result = $query->execute();
  
-     $data = sqlsrv_fetch_array($result);
+     $data = $result->fetchArray();
  
-     $response_array['realTime'] = $data['database_session'];
+     $response_array['realTime'] = $data['databaseSession'];
 
      echo json_encode($response_array);
 

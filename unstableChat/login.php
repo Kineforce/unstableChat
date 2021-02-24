@@ -33,13 +33,22 @@ if (isset($_POST['pwd'])){
 
             } else {
     
-                $insert_query = "INSERT INTO USERS (userName, userPwd, userColor)
-                VALUES (?, ?, ?)";
+                //$insert_query = "INSERT INTO USERS (userName, userPwd, userColor)
+                //VALUES (?, ?, ?)";
     
+                $stmt = $db->prepare("INSERT INTO USERS (userPwd, userColor, userName)
+                VALUES (?, ?, ?) ");
+
                 $password = password_hash($password, PASSWORD_DEFAULT);                 
     
-                $result = sqlsrv_query($conn, $insert_query, array($username, $password, $_SESSION['color']));
+                //$result = sqlsrv_query($conn, $insert_query, array($username, $password, $_SESSION['color']));
     
+                $stmt->bindValue(1, $password, SQLITE3_TEXT);
+                $stmt->bindValue(2, $_SESSION['color'], SQLITE3_TEXT);
+                $stmt->bindValue(3, $username, SQLITE3_TEXT);
+
+                $result = $stmt->execute();
+
                 $response_array['status'] = 'success';
                 
                 $_SESSION['isValidated'] = true;
@@ -51,17 +60,22 @@ if (isset($_POST['pwd'])){
     
         }else {
     
-            $hash_query = " SELECT userPwd
-                            FROM   USERS
-                            WHERE  USERNAME = ?;";
+            $stmt = $db->prepare("  SELECT userPwd
+                                    FROM   USERS
+                                    WHERE  USERNAME = ?;");
     
     
-            $result_query = sqlsrv_query($conn, $hash_query, array($username) );
+            /*$result_query = sqlsrv_query($conn, $hash_query, array($username) );
     
             $hash_db_pass = sqlsrv_fetch_array($result_query);
     
+            $password = password_verify($password, $hash_db_pass[0]);*/
+
+            $stmt->bindValue(1, $username, SQLITE3_TEXT);
+            $result = $stmt->execute();
+            $hash_db_pass = $result->fetchArray();
             $password = password_verify($password, $hash_db_pass[0]);
-    
+
             if ($password == true){
     
                 $response_array['status'] = 'success';
@@ -88,16 +102,21 @@ if (isset($_POST['pwd'])){
     
         include_once("conn.php");
     
-        $query = "SELECT * FROM users WHERE USERNAME = ?;";
+        /*$query = "SELECT * FROM users WHERE USERNAME = ?;";
     
         $result = sqlsrv_query($conn, $query , array($username));
     
-        $row = sqlsrv_fetch_array($result);
+        $row = sqlsrv_fetch_array($result);*/
+
+        $stmt = $db->prepare("SELECT 1 FROM USERS WHERE USERNAME = ?");
+        $stmt->bindValue(1, $username, SQLITE3_TEXT);
+        $result = $stmt->execute();
+        $row = $result->fetchArray(SQLITE3_ASSOC);
     
-        if (!$row){
+        if ($row === false){
            
             $_SESSION['itexists'] = 'false';
-            $_SESSION['color'] = $color;
+            $_SESSION['color'] = $color;      
     
         } else {
     

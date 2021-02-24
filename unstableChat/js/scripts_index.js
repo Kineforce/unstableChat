@@ -38,7 +38,6 @@ $("#login_form").submit(function(e) {
                     document.getElementById('feedback_message').innerHTML = 'Please, fulfill a valid username!';
                 }else {
                     document.getElementById('feedback_message').innerHTML = 'Contact support!';
-                    console.log(data.status);
                 }
             } 
         });

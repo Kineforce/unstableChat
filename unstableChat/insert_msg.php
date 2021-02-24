@@ -2,6 +2,8 @@
 
 session_start();
 
+header('Content-type: application/json');
+
 if (isset($_SESSION['isValidated'])){
 
     include_once 'conn.php';
@@ -11,37 +13,40 @@ if (isset($_SESSION['isValidated'])){
 
     if ($messageText != ""){
 
-        $query = " INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText)
-        VALUES (?, getdate(), ?) ";
+        $stmt_insert_message = $db->prepare(" INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText)
+        VALUES (?, CURRENT_TIMESTAMP, ?) ");
 
-        $result = sqlsrv_query($conn, $query, array($username, $messageText));
+        $stmt_insert_message->bindValue(1, $username);
+        $stmt_insert_message->bindValue(2, $messageText);
 
+        $result_insert_message = $stmt_insert_message->execute();
+        
+        //$result = sqlsrv_query($conn, $query, array($username, $messageText));
 
-        header('Content-type: application/json');
+        $query_2 = $db->prepare("SELECT * FROM UPDATE_DIV");
 
-        $query_2 = "SELECT * FROM UPDATE_DIV";
+        //$result_2 = sqlsrv_query($conn, $query_2);
 
-        $result_2 = sqlsrv_query($conn, $query_2);
+        //$data = sqlsrv_fetch_array($result_2);
 
-        $data = sqlsrv_fetch_array($result_2);
+        $result_2 = $query_2->execute();
+        $data = $result_2->fetchArray();
 
-        if ($data['database_session'] == 1){
+        if ($data['databaseSession'] == 1){
 
-        $query_2 = "UPDATE UPDATE_DIV SET DATABASE_SESSION = 0";
+            $stmt_update_query = $db->prepare("UPDATE UPDATE_DIV SET databaseSession = 0");
+            $stmt_update_query->execute();
+            
+        }
 
-        $result_2 = sqlsrv_query($conn, $query_2);
+        if ($data['databaseSession'] == 0){
+
+            $stmt_update_query = $db->prepare("UPDATE UPDATE_DIV SET databaseSession = 1");
+            $stmt_update_query->execute();
 
         }
 
-        if ($data['database_session'] == 0){
-
-        $query_2 = "UPDATE UPDATE_DIV SET DATABASE_SESSION = 1";
-
-        $result_2 = sqlsrv_query($conn, $query_2);
-
-        }
-
-        $response_array['cookie_value'] = $data['database_session'];
+        $response_array['cookie_value'] = $data['databaseSession'];
 
         echo json_encode($response_array);
 
