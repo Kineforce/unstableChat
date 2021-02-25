@@ -2,7 +2,7 @@
 (function($) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
-    }
+    };
 })(jQuery);
 
 // Variável que indica se está tudo scrollado
@@ -30,7 +30,7 @@ setInterval(function(){
 
             //console.log("No Bottom");
         }
-    })
+    });
 
 }, 200);
 
@@ -59,7 +59,7 @@ async function loopingScroll(){
     }else {
         setTimeout(function(){
             loopingScroll();
-        }, 200)
+        }, 200);
     }
     
 }
@@ -173,14 +173,14 @@ document.getElementById("logout").addEventListener("click", function(){
         success: function(response){
             location.reload();
         }
-    })
-})
+    });
+});
 
 // Listener que escuta o botão de enviar mensagens
 
 document.getElementById("send_msg").addEventListener("click", function(){
     sendMessageToChat();
-})
+});
 
 // Listener que escuta a tecla enter e chama a função de enviar mensagens
 
@@ -190,7 +190,7 @@ document.addEventListener("keyup", function(event){
         sendMessageToChat();
     }
 
-})
+});
 
 // Listener que escuta o botão para scrollar o chat
 
@@ -199,7 +199,7 @@ document.getElementById("go_to_bottom").addEventListener("click", function(){
     var messageBody = document.querySelector('.message_box');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
-})
+});
 
 
 
