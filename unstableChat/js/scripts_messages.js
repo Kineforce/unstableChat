@@ -18,7 +18,6 @@ setInterval(function(){
     [0].scrollHeight;
         if(check) {
            checkbottom = "bottom";
-           $('#go_to_bottom').attr("hidden", "hidden");
            $('#go_to_bottom').removeAttr("class", "fa fa-arrow-down");
 
            //console.log("Bottom");
