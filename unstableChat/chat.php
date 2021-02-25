@@ -18,23 +18,26 @@ if (isset($_SESSION['isValidated'])){
 </head>
 <body>
 
-<div class="container">
-    <div class="chat">
-        <div class="message_box">
-        </div>    
-        <div class="insert_box">
-            <span id="input_msg" >Insert your message: </span>
-            <input type="text" name="message" id="input_box" placeholder="start typing...">
-            <button name="data" id="send_msg">Send it!</button>
-        </div>
-        <div class="username_info">
-            <span class="username_info_span">You are logged in as: <?=$_SESSION['username']?></span>
-            <button class="logout" id="logout">Logout</button>
+    <div class="hidden-div" hidden>            
+    </div>
+
+    <div class="container">
+        <div class="chat">
+            <div class="message_box">
+            </div>    
+            <div class="insert_box">
+                <span id="input_msg" >Insert your message: </span>
+                <input type="text" name="message" id="input_box" placeholder="start typing...">
+                <button name="data" id="send_msg">Send it!</button>
+            </div>
+            <div class="username_info">
+                <span class="username_info_span">You are logged in as: <?=$_SESSION['username']?></span>
+                <button class="logout" id="logout">Logout</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="js/scripts_messages.js"></script>
+    <script src="js/scripts_messages.js"></script>
 
 </body>
 </html>

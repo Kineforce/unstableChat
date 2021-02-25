@@ -1,10 +1,15 @@
+// Função que checa se o scroll da div do chat está carregado
 (function($) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
     }
 })(jQuery);
 
+// Variável que indica se está tudo scrollado
+
 var checkbottom;
+
+// Verifica a cada 200ms se o chat está scrollado
 
 setInterval(function(){
 
@@ -21,11 +26,15 @@ setInterval(function(){
 
 }, 200);
 
+// Função para sleep
+
 function sleep(ms) {
 
     return new Promise(resolve => setTimeout(resolve, ms));
 
 }
+
+// Função que scrolla o chat, checando enquanto o chat não estiver totalmente scrollado
 
 async function looping(){
     if ($('.message_box').hasScrollBar() == true){
@@ -35,7 +44,7 @@ async function looping(){
 
         while (checkbottom != "bottom"){
             chat_box.scrollTop = i;
-            i += 50;
+            i += 5000;
             await sleep(1);
         }
 
@@ -48,73 +57,84 @@ async function looping(){
     
 }
 
+// Chamada da função acima
+
 looping();
 
-/*
-if (sessionStorage.getItem('js_isUpdated') === null){
-    sessionStorage.setItem('js_isUpdated', 1);
-    $('.message_box').load('./chat_box.php .inner_message');
+// Carrega inicialmente todas as mensagens
+var mainLoad = $('.message_box').load('./chat_box.php .inner_message'); 
 
-}else {
-    $('.message_box').load('./chat_box.php .inner_message');
+// Não sei por que, mas o primeiro load na hidden-div não funciona
+var firstIteration = 0;
 
+
+// Compara dois arrays e retorna a diferença
+
+function difference(a1, a2) {
+    var result = [];
+    for (var i = 0; i < a1.length; i++) {
+        if (a2.indexOf(a1[i]) === -1) {
+            result.push(a1[i]);
+        }
+    }
+    return result;
 }
 
-var input_box_message = document.getElementById("input_box").value;
-
-(function update() {
-
-    $.ajax({
-        url:'./verify.php',
-        type:'post',
-        data:{message:input_box_message},
-        dataType:'json',
-        success:function(response){
-            sessionStorage.setItem('realTime', response.realTime);
-        }
-    }).then(function() {
-        setTimeout(update, 200);
-    })
-})();
+// Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
 setInterval(function(){
 
-    js_session = sessionStorage.getItem('js_isUpdated');
-    realTime = sessionStorage.getItem('realTime');
 
-    var aux = true;
+    // Carrega em uma div escondida, as mensagens "atualizadas"
+    $('.hidden-div').load('./chat_box.php .inner_message');
 
-    if (sessionStorage.getItem('js_isUpdated') == 1){
-        aux = false;
+    // Pega os elementos carregados na div escondida
+    var pureHiddenDiv = $('.hidden-div')[0].getElementsByClassName('inner_message');
 
-    }
+    // Pega os elementos carregados inicialmente
+    var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
 
-    if (js_session == realTime){
-        $('.message_box').load('./chat_box.php .inner_message');
+    if (firstIteration != 0){
+        if (pureMainLoad.length == pureHiddenDiv.length){
+            //console.log("Equal divs! Do nothing!");
+        }else {
+            //console.log("Differente divs! Do something!");
+            string_array_hidden = [];
+            string_array_main = [];
 
-        if (aux == false){
-            sessionStorage.setItem("js_isUpdated", 0);
-        }else{
-            sessionStorage.setItem("js_isUpdated", 1);
+            for (i=0; i<pureHiddenDiv.length; i++){
+
+                string_array_hidden.push(pureHiddenDiv[i].outerHTML);
+                
+            }
+
+            for (i=0; i<pureMainLoad.length; i++){
+
+                string_array_main.push(pureHiddenDiv[i].outerHTML);
+                
+            }
+            
+            result = difference(string_array_hidden, string_array_main);
+        
+            $('.message_box').append(result);
+
+            var messageBody = document.querySelector('.message_box');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+            
         }
-    }   
-}, 200);
-*/
+    }else {
 
-setInterval(function(){
-
-    $('.message_box').load('./chat_box.php .inner_message');   
-
-}, 200);
-
-window.setInterval(function(){
-
-    if (checkbottom=="bottom") {
-        var chat_box = document.getElementsByClassName('message_box')[0];
-        chat_box.scrollTo(0, chat_box.scrollHeight);
+        firstIteration =+ 1;
+    
     }
 
-}, 500);
+    //console.log("pureMainLoad --> " + pureMainLoad.length);
+    //console.log("pureHiddenDiv --> " + pureHiddenDiv.length);
+    
+
+}, 200);
+
+// Função que envia a mensagem pro banco de dados
 
 function sendMessageToChat(){
     
@@ -135,6 +155,8 @@ function sendMessageToChat(){
     }
 }
 
+// Função que efetua o logout do usuário
+
 document.getElementById("logout").addEventListener("click", function(){
 
     $.ajax({
@@ -148,10 +170,13 @@ document.getElementById("logout").addEventListener("click", function(){
     })
 })
 
+// Listener que escuta o botão de enviar mensagens
+
 document.getElementById("send_msg").addEventListener("click", function(){
     sendMessageToChat();
 })
 
+// Listener que escuta a tecla enter e chama a função de enviar mensagens
 
 document.addEventListener("keyup", function(event){
 

@@ -19,7 +19,8 @@ $style = 'style="color: ';
 
 <?php while($data = $result->fetchArray()) {
     $loop_style = $style . $data['userColor'] . '"';
-    echo "<div class='inner_message' ".$loop_style.">
+    $messageId = $data['messageId'];
+    echo "<div id='$messageId' class='inner_message' ".$loop_style.">
         ".$data['userName']." : ".$data['messageText']."
     </div>";               
 }?>
