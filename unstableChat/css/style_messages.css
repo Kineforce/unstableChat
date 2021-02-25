@@ -145,3 +145,12 @@ body {
     background: #555;
 }
 
+.go_to_bottom {
+    position: absolute;
+    font-size: 30px;
+    color: gray;
+    left: 90%;
+    top: 90%;
+    z-index: 2;
+    cursor: pointer;
+}

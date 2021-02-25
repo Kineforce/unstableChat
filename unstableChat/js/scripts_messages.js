@@ -18,9 +18,17 @@ setInterval(function(){
     [0].scrollHeight;
         if(check) {
            checkbottom = "bottom";
+           $('#go_to_bottom').attr("hidden", "hidden");
+           $('#go_to_bottom').removeAttr("class", "fa fa-arrow-down");
+
+           //console.log("Bottom");
         }
         else {
             checkbottom = "nobottom";
+            $('#go_to_bottom').addClass("fa fa-arrow-down");
+            $('#go_to_bottom').addClass("go_to_bottom");
+
+            //console.log("No Bottom");
         }
     })
 
@@ -36,7 +44,7 @@ function sleep(ms) {
 
 // Função que scrolla o chat, checando enquanto o chat não estiver totalmente scrollado
 
-async function looping(){
+async function loopingScroll(){
     if ($('.message_box').hasScrollBar() == true){
         var chat_box = document.getElementsByClassName('message_box')[0];
 
@@ -48,18 +56,17 @@ async function looping(){
             await sleep(1);
         }
 
- 
     }else {
         setTimeout(function(){
-            looping();
+            loopingScroll();
         }, 200)
     }
     
 }
 
-// Chamada da função acima
+// Chamada da função loopingScroll();
 
-looping();
+loopingScroll();
 
 // Carrega inicialmente todas as mensagens
 var mainLoad = $('.message_box').load('./chat_box.php .inner_message'); 
@@ -83,7 +90,6 @@ function difference(a1, a2) {
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
 setInterval(function(){
-
 
     // Carrega em uma div escondida, as mensagens "atualizadas"
     $('.hidden-div').load('./chat_box.php .inner_message');
@@ -183,6 +189,15 @@ document.addEventListener("keyup", function(event){
     if (event.key == "Enter"){
         sendMessageToChat();
     }
+
+})
+
+// Listener que escuta o botão para scrollar o chat
+
+document.getElementById("go_to_bottom").addEventListener("click", function(){
+
+    var messageBody = document.querySelector('.message_box');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
 })
 

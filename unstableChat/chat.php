@@ -13,16 +13,14 @@ if (isset($_SESSION['isValidated'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="static/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/style_messages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>unstableChat</title>
 </head>
 <body>
-
-    <div class="hidden-div" hidden>            
-    </div>
-
     <div class="container">
-        <div class="chat">
+    <div id="go_to_bottom"></div>  
+        <div class="chat">           
             <div class="message_box">
             </div>    
             <div class="insert_box">
@@ -35,6 +33,9 @@ if (isset($_SESSION['isValidated'])){
                 <button class="logout" id="logout">Logout</button>
             </div>
         </div>
+    </div>
+
+    <div class="hidden-div" hidden>            
     </div>
 
     <script src="js/scripts_messages.js"></script>
