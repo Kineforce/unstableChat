@@ -200,5 +200,53 @@ document.getElementById("go_to_bottom").addEventListener("click", function(){
 
 });
 
+// Faz um post para o banco alterar a cor do usuário
 
+document.getElementById('colorpicker').addEventListener("change", function(){
+
+    var color_updated = $('#colorpicker')[0].value;
+
+    $.ajax({
+        url:'./update_color.php',
+        type:'post',
+        data:{color_updated:color_updated},
+        dataType:'json',
+        success:function(response){
+            sessionStorage.setItem("username", response.username);
+            sessionStorage.setItem("color_updated", color_updated);
+
+        }
+    });
+})
+
+// Troca a cor das mensagens do usuário caso ele utiliza o botão de mudar de cor
+
+setInterval(function(){
+
+    if (sessionStorage.getItem("username")){
+
+        let main_div = document.getElementsByClassName('message_box')[0];
+        let all_msgs = main_div.getElementsByClassName('inner_message');
+        let username = sessionStorage.getItem('username');
+
+        for (i = 0; i<all_msgs.length; i++){
+
+            let msg_html = all_msgs[i];
+            let msg = msg_html.getElementsByTagName('span')[0].textContent;
+
+            if (msg == username){   
+
+                msg_html.removeAttribute("style", "color");    
+                msg_html.setAttribute("style", "color: " + sessionStorage.getItem("color_updated"));    
+
+                console.log(msg_html);          
+
+            }
+        }
+    
+        sessionStorage.removeItem("username");
+
+    }
+
+}, 200)
 

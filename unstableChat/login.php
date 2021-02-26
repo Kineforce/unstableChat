@@ -2,6 +2,9 @@
 
 session_start();
 
+header('Content-type: application/json');
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
     
     $base_url = $_SERVER['HTTP_HOST'];
@@ -14,7 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 $username = isset($_POST['userName'])? $_POST['userName']: '';
 $color    = isset($_POST['color'])? $_POST['color']: '';
 $password = isset($_POST['userPass'])? $_POST['userPass']: '';
-$_SESSION['color_real'] = ($color != "")? $color : "";
+
+if ($color != ""){
+    $_SESSION['color_real'] = $color;
+}
 
 if (isset($_POST['pwd'])){
 
@@ -133,7 +139,6 @@ if (isset($_POST['pwd'])){
     }
 }
 
-header('Content-type: application/json');
 echo json_encode($response_array);
 
 exit();

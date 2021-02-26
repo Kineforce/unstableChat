@@ -21,7 +21,7 @@ $style = 'style="color: ';
     $loop_style = $style . $data['userColor'] . '"';
     $messageId = $data['messageId'];
     echo "<div id='$messageId' class='inner_message' ".$loop_style.">
-        ".$data['userName']." : ".$data['messageText']."
+     <span id='username'>".$data['userName']."</span>: ".$data['messageText']."
     </div>";               
 }?>
 

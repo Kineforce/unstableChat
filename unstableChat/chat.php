@@ -31,6 +31,7 @@ if (isset($_SESSION['isValidated'])){
             <div class="username_info">
                 <span class="username_info_span">You are logged in as: <?=$_SESSION['username']?></span>
                 <button class="logout" id="logout">Logout</button>
+                <input type="color" id="colorpicker" value="<?=$_SESSION['color_real']?>">
             </div>
         </div>
     </div>

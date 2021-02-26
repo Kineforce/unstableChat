@@ -154,3 +154,10 @@ body {
     z-index: 2;
     cursor: pointer;
 }
+
+#colorpicker {
+    position: relative;
+    left: 90% ;
+    background-color: darkslateblue;
+    border: none;
+}
