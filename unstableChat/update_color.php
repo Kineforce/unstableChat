@@ -26,21 +26,6 @@ if (isset($_SESSION['isValidated'])){
         $_SESSION['updated_color'] = "updateit";
         $response_array['username'] = $_SESSION['username'];
     
-        if (isset($_POST['check_user_color'])){
-    
-            $check_user_colors = $db->prepare("SELECT userColor FROM USERS");
-            $result = $check_user_colors->execute();
-    
-            $json_array = array();
-    
-            while ($row = $result->fetchArray()){
-                array_push($json_array, $row);
-            }
-    
-            $response_array['color_data'] = $json_array;
-    
-        }
-    
     }
 
     echo json_encode($response_array);

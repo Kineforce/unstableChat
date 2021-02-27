@@ -112,6 +112,22 @@ setInterval(function(){
     // Pega os elementos carregados inicialmente
     var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
 
+    // Carrega cor da #colorpicker baseado nas mensagens que chegaram
+
+    for (i = 0; i<pureHiddenDiv.length; i++){
+
+        let msg_html = pureHiddenDiv[i];
+        let msg = msg_html.getElementsByTagName('span')[0].textContent;
+
+        if (msg == sessionStorage.getItem("username")){   
+
+            $user_color = msg_html.getAttribute("style").substring(7);
+
+            $('#colorpicker').attr("value", $user_color);   
+            $('#colorpicker').removeAttr("hidden");
+            break;
+        }
+    }
 
     if (firstIteration != 0){
         if (pureMainLoad.length == pureHiddenDiv.length){
@@ -146,48 +162,6 @@ setInterval(function(){
         firstIteration =+ 1;
     
     }
-
-    // Carrega cor da #colorpicker baseado nas mensagens que chegaram
-
-    for (i = 0; i<pureHiddenDiv.length; i++){
-
-        let msg_html = pureHiddenDiv[i];
-        let msg = msg_html.getElementsByTagName('span')[0].textContent;
-
-        if (msg == sessionStorage.getItem("username")){   
-
-            $user_color = msg_html.getAttribute("style").substring(7);
-
-            $('#colorpicker').attr("value", $user_color);   
-            
-            break;
-        }
-    }
-
-    // Carrega a cor das mensagens de acordo com as novas mensagens que chegaram
-
-    for (i = 0; i<pureHiddenDiv.length; i++){
-
-        let msg_html = pureHiddenDiv[i];
-        let msg = msg_html.getElementsByTagName('span')[0].textContent;
-
-        let current_msg_html = pureMainLoad[i];
-
-        if (msg == sessionStorage.getItem("username")){   
-
-            $user_color = msg_html.getAttribute("style").substring(7);
-
-            current_msg_html.removeAttribute("style", "color");    
-            current_msg_html.setAttribute("style", "color: " + $user_color);  
-
-            $('#colorpicker').removeAttr("hidden");
-
-            console.log("Te pombo");
-            
-        }
-
-    }
-    
 
 }, 200);
 
@@ -268,4 +242,34 @@ document.getElementById('colorpicker').addEventListener("change", function(){
     });
 })
 
+// Atualiza a cor do chat
 
+setInterval(function(){
+
+
+    // Pega os elementos carregados na div escondida
+    var pureHiddenDiv = $('.hidden-div')[0].getElementsByClassName('inner_message');
+
+    // Pega os elementos carregados inicialmente
+    var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
+
+    // Carrega a cor das mensagens de acordo com as novas mensagens que chegaram
+
+    for (i = 0; i<pureHiddenDiv.length; i++){
+        
+        let msg_html_x = pureHiddenDiv[i];
+        let msg_user_x = msg_html_x.getElementsByTagName('span')[0].textContent;
+
+        let current_msg_html = pureMainLoad[i];
+        let current_msg_user = current_msg_html.getElementsByTagName('span')[0].textContent;
+
+        if (msg_user_x == current_msg_user){   
+
+            $user_color_updated = msg_html_x.getAttribute("style").substring(7);
+            current_msg_html.setAttribute("style", "color: " + $user_color_updated)
+            
+        }
+
+    }
+
+}, 1000);
