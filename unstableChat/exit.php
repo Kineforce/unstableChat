@@ -25,6 +25,4 @@ if(isset($_SESSION['isValidated'])){
 
 }
 
-
-
 ?>
