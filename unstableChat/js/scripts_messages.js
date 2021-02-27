@@ -231,6 +231,7 @@ document.getElementById("go_to_bottom").addEventListener("click", function(){
 document.getElementById('colorpicker').addEventListener("change", function(){
 
     var color_updated = $('#colorpicker')[0].value;
+    console.log(color_updated);
 
     $.ajax({
         url:'./update_color.php',
@@ -272,4 +273,4 @@ setInterval(function(){
 
     }
 
-}, 1000);
+}, 200);
