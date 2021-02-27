@@ -147,6 +147,23 @@ setInterval(function(){
     
     }
 
+    // Carrega cor da #colorpicker baseado nas mensagens que chegaram
+
+    for (i = 0; i<pureHiddenDiv.length; i++){
+
+        let msg_html = pureHiddenDiv[i];
+        let msg = msg_html.getElementsByTagName('span')[0].textContent;
+
+        if (msg == sessionStorage.getItem("username")){   
+
+            $user_color = msg_html.getAttribute("style").substring(7);
+
+            $('#colorpicker').attr("value", $user_color);   
+            
+            break;
+        }
+    }
+
     // Carrega a cor das mensagens de acordo com as novas mensagens que chegaram
 
     for (i = 0; i<pureHiddenDiv.length; i++){
@@ -162,6 +179,10 @@ setInterval(function(){
 
             current_msg_html.removeAttribute("style", "color");    
             current_msg_html.setAttribute("style", "color: " + $user_color);  
+
+            $('#colorpicker').removeAttr("hidden");
+
+            console.log("Te pombo");
             
         }
 
@@ -247,27 +268,4 @@ document.getElementById('colorpicker').addEventListener("change", function(){
     });
 })
 
-// Carrega cor da #colorpicker baseado nas mensagens atuais
-
-setInterval(function(){
-
-    var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
-
-    for (i = 0; i<pureMainLoad.length; i++){
-
-        let msg_html = pureMainLoad[i];
-        let msg = msg_html.getElementsByTagName('span')[0].textContent;
-    
-        if (msg == sessionStorage.getItem("username")){   
-    
-            $user_color = msg_html.getAttribute("style").substring(7);
-    
-            $('#colorpicker').attr("value", $user_color);   
-            
-            $('#colorpicker').removeAttr("hidden");
-            break;
-        }
-    }
-
-}, 200)
 
