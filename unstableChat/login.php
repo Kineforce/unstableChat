@@ -30,7 +30,8 @@ if (isset($_POST['pwd'])){
     
         $username = $_SESSION['username'];
         $userexists = isset($_SESSION['itexists'])? $_SESSION['itexists']: '';    
-    
+
+        // SE O USUÁRIO NÃO EXISTIR, INSERIR NO BANCO
         if($userexists == 'false'){
     
             if ($_POST['token'] != $_SESSION['token']){
@@ -39,16 +40,11 @@ if (isset($_POST['pwd'])){
 
             } else {
     
-                //$insert_query = "INSERT INTO USERS (userName, userPwd, userColor)
-                //VALUES (?, ?, ?)";
-    
                 $stmt = $db->prepare("INSERT INTO USERS (userPwd, userColor, userName)
                 VALUES (?, ?, ?) ");
 
                 $password = password_hash($password, PASSWORD_DEFAULT);                 
-    
-                //$result = sqlsrv_query($conn, $insert_query, array($username, $password, $_SESSION['color']));
-    
+        
                 $stmt->bindValue(1, $password, SQLITE3_TEXT);
                 $stmt->bindValue(2, $_SESSION['color'], SQLITE3_TEXT);
                 $stmt->bindValue(3, $username, SQLITE3_TEXT);
@@ -64,18 +60,13 @@ if (isset($_POST['pwd'])){
     
             }
     
+        // SE O USUÁRIO EXISTIR, VALIDAR SENHA
+
         }else {
     
-            $stmt = $db->prepare("  SELECT userPwd
+            $stmt = $db->prepare("  SELECT userPwd, userColor
                                     FROM   USERS
                                     WHERE  USERNAME = ?;");
-    
-    
-            /*$result_query = sqlsrv_query($conn, $hash_query, array($username) );
-    
-            $hash_db_pass = sqlsrv_fetch_array($result_query);
-    
-            $password = password_verify($password, $hash_db_pass[0]);*/
 
             $stmt->bindValue(1, $username, SQLITE3_TEXT);
             $result = $stmt->execute();
@@ -107,12 +98,6 @@ if (isset($_POST['pwd'])){
         $_SESSION['username'] = $username;
     
         include_once("conn.php");
-    
-        /*$query = "SELECT * FROM users WHERE USERNAME = ?;";
-    
-        $result = sqlsrv_query($conn, $query , array($username));
-    
-        $row = sqlsrv_fetch_array($result);*/
 
         $stmt = $db->prepare("SELECT 1 FROM USERS WHERE USERNAME = ?");
         $stmt->bindValue(1, $username, SQLITE3_TEXT);

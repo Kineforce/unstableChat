@@ -5,6 +5,18 @@
     };
 })(jQuery);
 
+// Faz um post para a update_color e retorna o username
+
+$.ajax({
+    url:'./update_color.php',
+    type:'post',
+    data:{retorna_username:'0'},
+    dataType:'json',
+    success:function(response){
+        sessionStorage.setItem("username", response.username);
+    }
+});
+
 // Variável que indica se está tudo scrollado
 
 var checkbottom;
@@ -86,6 +98,7 @@ function difference(a1, a2) {
     return result;
 }
 
+
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
 setInterval(function(){
@@ -98,6 +111,7 @@ setInterval(function(){
 
     // Pega os elementos carregados inicialmente
     var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
+
 
     if (firstIteration != 0){
         if (pureMainLoad.length == pureHiddenDiv.length){
@@ -133,8 +147,42 @@ setInterval(function(){
     
     }
 
-    //console.log("pureMainLoad --> " + pureMainLoad.length);
-    //console.log("pureHiddenDiv --> " + pureHiddenDiv.length);
+    // Carrega cor da #colorpicker baseado nas mensagens que chegaram
+
+    for (i = 0; i<pureHiddenDiv.length; i++){
+
+        let msg_html = pureHiddenDiv[i];
+        let msg = msg_html.getElementsByTagName('span')[0].textContent;
+
+        if (msg == sessionStorage.getItem("username")){   
+
+            $user_color = msg_html.getAttribute("style").substring(7);
+
+            $('#colorpicker').attr("value", $user_color);   
+            
+            break;
+        }
+    }
+
+    // Carrega a cor das mensagens de acordo com as novas mensagens que chegaram
+
+    for (i = 0; i<pureHiddenDiv.length; i++){
+
+        let msg_html = pureHiddenDiv[i];
+        let msg = msg_html.getElementsByTagName('span')[0].textContent;
+
+        let current_msg_html = pureMainLoad[i];
+
+        if (msg == sessionStorage.getItem("username")){   
+
+            $user_color = msg_html.getAttribute("style").substring(7);
+
+            current_msg_html.removeAttribute("style", "color");    
+            current_msg_html.setAttribute("style", "color: " + $user_color);  
+            
+        }
+
+    }
     
 
 }, 200);
@@ -212,41 +260,8 @@ document.getElementById('colorpicker').addEventListener("change", function(){
         data:{color_updated:color_updated},
         dataType:'json',
         success:function(response){
-            sessionStorage.setItem("username", response.username);
-            sessionStorage.setItem("color_updated", color_updated);
-
         }
     });
 })
 
-// Troca a cor das mensagens do usuário caso ele utiliza o botão de mudar de cor
-
-setInterval(function(){
-
-    if (sessionStorage.getItem("username")){
-
-        let main_div = document.getElementsByClassName('message_box')[0];
-        let all_msgs = main_div.getElementsByClassName('inner_message');
-        let username = sessionStorage.getItem('username');
-
-        for (i = 0; i<all_msgs.length; i++){
-
-            let msg_html = all_msgs[i];
-            let msg = msg_html.getElementsByTagName('span')[0].textContent;
-
-            if (msg == username){   
-
-                msg_html.removeAttribute("style", "color");    
-                msg_html.setAttribute("style", "color: " + sessionStorage.getItem("color_updated"));    
-
-                console.log(msg_html);          
-
-            }
-        }
-    
-        sessionStorage.removeItem("username");
-
-    }
-
-}, 200)
 
