@@ -8,7 +8,6 @@ body {
     margin-top: 100px;
     width: 600px;
     height: 600px;
-
 }
 
 .chat {
@@ -24,7 +23,6 @@ body {
     border: 1px solid white;
     margin-top: 700px;
     background-color: darkslateblue;
-
 }
 
 .username_info {
@@ -34,7 +32,6 @@ body {
     border: 1px solid white;
     margin-top: 770px;
     background-color: darkslateblue;
-
 }
 
 .username_info_span {
@@ -44,13 +41,11 @@ body {
     top: 5px;
     left: 10px;
     color: white;
-
 }
 
 
 .current_message {
     position: absolute;
-
 }
 
 #input_msg {
@@ -61,7 +56,6 @@ body {
     font-family: monospace;
     color: white;
     width: auto;
-
 }
 
 #input_box {
@@ -72,9 +66,7 @@ body {
     font-size: 15px;
     font-family: monospace;
     color: black;
-
 }
-
 
 #send_msg {
     position: absolute;
@@ -88,7 +80,6 @@ body {
     width: 100px;
     height: 20px;
     border: 1px solid black;
-
 }
 
 .default_color {

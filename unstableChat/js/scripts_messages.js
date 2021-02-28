@@ -198,13 +198,14 @@ document.getElementById('colorpicker').addEventListener("change", function(){
         data:{color_updated:color_updated},
         dataType:'json',
         success:function(response){
+            
         }
     });
 })
 
-// Atualiza a cor do chat
+// Atualiza a cor do chat baseado em um json vindo do backend
 
-setInterval(function(){
+function updateColorChat(){
 
     let message = $('.inner_message');
 
@@ -248,4 +249,15 @@ setInterval(function(){
         }
     })
 
-}, 200);
+    setTimeout(updateColorChat, 200);
+
+}
+
+// Chama função acima
+
+$(document).ready(function(){
+
+    updateColorChat();
+
+});
+
