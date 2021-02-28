@@ -45,7 +45,7 @@ body {
     background-color: rgb(61, 40, 245);
 }
 
-.feedback_message {
+#feedback_message {
     position: absolute;
     margin-top: 10px;
     margin-left: 12.6rem;
