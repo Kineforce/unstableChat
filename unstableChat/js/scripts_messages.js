@@ -112,9 +112,11 @@ function loadNewMessages(){
 
             }
         }
-    });
-    
-    setTimeout(loadNewMessages, 200);
+    }).done(function(){
+
+        setTimeout(loadNewMessages, 200);
+
+    })
 
 }
 
@@ -247,9 +249,11 @@ function updateColorChat(){
                 }
             }
         }
-    })
+    }).done(function() {
 
-    setTimeout(updateColorChat, 200);
+        setTimeout(updateColorChat, 200);
+
+    })
 
 }
 
