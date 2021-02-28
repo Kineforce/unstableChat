@@ -26,21 +26,21 @@ $('#pass_form').submit(function(e) {
             dataType: 'json',
             success: function(data) {
                 if (data.status == 'success'){
-                    document.getElementById('feedback_message').innerHTML = 'Redirecting to unstableChat!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'Redirecting to unstableChat!';
                     setTimeout(function(){ 
                         window.location.href = './chat.php';
                     }, 2000);
                 }else if (data.status == 'wrongpassword') {
-                    document.getElementById('feedback_message').innerHTML = 'Wrong password!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'Wrong password!';
                     setTimeout(function(){ 
                         window.location.href = './';
                     }, 2000);
                 } else if (data.status == 'nopassword') {
-                    document.getElementById('feedback_message').innerHTML = 'Insert a password!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'Insert a password!';
                 }else if (data.status == 'waitforit'){
-                    document.getElementById('feedback_message').innerHTML = 'You already send a request!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'You already send a request!';
                 }else {
-                    document.getElementById('feedback_message').innerHTML = 'Contact support!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'Contact support!';
                 }
             }
         })

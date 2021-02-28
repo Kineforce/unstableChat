@@ -35,9 +35,9 @@ $("#login_form").submit(function(e) {
                 }else if (data.status == 'password'){
                     console.log("Password validated!");
                 }else if (data.status == 'invalidUser'){
-                    document.getElementById('feedback_message').innerHTML = 'Please, fulfill a valid username!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'Please, fulfill a valid username!';
                 }else {
-                    document.getElementById('feedback_message').innerHTML = 'Contact support!';
+                    document.getElementsByClassName('feedback_message')[0].innerHTML = 'Contact support!';
                     console.log(data.status);
                 }
             } 
