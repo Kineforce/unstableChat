@@ -79,91 +79,51 @@ async function loopingScroll(){
 
 loopingScroll();
 
-// Carrega inicialmente todas as mensagens
-var mainLoad = $('.message_box').load('./chat_box.php .inner_message'); 
-
-// Não sei por que, mas o primeiro load na hidden-div não funciona
-var firstIteration = 0;
-
-
-// Compara dois arrays e retorna a diferença
-
-function difference(a1, a2) {
-    var result = [];
-    for (var i = 0; i < a1.length; i++) {
-        if (a2.indexOf(a1[i]) === -1) {
-            result.push(a1[i]);
-        }
-    }
-    return result;
-}
-
-
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
-setInterval(function(){
+function loadNewMessages(){
 
-    // Carrega em uma div escondida, as mensagens "atualizadas"
-    $('.hidden-div').load('./chat_box.php .inner_message');
+    var all_msgs = $('.inner_message');    
+    var last_msg_div = $(all_msgs);
 
-    // Pega os elementos carregados na div escondida
-    var pureHiddenDiv = $('.hidden-div')[0].getElementsByClassName('inner_message');
+    if (last_msg_div.length == 0){
 
-    // Pega os elementos carregados inicialmente
-    var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
+        var last_msg = 0;
 
-    // Carrega cor da #colorpicker baseado nas mensagens que chegaram
-
-    for (i = 0; i<pureHiddenDiv.length; i++){
-
-        let msg_html = pureHiddenDiv[i];
-        let msg = msg_html.getElementsByTagName('span')[0].textContent;
-
-        if (msg == sessionStorage.getItem("username")){   
-
-            $user_color = msg_html.getAttribute("style").substring(7);
-
-            $('#colorpicker').attr("value", $user_color);   
-            $('#colorpicker').removeAttr("hidden");
-            break;
-        }
-    }
-
-    if (firstIteration != 0){
-        if (pureMainLoad.length == pureHiddenDiv.length){
-            //console.log("Equal divs! Do nothing!");
-        }else {
-            //console.log("Differente divs! Do something!");
-            string_array_hidden = [];
-            string_array_main = [];
-
-            for (i=0; i<pureHiddenDiv.length; i++){
-
-                string_array_hidden.push(pureHiddenDiv[i].outerHTML);
-                
-            }
-
-            for (i=0; i<pureMainLoad.length; i++){
-
-                string_array_main.push(pureHiddenDiv[i].outerHTML);
-                
-            }
-            
-            result = difference(string_array_hidden, string_array_main);
-        
-            $('.message_box').append(result);
-
-            var messageBody = document.querySelector('.message_box');
-            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-            
-        }
     }else {
 
-        firstIteration =+ 1;
-    
+        var last_msg = last_msg_div.last()[0].id;
+
     }
 
-}, 200);
+    $.ajax({
+        url:'./chat_box.php',
+        type:'post',
+        data:{load_last_msg:last_msg},
+        dataType:'json',
+        success:function(response){
+ 
+            $('.message_box').append(response.status);
+
+            if (response.status != ""){
+
+                var messageBody = document.querySelector('.message_box');
+                messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+            }
+        }
+    });
+    
+    setTimeout(loadNewMessages, 200);
+
+}
+
+// Carrega inicialmente todas as mensagens e chama a função que verifica novas mensagens
+var mainLoad = $('.message_box').load('./chat_box.php .inner_message', function(){
+
+    loadNewMessages(); 
+
+});
 
 // Função que envia a mensagem pro banco de dados
 
@@ -247,30 +207,45 @@ document.getElementById('colorpicker').addEventListener("change", function(){
 
 setInterval(function(){
 
+    let message_box = $('.message_box')[0];
+    let message     = $('.inner_message');
 
-    // Pega os elementos carregados na div escondida
-    var pureHiddenDiv = $('.hidden-div')[0].getElementsByClassName('inner_message');
+    $.ajax({
+        url:'./update_color.php',
+        type:'post',
+        data:{retorna_cores:"0"},
+        dataType:'json',
+        success:function(response){
 
-    // Pega os elementos carregados inicialmente
-    var pureMainLoad = $('.message_box')[0].getElementsByClassName('inner_message');
-
-    // Carrega a cor das mensagens de acordo com as novas mensagens que chegaram
-
-    for (i = 0; i<pureHiddenDiv.length; i++){
-        
-        let msg_html_x = pureHiddenDiv[i];
-        let msg_user_x = msg_html_x.getElementsByTagName('span')[0].textContent;
-
-        let current_msg_html = pureMainLoad[i];
-        let current_msg_user = current_msg_html.getElementsByTagName('span')[0].textContent;
-
-        if (msg_user_x == current_msg_user){   
-
-            $user_color_updated = msg_html_x.getAttribute("style").substring(7);
-            current_msg_html.setAttribute("style", "color: " + $user_color_updated)
+            let parsed_data = JSON.parse(response.cores);
             
+            for (j = 0; j<message.length; j++){
+
+                for (k = 0; k<parsed_data.length; k++){
+
+                    if ( message[j].getElementsByTagName('span')[0].innerText == parsed_data[k].username){
+
+                        let color_style = parsed_data[k].color;
+
+                        message[j].setAttribute('style', 'color: ' + color_style);
+                    }
+                } 
+            }
+            
+            // Atualiza cor do colorpicker
+
+            for (i = 0; i<message.length; i++){
+
+                if ( message[i].getElementsByTagName('span')[0].innerText == sessionStorage.getItem("username") ){
+                    $user_color = message[i].getAttribute("style").substring(7);
+                    
+                    $('#colorpicker').attr("value", $user_color);   
+                    $('#colorpicker').removeAttr("hidden");
+
+                    break;
+
+                }
+            }
         }
-
-    }
-
+    })
 }, 200);

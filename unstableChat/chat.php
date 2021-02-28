@@ -35,10 +35,6 @@ if (isset($_SESSION['isValidated'])){
             </div>
         </div>
     </div>
-
-    <div class="hidden-div" hidden>            
-    </div>
-
     <script src="js/scripts_messages.js"></script>
 
 </body>
