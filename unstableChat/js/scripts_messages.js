@@ -191,7 +191,6 @@ document.getElementById("go_to_bottom").addEventListener("click", function(){
 document.getElementById('colorpicker').addEventListener("change", function(){
 
     var color_updated = $('#colorpicker')[0].value;
-    console.log(color_updated);
 
     $.ajax({
         url:'./update_color.php',
@@ -207,8 +206,7 @@ document.getElementById('colorpicker').addEventListener("change", function(){
 
 setInterval(function(){
 
-    let message_box = $('.message_box')[0];
-    let message     = $('.inner_message');
+    let message = $('.inner_message');
 
     $.ajax({
         url:'./update_color.php',
@@ -237,6 +235,7 @@ setInterval(function(){
             for (i = 0; i<message.length; i++){
 
                 if ( message[i].getElementsByTagName('span')[0].innerText == sessionStorage.getItem("username") ){
+
                     $user_color = message[i].getAttribute("style").substring(7);
                     
                     $('#colorpicker').attr("value", $user_color);   
@@ -248,4 +247,5 @@ setInterval(function(){
             }
         }
     })
+
 }, 200);
