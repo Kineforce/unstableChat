@@ -132,6 +132,7 @@ var mainLoad = $('.message_box').load('./chat_box.php .inner_message', function(
 function sendMessageToChat(){
     
     var input_box_message = document.getElementById("input_box").value;
+    document.getElementById("input_box").value = "";
 
     if (!input_box_message){
     }else {
@@ -142,7 +143,6 @@ function sendMessageToChat(){
             data:{message:input_box_message},
             dataType:'json',
             success:function(response){
-                document.getElementById("input_box").value = "";
             }
         });
     }
