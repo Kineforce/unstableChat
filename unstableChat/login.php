@@ -2,7 +2,7 @@
 
 session_start();
 
-header('Content-type: application/json');
+header('Content-type: application/json; charset=utf-8' );
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){

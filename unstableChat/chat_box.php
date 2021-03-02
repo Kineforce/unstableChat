@@ -5,7 +5,7 @@ session_start();
 
 if (isset($_SESSION['isValidated'])){
 
-    header('Content-type: application/json');
+    header('Content-type: application/json; charset=utf-8' );
 
     include_once 'conn.php';
 

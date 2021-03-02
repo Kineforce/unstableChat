@@ -114,14 +114,14 @@ function loadNewMessages(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
-            console.log("Busy database, retrying...")
+            //console.log("Busy database, retrying...")
             setTimeout(loadNewMessages, 500);
 
 
         }
     }).done(function(){
 
-        console.log("Messages loaded!")
+        //console.log("Messages loaded!")
         setTimeout(loadNewMessages, 200);
 
     })
@@ -155,7 +155,7 @@ function sendMessageToChat(){
         });
     }
 
-    console.log("Message sent!")
+    //console.log("Message sent!")
 }
 
 // Função que efetua o logout do usuário
@@ -214,7 +214,7 @@ document.getElementById('colorpicker').addEventListener("change", function(){
         }
     });
 
-    console.log("Color sent!")
+    //console.log("Color sent!")
 
 })
 
@@ -264,14 +264,14 @@ function updateColorChat(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
-            console.log("Busy database, retrying...")
+            //console.log("Busy database, retrying...")
             setTimeout(updateColorChat, 500);
 
 
         }
     }).done(function() {
 
-        console.log("Color changed!")
+        //console.log("Color changed!")
         setTimeout(updateColorChat, 1000);
     })
 

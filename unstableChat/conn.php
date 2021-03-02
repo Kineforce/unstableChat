@@ -2,7 +2,7 @@
 
 if (isset($_SESSION['username'])){
 
-    header('Content-type: application/json');
+    header('Content-type: application/json; charset=utf-8' );
 
     $db = new SQLite3('messages.db');
 

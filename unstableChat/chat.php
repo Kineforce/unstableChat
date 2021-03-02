@@ -24,13 +24,14 @@ if (isset($_SESSION['isValidated'])){
             <div class="message_box">
             </div>    
             <div class="insert_box">
-                <span id="input_msg" >Insert your message: </span>
+                <label id="input_msg" for="input_box" >Insert your message: </label>
                 <input type="text" name="message" id="input_box" placeholder="start typing...">
                 <button name="data" id="send_msg">Send it!</button>
             </div>
             <div class="username_info">
-                <span class="username_info_span">You are logged in as: <?=$_SESSION['username']?></span>
+                <label class="username_info_span" for="logout">You are logged in as: <?=$_SESSION['username']?></label>
                 <button class="logout" id="logout">Logout</button>
+                <label for="colorpicker"></label>
                 <input type="color" id="colorpicker" hidden>
             </div>
         </div>
