@@ -173,17 +173,12 @@ document.getElementById("logout").addEventListener("click", function(){
     });
 });
 
-// Listener que escuta o botão de enviar mensagens
-
-document.getElementById("send_msg").addEventListener("click", function(){
-    sendMessageToChat();
-});
-
 // Listener que escuta a tecla enter e chama a função de enviar mensagens
 
 document.addEventListener("keyup", function(event){
 
-    if (event.key == "Enter"){
+
+    if (event.key == "Enter" && !event.shiftKey){
         sendMessageToChat();
     }
 

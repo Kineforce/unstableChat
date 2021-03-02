@@ -24,9 +24,7 @@ if (isset($_SESSION['isValidated'])){
             <div class="message_box">
             </div>    
             <div class="insert_box">
-                <label id="input_msg" for="input_box" >Insert your message: </label>
-                <input type="text" name="message" id="input_box" placeholder="start typing...">
-                <button name="data" id="send_msg">Send it!</button>
+                <textarea type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false"></textarea>
             </div>
             <div class="username_info">
                 <label class="username_info_span" for="logout">You are logged in as: <?=$_SESSION['username']?></label>

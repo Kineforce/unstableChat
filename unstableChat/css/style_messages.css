@@ -60,12 +60,17 @@ body {
 
 #input_box {
     position: absolute;
-    top: 15px;
-    left: 200px;
-    width: 1;
+    top: 5px;
+    left: 5px;
+    width: 97%;
+    height: 30%;
     font-size: 15px;
     font-family: monospace;
     color: black;
+    resize: none;
+    border-radius: 10px;
+    border: 2px solid white;
+
 }
 
 #send_msg {
