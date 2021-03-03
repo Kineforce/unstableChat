@@ -10,6 +10,24 @@ body {
     height: 600px;
 }
 
+.online_users {
+    position: absolute;
+    color: white;
+    right: 650px;
+    width: 120px;
+    height: 100%;
+    font-family: monospace;
+    overflow-wrap: break-word;
+
+}
+
+.users {
+    position: relative;
+    margin-top: 10px;
+    color: greenyellow;
+
+}
+
 .chat {
     position: absolute;
     width: 100%;

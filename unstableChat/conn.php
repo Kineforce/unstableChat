@@ -13,6 +13,8 @@ if (isset($_SESSION['username'])){
 
     } else {
 
+        // Cria a tabela onde serão armazenadas as mensagens
+
         $create_stored_messages = $db->prepare( "   CREATE TABLE IF NOT EXISTS STORED_MESSAGES (
                                                     messageId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                                     userName TEXT NOT NULL,
@@ -21,7 +23,9 @@ if (isset($_SESSION['username'])){
                                                 
                                                 )");
 
-        $create_stored_messages->execute();    
+        $create_stored_messages->execute();  
+
+        // Cria a tabela onde serão armazenados os usuários
 
         $create_users_table      = $db->prepare( "  CREATE TABLE IF NOT EXISTS USERS (
                                                     userId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,6 +36,16 @@ if (isset($_SESSION['username'])){
                                                 )");
 
         $create_users_table->execute(); 
+
+        // Cria a tabela onde será armazenado o status de cada usuário
+
+        $create_status_table     = $db->prepare( "  CREATE TABLE IF NOT EXISTS USER_STATUS (
+                                                    userId INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                    isOnline TEXT not null     
+
+                                                )");
+
+        $create_status_table->execute(); 
 
     }
         

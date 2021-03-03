@@ -40,8 +40,9 @@ if (isset($_POST['pwd'])){
 
             } else {
     
-                $stmt = $db->prepare("INSERT INTO USERS (userPwd, userColor, userName)
-                VALUES (?, ?, ?) ");
+                $stmt = $db->prepare("  INSERT INTO USERS (userPwd, userColor, userName)
+                                        VALUES (?, ?, ?);                                 
+                                    ");
 
                 $password = password_hash($password, PASSWORD_DEFAULT);                 
         
@@ -50,6 +51,12 @@ if (isset($_POST['pwd'])){
                 $stmt->bindValue(3, $username, SQLITE3_TEXT);
 
                 $result = $stmt->execute();
+
+                $stmt_2 = $db->prepare("  INSERT INTO USER_STATUS (isOnline) 
+                                          VALUES ('yes')
+                                       ");
+
+                $result_2 = $stmt_2->execute(); 
 
                 $response_array['status'] = 'success';
                 
