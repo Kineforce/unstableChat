@@ -22,7 +22,7 @@ if (isset($_SESSION['isValidated'])){
     <div class="container">
 
         <div class="online_users">
-            <span>Online Users:</span>
+            <span>Last Seen:</span>
             <div class="users">
                 
             </div>

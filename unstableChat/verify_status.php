@@ -8,13 +8,13 @@ if (isset($_SESSION['isValidated'])){
 
     include_once 'conn.php';
 
-    if (isset($_POST['setTrue'])){
+    if (isset($_POST['setLastStamp'])){
 
         $username = $_POST['username'];
 
-        // Seta o valor isOnline para o usuário do contexto para 'yes'
+        // Seta o valor lastSeen para o usuário do contexto para 'yes'
 
-        $stmt_0 = $db->prepare(" UPDATE USER_STATUS SET isOnline = 'yes' 
+        $stmt_0 = $db->prepare(" UPDATE USER_STATUS SET lastSeen = CURRENT_TIMESTAMP
                                WHERE  userId IN ( SELECT userID 
                                                   FROM   USERS 
                                                   WHERE  userName = ?)"
@@ -29,20 +29,24 @@ if (isset($_SESSION['isValidated'])){
 
         // Retorna lista de usuários online
 
-        $stmt = $db->prepare( "SELECT US.USERNAME, US_ST.isOnline 
+        $stmt = $db->prepare( "SELECT US.USERNAME, US_ST.lastSeen 
                                FROM   USER_STATUS AS US_ST
                                JOIN   USERS  AS US ON US_ST.userId = US.userID
-                               WHERE  US_ST.isOnline = 'yes'"
-                            ); 
+                               WHERE  US.USERNAME <> ?
+                            "); 
     
+        $stmt->bindValue(1, $username, SQLITE3_TEXT);
+
         $result = $stmt->execute();
     
         $online_users = array();
 
+
         while($data = $result->fetchArray()){
+
             array_push($online_users, array(
                 'username' => $data[0],
-                'isOnline' => $data[1],
+                'lastSeen' => $data[1],
             ));
         }
 
@@ -50,23 +54,7 @@ if (isset($_SESSION['isValidated'])){
     
         echo json_encode($response_array);
 
-
-    }else if (isset($_POST['setFalse'])){
-
-        $stmt = $db->prepare(" UPDATE USER_STATUS SET isOnline = 'no' 
-                               WHERE  userId IN (SELECT userID 
-                                                 FROM   USERS 
-                                                 WHERE  userName = ?)"
-                            );
-
-        $username = $_POST['username'];
-
-        $stmt->bindValue(1, $username, SQLITE3_TEXT);
-
-        $result = $stmt->execute();
-
     }
-
 
 }else {
 

@@ -41,7 +41,7 @@ if (isset($_SESSION['username'])){
 
         $create_status_table     = $db->prepare( "  CREATE TABLE IF NOT EXISTS USER_STATUS (
                                                     userId INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                    isOnline TEXT not null     
+                                                    lastSeen TEXT not null     
 
                                                 )");
 

@@ -15,7 +15,9 @@ $.ajax({
     success:function(response){
         sessionStorage.setItem("username", response.username);
     }
-});
+}).done(function(){
+    setTimeout(isTabActive, 2000);
+})
 
 // Variável que indica se está tudo scrollado
 
@@ -280,7 +282,7 @@ $(document).ready(function(){
 
 });
 
-(function isTabActive(){
+function isTabActive(){
 
     if (document.visibilityState == 'visible'){
 
@@ -291,64 +293,81 @@ $(document).ready(function(){
             type:'post',
             data:{
                 username:username,
-                setTrue:'1'
+                setLastStamp:'1'
                 
                 },
             dataType:'json',
             success:function(response){
 
                 let parsed_users = JSON.parse(response.status);
-                let online_box = $('.users');
-
                 let string_online_users = '';
 
                 for (var value in parsed_users){
-                    let username = parsed_users[value].username;
-                    string_online_users = string_online_users + username + "<br>";
+
+                    // Recebe timestamp do banco em UTC
+                    let sqlite_timestamp = parsed_users[value].lastSeen;
+
+                    // Converte o dado para objeto date do js
+                    let sqlite_date = new Date(sqlite_timestamp);
+
+                    // Subtrai 3 horas para o gmt de brasília
+                    sqlite_date.setHours(sqlite_date.getHours() - 3);
+
+                    // Converte para data no formato string
+                    sqlite_timestamp = sqlite_date.toLocaleString();
+
+                    // Recebe a data atual do usuário
+                    let curr_date   = new Date();
+
+                    // Calcula a diferença entre a data do banco e a data atual do usuário
+                    let diffTime = Math.abs(curr_date - sqlite_date);
+
+                    // Recebe o username do banco
+                    let sql_username = parsed_users[value].username;
+
+                    // Atribui a diferença à variavel last_seen
+                    let last_seen = diffTime;
+
+                    if (last_seen <= 5000){
+
+                        last_seen = "Online";
+
+                    } else if (last_seen > 5000 &&  last_seen < 60000){
+
+                        last_seen = "A minute ago";
+
+                    } else {
+
+                        last_seen = "Offline";
+
+                    }
+
+        
+                    string_online_users = string_online_users + sql_username + ": " + last_seen + " <br>";
+
                 }
 
                 $('.users')[0].innerHTML = string_online_users;
+
+                console.log(response.status)
 
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                // console.log("Erro em dar update yes!")
-                // console.log(XMLHttpRequest);
-                // console.log(errorThrown)
-                // console.log(textStatus);
-                setTimeout(isTabActive, 500);
+                console.log("Erro em dar update yes!")
+                console.log(XMLHttpRequest);
+                console.log(errorThrown)
+                console.log(textStatus);
+
+                setTimeout(isTabActive, 2000);
 
             }
         })
 
         
-    } else {
-
-        let username = sessionStorage.getItem("username");
-
-        $.ajax({
-            url:'./verify_status.php',
-            type:'post',
-            data:{
-                username:username,
-                setFalse:'1'
-            },
-            dataType:'text',
-            success:function(response){
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-
-                // console.log("Erro em dar update no!")
-                // console.log(XMLHttpRequest);
-                // console.log(errorThrown)
-                // console.log(textStatus);
-                setTimeout(isTabActive, 500);
-
-            }
-        })
-    }
+    } 
 
     setTimeout(isTabActive, 2000);
 
-})();
+}

@@ -52,8 +52,8 @@ if (isset($_POST['pwd'])){
 
                 $result = $stmt->execute();
 
-                $stmt_2 = $db->prepare("  INSERT INTO USER_STATUS (isOnline) 
-                                          VALUES ('yes')
+                $stmt_2 = $db->prepare("  INSERT INTO USER_STATUS (lastSeen) 
+                                          VALUES (CURRENT_TIMESTAMP)
                                        ");
 
                 $result_2 = $stmt_2->execute(); 
