@@ -376,9 +376,6 @@ function isTabActive(){
 
                 $('.users')[0].innerHTML = string_online_users;
 
-                console.log(response.status)
-
-
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
@@ -392,7 +389,6 @@ function isTabActive(){
             }
         })
 
-        
     } 
 
     setTimeout(isTabActive, 2000);
