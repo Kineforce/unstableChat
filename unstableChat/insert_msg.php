@@ -11,7 +11,7 @@ if (isset($_SESSION['isValidated'])){
     $username = $_SESSION['username'];
     $messageText = $_POST['message'];
 
-    if ($messageText != ""){
+    if (strlen($messageText) != 0){
 
         $stmt_insert_message = $db->prepare(" INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText)
         VALUES (?, CURRENT_TIMESTAMP, ?) ");
@@ -22,7 +22,8 @@ if (isset($_SESSION['isValidated'])){
         $result_insert_message = $stmt_insert_message->execute();
 
         $response_array['status'] = 'success';
-        echo json_encode($response_array['status']);
+        $response_array['message'] = $messageText;
+        echo json_encode($response_array);
         
     }
 

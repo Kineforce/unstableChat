@@ -1,4 +1,5 @@
 // Função que checa se o scroll da div do chat está carregado
+
 (function($) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
@@ -141,21 +142,19 @@ var mainLoad = $('.message_box').load('./chat_box.php .inner_message', function(
 
 function sendMessageToChat(){
     
-    var input_box_message = document.getElementById("input_box").value;
-    document.getElementById("input_box").value = "";
+    let input_box_message = $('#input_box').val().trimStart().trimEnd().replaceAll(' ', '&nbsp');
 
-    if (!input_box_message){
-    }else {
+    $.ajax({
+        url:'./insert_msg.php',
+        type:'post',
+        data:{message:input_box_message},
+        dataType:'json',
+        success:function(response){
 
-        $.ajax({
-            url:'./insert_msg.php',
-            type:'post',
-            data:{message:input_box_message},
-            dataType:'json',
-            success:function(response){
-            }
-        });
-    }
+        }
+    }).then(function(){
+        document.getElementById("input_box").value = "";
+    })
 
     //console.log("Message sent!")
 }
@@ -234,7 +233,7 @@ function updateColorChat(){
 
                 for (k = 0; k<parsed_data.length; k++){
 
-                    if ( message[j].getElementsByTagName('span')[0].innerText == parsed_data[k].username){
+                    if ( message[j].getElementsByTagName('span')[1].innerText == parsed_data[k].username){
 
                         let color_style = parsed_data[k].color;
 
@@ -247,7 +246,7 @@ function updateColorChat(){
 
             for (i = 0; i<message.length; i++){
 
-                if ( message[i].getElementsByTagName('span')[0].innerText == sessionStorage.getItem("username") ){
+                if ( message[i].getElementsByTagName('span')[1].innerText == sessionStorage.getItem("username") ){
 
                     $user_color = message[i].getAttribute("style").substring(7);
                     
@@ -264,12 +263,12 @@ function updateColorChat(){
             //console.log("Busy database, retrying...")
             setTimeout(updateColorChat, 500);
 
-
         }
     }).done(function() {
 
         //console.log("Color changed!")
         setTimeout(updateColorChat, 1000);
+
     })
 
 }
@@ -292,6 +291,7 @@ function isTabActive(){
             url:'./verify_status.php',
             type:'post',
             data:{
+
                 username:username,
                 setLastStamp:'1'
                 
@@ -335,7 +335,6 @@ function isTabActive(){
                     let two_hour = hour * 2;
                     let day = hour * 24;
                     
-                    
                     if (last_seen < five_sec){
 
                         last_seen = "<span style='color: darkgreen'>online</span>";
@@ -374,7 +373,7 @@ function isTabActive(){
 
                 }
 
-                $('.users')[0].innerHTML = string_online_users;
+                $('.user')[0].innerHTML = string_online_users;
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
