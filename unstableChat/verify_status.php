@@ -29,10 +29,11 @@ if (isset($_SESSION['isValidated'])){
 
         // Retorna lista de usuários online
 
-        $stmt = $db->prepare( "SELECT US.USERNAME, US_ST.lastSeen 
-                               FROM   USER_STATUS AS US_ST
-                               JOIN   USERS  AS US ON US_ST.userId = US.userID
-                               WHERE  US.USERNAME <> ?
+        $stmt = $db->prepare( "SELECT   US.USERNAME, US_ST.lastSeen 
+                               FROM     USER_STATUS AS US_ST
+                               JOIN     USERS  AS US ON US_ST.userId = US.userID
+                               WHERE    US.USERNAME <> ?
+                               ORDER BY US_ST.lastSeen DESC 
                             "); 
     
         $stmt->bindValue(1, $username, SQLITE3_TEXT);

@@ -21,10 +21,10 @@ body {
 
 }
 
-.users {
+.users li {
     position: relative;
     margin-top: 10px;
-    color: greenyellow;
+    color: white;
 
 }
 

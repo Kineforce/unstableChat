@@ -328,22 +328,49 @@ function isTabActive(){
                     // Atribui a diferença à variavel last_seen
                     let last_seen = diffTime;
 
-                    if (last_seen <= 5000){
+                    let five_sec = 5 * 1000;
+                    let minute = 60 * 1000;
+                    let ten_minutes = 600 * 1000;
+                    let hour = ten_minutes * 6;
+                    let two_hour = hour * 2;
+                    let day = hour * 24;
+                    
+                    
+                    if (last_seen < five_sec){
 
-                        last_seen = "Online";
+                        last_seen = "<span style='color: darkgreen'>online</span>";
 
-                    } else if (last_seen > 5000 &&  last_seen < 60000){
+                    } else if (last_seen >= five_sec && last_seen < minute){
 
-                        last_seen = "A minute ago";
+                        last_seen = "<span style='color: darkgrey'>offline</span>";
+
+                    } else if (last_seen >= minute && last_seen < ten_minutes) {
+
+                        last_seen = "<span style='color: grey'>a minute ago</span>";
+
+                    } else if (last_seen >= ten_minutes && last_seen < hour) {
+
+                        last_seen = "<span style='color: grey'>10 minutes ago</span>";
+
+                    } else if (last_seen >= hour && last_seen < two_hour){
+
+                        last_seen = "<span style='color: grey'>a hour ago</span>";
+
+                    } else if (last_seen >= two_hour && last_seen < day){
+
+                        last_seen = "<span style='color: grey'>today</span>";
+
+                    } else if (last_seen >= day && last_seen < (day * 2)){
+
+                        last_seen = "<span style='color: grey'>yesterday</span>";
 
                     } else {
-
-                        last_seen = "Offline";
+                        
+                        last_seen = "<span style='color: grey'>more than two days</span>";
 
                     }
-
         
-                    string_online_users = string_online_users + sql_username + ": " + last_seen + " <br>";
+                    string_online_users = string_online_users + "<li>" + sql_username + ": <br>" + last_seen + " </li>";
 
                 }
 
