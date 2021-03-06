@@ -337,11 +337,11 @@ function isTabActive(){
                     
                     if (last_seen < five_sec){
 
-                        last_seen = "<span style='color: darkgreen'>online</span>";
+                        last_seen = "<span style='color: #37ff00'>online</span>";
 
                     } else if (last_seen >= five_sec && last_seen < minute){
 
-                        last_seen = "<span style='color: darkgrey'>offline</span>";
+                        last_seen = "<span style='color: grey'>offline</span>";
 
                     } else if (last_seen >= minute && last_seen < ten_minutes) {
 

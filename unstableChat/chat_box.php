@@ -34,7 +34,7 @@ if (isset($_SESSION['isValidated'])){
             $messageId = $data['messageId'];
 
             $message_div = "<div id='$messageId' class='inner_message' ".$loop_style.">
-            <span class='msg'><span class='username'>".$data['userName']."</span>: ".$data['messageText']."</span>
+            <span class='msg'><span class='username'>".$data['userName']."</span>:<br>".$data['messageText']."</span>
             </div>";
 
             array_push($message_div_array, $message_div); 
@@ -60,7 +60,7 @@ if (isset($_SESSION['isValidated'])){
             $loop_style = $style . $data['userColor'] . '"';
             $messageId = $data['messageId'];
             echo "<div id='$messageId' class='inner_message' ".$loop_style.">
-            <span class='msg'><span id='username'>".$data['userName']."</span>: ".$data['messageText']."</span>
+            <span class='msg'><span id='username'>".$data['userName']."</span>:<br>".$data['messageText']."</span>
             </div>";               
         }
     }
