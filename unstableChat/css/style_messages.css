@@ -12,6 +12,8 @@ body {
 
 .online_users {
     position: absolute;
+    margin-top: 10px;
+    margin-right: 5px;
     color: white;
     right: 0px;
     width: 120px;
@@ -25,7 +27,6 @@ body {
 .online_users span {
     position: relative;
     font-family: monospace;
-    margin-top: 10px;
     font-size: 15px;
     color: red;
 }
@@ -135,10 +136,13 @@ body {
     font-family: monospace;
     width: 86%;
     height: max-content;
+    min-height: 50px;
     border: 1px solid white;
 }
 
 .msg {
+    position: relative;
+    left: 5px;
     white-space: pre-wrap;
 }
 
