@@ -26,7 +26,7 @@ var checkbottom;
 
 // Verifica a cada 200ms se o chat está scrollado
 
-setInterval(function(){
+(function checkScroll(){
 
     $('.message_box').on('scroll', function() {
         var check = $(this).scrollTop() + $(this).innerHeight() >= $(this) 
@@ -46,7 +46,9 @@ setInterval(function(){
         }
     });
 
-}, 200);
+    setTimeout(checkScroll, 200);
+
+})();
 
 // Função para sleep
 

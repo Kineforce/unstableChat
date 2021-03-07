@@ -186,7 +186,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: green;
+    background: grey;
 }
 
 ::-webkit-scrollbar-thumb:hover {
