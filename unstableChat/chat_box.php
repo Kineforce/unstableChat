@@ -30,11 +30,20 @@ if (isset($_SESSION['isValidated'])){
 
         while($data = $result->fetchArray()) {
 
+            $stamp_msg = $data['messageStamp'];
+            $convert_date  = strtotime($stamp_msg);
+
+            $time_msg = date($convert_date);
+
+            $hours_to_subtract = 3;
+            $time_to_subtract = ($hours_to_subtract * 60 * 60);
+            $timeInPast = $time_msg - $time_to_subtract;
+            $hour_msg = date("H:i",$timeInPast);
+
             $loop_style = $style . $data['userColor'] . '"';
             $messageId = $data['messageId'];
-
-            $message_div = "<div id='$messageId' class='inner_message' ".$loop_style.">
-            <span class='msg'><span class='username'>".$data['userName']."</span>:<br>".$data['messageText']."</span>
+            $message_div = "<div id='$messageId' class='inner_message'><span class='msg_stamp' style='color:white'>$hour_msg</span>
+            <span class='username' ".$loop_style.">".$data['userName']."</span><span class='msg' style='color:white'><br>".$data['messageText']."</span>
             </div>";
 
             array_push($message_div_array, $message_div); 
@@ -57,11 +66,23 @@ if (isset($_SESSION['isValidated'])){
         $result = $stmt->execute();
     
         while($data = $result->fetchArray()) {
+            
+            $stamp_msg = $data['messageStamp'];
+            $convert_date  = strtotime($stamp_msg);
+
+            $time_msg = date($convert_date);
+
+            $hours_to_subtract = 3;
+            $time_to_subtract = ($hours_to_subtract * 60 * 60);
+            $timeInPast = $time_msg - $time_to_subtract;
+            $hour_msg = date("H:i",$timeInPast);
+
             $loop_style = $style . $data['userColor'] . '"';
             $messageId = $data['messageId'];
-            echo "<div id='$messageId' class='inner_message' ".$loop_style.">
-            <span class='msg'><span id='username'>".$data['userName']."</span>:<br>".$data['messageText']."</span>
-            </div>";               
+            echo "<div id='$messageId' class='inner_message'><span class='msg_stamp' style='color:white'>$hour_msg</span>
+            <span class='username' ".$loop_style.">".$data['userName']."</span><span class='msg' style='color:white'><br>".$data['messageText']."</span>
+            </div>";  
+
         }
     }
 

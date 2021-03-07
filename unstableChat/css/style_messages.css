@@ -1,5 +1,7 @@
 body {
     background-color: black;
+    scroll-behavior: smooth;
+
 }
 
 .container {
@@ -12,7 +14,6 @@ body {
 
 .online_users {
     position: absolute;
-    margin-top: 10px;
     margin-right: 5px;
     color: white;
     right: 0px;
@@ -27,8 +28,7 @@ body {
 .online_users span {
     position: relative;
     font-family: monospace;
-    font-size: 15px;
-    color: red;
+    color: grey;
 }
 
 .users li {
@@ -51,7 +51,6 @@ body {
     height: 10%;
     border: 1px solid white;
     margin-top: 700px;
-    background-color: darkslateblue;
 }
 
 .username_info {
@@ -60,7 +59,6 @@ body {
     height: 5%;
     border: 1px solid white;
     margin-top: 770px;
-    background-color: darkslateblue;
 }
 
 .username_info_span {
@@ -132,7 +130,6 @@ body {
 .inner_message {
     position: relative;
     overflow-wrap: break-word;
-    font-size: 15px;
     font-family: monospace;
     width: 86%;
     height: max-content;
@@ -140,10 +137,27 @@ body {
     border: 1px solid white;
 }
 
+.msg_stamp {
+    position: absolute;
+    margin-left: 95%;
+    width: 50px;
+    height: 10px;
+}
+
 .msg {
     position: relative;
     left: 5px;
     white-space: pre-wrap;
+}
+
+.username {
+    position: absolute;
+    left: 5px;
+    border-bottom: 1px solid white;
+}
+
+.msg span {
+    font-style: italic;
 }
 
 .logout {
@@ -164,7 +178,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 2px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -172,7 +186,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: darkslateblue;
+    background: green;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -192,6 +206,6 @@ body {
 #colorpicker {
     position: relative;
     left: 90% ;
-    background-color: darkslateblue;
+    background-color: black;
     border: none;
 }

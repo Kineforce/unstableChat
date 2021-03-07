@@ -108,7 +108,7 @@ function loadNewMessages(){
  
             $('.message_box').append(response.status);
 
-            if (response.status != ""){
+            if (response.status != "" && checkbottom == "bottom"){
 
                 var messageBody = document.querySelector('.message_box');
                 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -189,6 +189,7 @@ document.addEventListener("keyup", function(event){
 
 document.getElementById("go_to_bottom").addEventListener("click", function(){
 
+    console.log("HEH");
     var messageBody = document.querySelector('.message_box');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
@@ -237,7 +238,7 @@ function updateColorChat(){
 
                         let color_style = parsed_data[k].color;
 
-                        message[j].setAttribute('style', 'color: ' + color_style);
+                        message[j].getElementsByClassName('username')[0].setAttribute('style', 'color: ' + color_style);
                     }
                 } 
             }
@@ -248,9 +249,9 @@ function updateColorChat(){
 
                 if ( message[i].getElementsByTagName('span')[1].innerText == sessionStorage.getItem("username") ){
 
-                    $user_color = message[i].getAttribute("style").substring(7);
+                    let user_color = message[0].getElementsByClassName("username")[0].getAttribute("style").substring(7);
                     
-                    $('#colorpicker').attr("value", $user_color);   
+                    $('#colorpicker').attr("value", user_color);   
                     $('#colorpicker').removeAttr("hidden");
 
                     break;
