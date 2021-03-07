@@ -32,7 +32,7 @@ if (isset($_SESSION['isValidated'])){
                 <div class="message_box">
                 </div>   
                 <div class="insert_box">
-                    <textarea type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false"></textarea>
+                    <input type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false"></input>
                 </div>
                 <div class="username_info">
                     <label class="username_info_span" for="logout">You are logged in as: <?=$_SESSION['username']?></label>

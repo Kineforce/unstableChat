@@ -143,6 +143,7 @@ var mainLoad = $('.message_box').load('./chat_box.php .inner_message', function(
 function sendMessageToChat(){
     
     let input_box_message = $('#input_box').val().trimStart().trimEnd().replaceAll(' ', '&nbsp');
+    document.getElementById("input_box").value = "";
 
     $.ajax({
         url:'./insert_msg.php',
@@ -150,10 +151,7 @@ function sendMessageToChat(){
         data:{message:input_box_message},
         dataType:'json',
         success:function(response){
-
         }
-    }).then(function(){
-        document.getElementById("input_box").value = "";
     })
 
     //console.log("Message sent!")
