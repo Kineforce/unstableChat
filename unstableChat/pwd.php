@@ -24,7 +24,7 @@ if (isset($_SESSION['username'])){
     <div class="container">
         <form id="pass_form" method="post" action="./login.php">
             <label id="label_pwd" for="pwd"><h1>Enter your password</h1></label>
-            <input type="password" name="userPass" id="pwd_input" placeholder="type your user here!">
+            <input type="password" name="userPass" id="pwd_input" placeholder="type your user here!" autocomplete="off">
             <span id="feedback_message"></span>
             <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?>">
             <input type="submit" id="submit_pwd" value="Send it!">

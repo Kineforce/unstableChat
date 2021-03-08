@@ -22,17 +22,20 @@ if (isset($_SESSION['isValidated'])){
     <div class="container">
 
         <div class="online_users">
+
             <span>Last Seen:</span>
             <div class="user"> 
             </div>
+
         </div>
-        <div id="go_to_bottom">
+
+        <div id="go_to_bottom">   
         </div>  
             <div class="chat">     
                 <div class="message_box">
                 </div>   
                 <div class="insert_box">
-                    <input type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false"></input>
+                    <input type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false" autocomplete="off"></input>
                 </div>
                 <div class="username_info">
                     <label class="username_info_span" for="logout">You are logged in as: <?=$_SESSION['username']?></label>
