@@ -249,9 +249,7 @@ function updateColorChat(){
                 if ( message[i].getElementsByTagName('span')[1].innerText == sessionStorage.getItem("username") ){
 
                     let user_color = message[i].getElementsByClassName("username")[0].getAttribute("style").substring(7);
-
-                    console.log(user_color);
-                    
+            
                     $('#colorpicker').attr("value", user_color);   
                     $('#colorpicker').removeAttr("hidden");
 
