@@ -42,8 +42,8 @@ if (isset($_SESSION['isValidated'])){
 
             $loop_style = $style . $data['userColor'] . '"';
             $messageId = $data['messageId'];
-            $message_div = "<div id='$messageId' class='inner_message'><span class='msg_stamp' style='color:white'>$hour_msg</span>
-            <span class='username' ".$loop_style.">".$data['userName']."</span><span class='msg' style='color:white'><br>".$data['messageText']."</span>
+            $message_div = "<div id='".htmlspecialchars($messageId)."' class='inner_message'><span class='msg_stamp' style='color:white'>".htmlspecialchars($hour_msg)."</span>
+            <span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span><span class='msg' style='color:white'><br>".htmlspecialchars($data['messageText'])."</span>
             </div>";
 
             array_push($message_div_array, $message_div); 
@@ -79,8 +79,8 @@ if (isset($_SESSION['isValidated'])){
 
             $loop_style = $style . $data['userColor'] . '"';
             $messageId = $data['messageId'];
-            echo "<div id='$messageId' class='inner_message'><span class='msg_stamp' style='color:white'>$hour_msg</span>
-            <span class='username' ".$loop_style.">".$data['userName']."</span><span class='msg' style='color:white'><br>".$data['messageText']."</span>
+            echo "<div id='".htmlspecialchars($messageId)."' class='inner_message'><span class='msg_stamp' style='color:white'>".htmlspecialchars($hour_msg)."</span>
+            <span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span><span class='msg' style='color:white'><br>".htmlspecialchars($data['messageText'])."</span>
             </div>";  
 
         }

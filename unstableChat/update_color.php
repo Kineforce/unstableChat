@@ -22,8 +22,8 @@ if (isset($_SESSION['isValidated'])){
 
         while($data = $result->fetchArray()){
             array_push($user_colors, array(
-                'username' => $data[0],
-                'color' => $data[1],
+                'username' => htmlspecialchars($data[0]),
+                'color' => htmlspecialchars($data[1]),
             ));
         }
 

@@ -46,8 +46,8 @@ if (isset($_SESSION['isValidated'])){
         while($data = $result->fetchArray()){
 
             array_push($online_users, array(
-                'username' => $data[0],
-                'lastSeen' => $data[1],
+                'username' => htmlspecialchars($data[0]),
+                'lastSeen' => htmlspecialchars($data[1]),
             ));
         }
 

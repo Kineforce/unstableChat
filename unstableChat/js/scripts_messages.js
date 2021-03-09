@@ -144,7 +144,9 @@ var mainLoad = $('.message_box').load('./chat_box.php .inner_message', function(
 
 function sendMessageToChat(){
     
-    let input_box_message = $('#input_box').val().trimStart().trimEnd().replaceAll(' ', '&nbsp');
+    //let input_box_message = $('#input_box').val().trimStart().trimEnd().replaceAll(' ', '&nbsp');
+
+    let input_box_message = $('#input_box').val().trimStart().trimEnd();
     document.getElementById("input_box").value = "";
 
     $.ajax({
@@ -330,20 +332,22 @@ function isTabActive(){
 
                     let five_sec = 5 * 1000;
                     let minute = 60 * 1000;
+                    /*
                     let ten_minutes = 600 * 1000;
                     let hour = ten_minutes * 6;
                     let two_hour = hour * 2;
                     let day = hour * 24;
+                    */
                     
                     if (last_seen < five_sec){
 
                         last_seen = "<span style='color: #37ff00'>online</span>";
 
-                    } else if (last_seen >= five_sec && last_seen < minute){
+                    } else { //if (last_seen >= five_sec && last_seen < minute){
 
                         last_seen = "<span style='color: grey'>offline</span>";
 
-                    } else if (last_seen >= minute && last_seen < ten_minutes) {
+                    } /*else if (last_seen >= minute && last_seen < ten_minutes) {
 
                         last_seen = "<span style='color: grey'>a minute ago</span>";
 
@@ -368,6 +372,7 @@ function isTabActive(){
                         last_seen = "<span style='color: grey'>more than two days</span>";
 
                     }
+                    */
         
                     string_online_users = string_online_users + "<li>" + sql_username + ": <br>" + last_seen + " </li>";
 

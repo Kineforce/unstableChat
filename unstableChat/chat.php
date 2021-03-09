@@ -35,10 +35,10 @@ if (isset($_SESSION['isValidated'])){
                 <div class="message_box">
                 </div>   
                 <div class="insert_box">
-                    <input type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false" autocomplete="off"></input>
+                    <textarea type="text" name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" ng-trim="false" autocomplete="off"></textarea>
                 </div>
                 <div class="username_info">
-                    <label class="username_info_span" for="logout">You are logged in as: <?=$_SESSION['username']?></label>
+                    <label class="username_info_span" for="logout">You are logged in as: <?=htmlspecialchars($_SESSION['username'])?></label>
                     <button class="logout" id="logout">Logout</button>
                     <label for="colorpicker"></label>
                     <input type="color" id="colorpicker" hidden>
