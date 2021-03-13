@@ -56,22 +56,22 @@ $route['translate_uri_dashes'] = FALSE;
 
 // Login and Auth
 
-$route['default_controller'] = 'chat';
-$route['pwd'] = 'chat/pwd';
-$route['logout'] = 'chat/logout';
+$route['default_controller'] = 'Chat';
+$route['pwd'] = 'Chat/pwd';
+$route['logout'] = 'Chat/logout';
 
 // Redirect to chat
-$route['everyone'] = 'chat/everyoneChat';
+$route['everyone'] = 'Chat/everyoneChat';
 
 // Getting data
 
-$route['getMessages'] = 'chat/getMessages';
-$route['getColorMessages'] = 'chat/getColorMessages';
-$route['getUserStatus'] = 'chat/getUserStatus';
-$route['getUsername'] = 'chat/getUsername';
+$route['getMessages'] = 'Chat/getMessages';
+$route['getColorMessages'] = 'Chat/getColorMessages';
+$route['getUserStatus'] = 'Chat/getUserStatus';
+$route['getUsername'] = 'Chat/getUsername';
 
 // Setting data
 
-$route['setNewMessage'] = 'chat/setNewMessage';
-$route['setUserColor'] = 'chat/setUserColor';
+$route['setNewMessage'] = 'Chat/setNewMessage';
+$route['setUserColor'] = 'Chat/setUserColor';
 

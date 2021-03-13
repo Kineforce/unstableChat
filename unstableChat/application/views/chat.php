@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="application\views\img\favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="application\views\css\style_messages.css">
+    <link rel="shortcut icon" href="<?php echo BASE_URL(); ?>static/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="<?php echo BASE_URL(); ?>static/css/style_messages.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>unstableChat</title>
@@ -40,7 +40,7 @@
         </div>
     </div>    
 
-    <script src="application\views\js\scripts_messages.js"></script>
+    <script src="<?php echo BASE_URL(); ?>static/js/scripts_messages.js"></script>
     
 </body>
 </html>
