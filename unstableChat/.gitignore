@@ -5,6 +5,8 @@ application/cache/*
 
 system/sessions/*
 
+application/messages.db
+
 application/logs/*
 !application/logs/index.html
 
