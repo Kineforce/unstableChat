@@ -12,7 +12,7 @@ if (isset($_SESSION['isValidated'])){
 
         $username = $_POST['username'];
 
-        // Seta o valor lastSeen para o usuário do contexto para 'yes'
+        // Seta o valor lastSeen para o usuário do contexto para o tempo atual
 
         $stmt_0 = $db->prepare(" UPDATE USER_STATUS SET lastSeen = CURRENT_TIMESTAMP
                                WHERE  userId IN ( SELECT userID 
