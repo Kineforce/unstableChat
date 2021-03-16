@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 // Login and Auth
 
 $route['default_controller'] = 'Chat';
+$route['login'] = 'Chat/login';
 $route['pwd'] = 'Chat/pwd';
 $route['logout'] = 'Chat/logout';
 

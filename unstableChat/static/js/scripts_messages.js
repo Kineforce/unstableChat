@@ -88,7 +88,7 @@ loopingScroll();
 
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
-function loadNewMessages(){
+(function loadNewMessages(){
 
     var all_msgs = $('.inner_message');    
     var last_msg_div = $(all_msgs);
@@ -127,7 +127,6 @@ function loadNewMessages(){
             //console.log(textStatus);
             setTimeout(loadNewMessages, 300);
 
-
         }
     }).done(function(){
 
@@ -136,31 +135,7 @@ function loadNewMessages(){
 
     })
 
-}
-
-// Carrega inicialmente todas as mensagens e chama a função que verifica novas mensagens
-
-(function loadAllMessages(){
-
-    $.ajax({
-        url:'getMessages',
-        type:'GET',
-        data:{load_all_msg:"1"},
-        dataType:"JSON",
-        success:function(response){
-
-            $('.message_box').append(response.status);   
-
-        }
-    }).then(function(){
-
-        loadNewMessages(); 
-
-    })
-
-
 })();
-
 
 // Função que envia a mensagem pro banco de dados
 

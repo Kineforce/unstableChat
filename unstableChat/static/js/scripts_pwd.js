@@ -28,7 +28,7 @@ $('#pass_form').submit(function(e) {
                 if (data.status == 'success'){
                     document.getElementById('feedback_message').innerHTML = 'Redirecting to unstableChat!';
                    setTimeout(function(){ 
-                       window.location.href = 'everyone';
+                    window.location.replace('/everyone');
                    }, 2000);
                 }else if (data.status == 'wrongpassword') {
                     document.getElementById('feedback_message').innerHTML = 'Wrong password!';

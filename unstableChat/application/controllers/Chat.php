@@ -16,23 +16,39 @@ class Chat extends CI_controller {
      */
     public function index(){
 
-        // Faz um get para API da Abstract, retornando o IP do client 
-        // --> Tratar ERRO 'too many requests'
-        @$api_abstract_response = file_get_contents("https://ipgeolocation.abstractapi.com/v1/?api_key=01555be128114291af82a560231a7a40");
-
-        // Converte de JSON para Array
-        @$parsed_data           = json_decode($api_abstract_response, true);
-
-        // Define o ip do client na variável
-        @$client_ip = $parsed_data['ip_address'];
-
         if ($this->session->userdata('isAuthenticated', '1')){
 
             header("Location: http://localhost:8000/everyone");
 
         } else {
 
-            $this->load->view("login");
+            $api_response = file_get_contents("https://www.cloudflare.com/cdn-cgi/trace");
+
+            $get_lines = explode("\n", $api_response);
+            
+            $api_array = array();
+            
+            foreach ($get_lines as $line){
+            
+                $inner_explode = explode('=', $line);
+            
+                if ($inner_explode[0] == 'ip'){
+    
+                    $api_array[$inner_explode[0]] = $inner_explode[1];
+    
+                }
+            }
+    
+            $data = array();
+
+            if (count($api_array) > 0){
+
+                $data['ip'] = $api_array['ip'];
+                $this->session->set_userdata('user_ip_address', $data['ip']);
+
+            }
+
+            $this->load->view("login", $data);
 
         }
     }
@@ -43,17 +59,18 @@ class Chat extends CI_controller {
      */
     public function login(){
 
-        if ($this->session->userdata('isAuthenticated', '1')){
+        if ($this->session->userdata('isAuthenticated') == 1){
 
             header("Location: http://localhost:8000/everyone");
 
-        } else {
+        } else if ($this->input->post()){
 
             header('Content-Type: application/json');
 
             $response_array = array();
             $username       = htmlspecialchars($this->input->post('username'));
             $color          = htmlspecialchars($this->input->post('color'));
+            $userIp         = $this->session->userdata('user_ip_address');
             $isValidated    = false;
 
             if ($username == '' && $color){
@@ -74,15 +91,30 @@ class Chat extends CI_controller {
         
             if ($isValidated){
 
-                $result = $this->Chat_model->checkIfUserExists($username);
+                $result     = $this->Chat_model->checkIfUserExists($username);
+                $num_result = $result->num_rows();
 
-                if ($result > 0){
+                if ($num_result > 0){
 
                     // Caso exista, definir variável na sessão para efetuar autenticação do usuário posteriormente
                     $this->session->set_userdata('userExists', '1');
 
                     
                 } else {
+
+                    $checkIp    = $this->Chat_model->checkIfIpExists($userIp);
+                    $num_check  = $checkIp->num_rows();
+
+                    if ($num_check > 0){
+
+                        // IP já cadastrado no banco, logo, login bloqueado
+                        $response_array['status'] = "ipException";
+
+                        echo json_encode($response_array);
+
+                        die();
+
+                    }
 
                     // Caso não exista, definir variável na sessão para cadastrar usuário posteriormente
                     $this->session->set_userdata('userExists', '0');
@@ -102,6 +134,11 @@ class Chat extends CI_controller {
                 echo json_encode($response_array);
 
             }
+
+        } else {
+
+            header("Location: http://localhost:8000/chat");
+
         }
     }
 
@@ -111,7 +148,7 @@ class Chat extends CI_controller {
      */
     public function pwd(){  
 
-        if ($this->session->userdata('isAuthenticated', '1')){
+        if ($this->session->userdata('isAuthenticated') == 1){
 
             header("Location: http://localhost:8000/everyone");
 
@@ -139,6 +176,7 @@ class Chat extends CI_controller {
 
                 $color          = $this->session->userdata('color');
                 $username       = $this->session->userdata('username');
+                $userIp         = $this->session->userdata('user_ip_address');
                 $session_token  = $this->session->userdata('token');
                 $itExists       = $this->session->userdata('userExists');
 
@@ -153,7 +191,7 @@ class Chat extends CI_controller {
                     } else {
 
                         // Envia dados para o método da model cadastrar o usuário no banco de dados
-                        $result = $this->Chat_model->insertNewUser($username, $password, $color);
+                        $result = $this->Chat_model->insertNewUser($username, $password, $color, $userIp);
 
                         if ($result){
 
@@ -266,46 +304,33 @@ class Chat extends CI_controller {
 
             header('Content-Type: application/json');
 
-            $load_all_msg = $this->input->get('load_all_msg');
-            $load_last_msg = $this->input->get('load_last_msg');
-
-            if ($load_all_msg || $load_last_msg){
+            $load_last_msg  = $this->input->get('load_last_msg');
     
-                if ($load_all_msg){
+            $result = $this->Chat_model->returnLastMessages($load_last_msg);
+            
+            $message_div_concat = "";
 
-                    $result = $this->Chat_model->returnAllMessages($load_all_msg);
+            foreach ($result->result_array() as $data){
 
-                } else if ($load_last_msg){
+                // Tratando hora do banco e ajustando para GMT -3
+                $stamp_msg              = $data['messageStamp'];
+                $convert_date           = strtotime($stamp_msg);
+                $time_msg               = date($convert_date);
+                $hours_to_subtract      = 3;
+                $time_to_subtract       = ($hours_to_subtract * 60 * 60);
+                $time_in_past           = $time_msg - $time_to_subtract;
+                $hour_msg               = date("H:i", $time_in_past);
 
-                    $result = $this->Chat_model->returnLastMessages($load_last_msg);
-
-                }
+                // Criando varáveis de estilo
+                $style                  = "style='color: ";
+                $loop_style             = $style . $data['userColor']. "'";
+                $messageId              = $data['messageId'];
+                $message_div            = "<div id='".htmlspecialchars($messageId)."' class='inner_message'><span class='msg_stamp' style='color:white'>".htmlspecialchars($hour_msg)."</span>
+                <span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span><span class='msg' style='color:white'><br>".htmlspecialchars($data['messageText'])."</span>
+                </div>";
                 
-                $message_div_concat = "";
-
-                foreach ($result->result_array() as $data){
-
-                    // Tratando hora do banco e ajustando para GMT -3
-                    $stamp_msg              = $data['messageStamp'];
-                    $convert_date           = strtotime($stamp_msg);
-                    $time_msg               = date($convert_date);
-                    $hours_to_subtract      = 3;
-                    $time_to_subtract       = ($hours_to_subtract * 60 * 60);
-                    $time_in_past           = $time_msg - $time_to_subtract;
-                    $hour_msg               = date("H:i", $time_in_past);
-
-                    // Criando varáveis de estilo
-                    $style                  = "style='color: ";
-                    $loop_style             = $style . $data['userColor']. "'";
-                    $messageId              = $data['messageId'];
-                    $message_div            = "<div id='".htmlspecialchars($messageId)."' class='inner_message'><span class='msg_stamp' style='color:white'>".htmlspecialchars($hour_msg)."</span>
-                    <span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span><span class='msg' style='color:white'><br>".htmlspecialchars($data['messageText'])."</span>
-                    </div>";
+                $message_div_concat .= $message_div;
                     
-                    $message_div_concat .= $message_div;
-                    
-                }
-
                 $response_array['status'] = $message_div_concat;
 
             } 

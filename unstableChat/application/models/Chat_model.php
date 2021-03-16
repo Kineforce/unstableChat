@@ -11,21 +11,22 @@ class Chat_model extends CI_Model {
         $username = $this->db->escape($username);
         $query = $this->db->query("SELECT 1 FROM USERS WHERE USERNAME = $username");
 
-        return $query->num_rows();
+        return $query;
 
     }
 
     /**
      * Insere novo usuário no banco de dados 
      */
-    public function insertNewUser($username, $password, $color){
+    public function insertNewUser($username, $password, $color, $userIp){
+        
+        $userIp     = $this->db->escape($userIp);
+        $username   = $this->db->escape($username);
+        $password   = password_hash($password, PASSWORD_DEFAULT);
+        $color      = $this->db->escape($color);
 
-        $username = $this->db->escape($username);
-        $password = password_hash($password, PASSWORD_DEFAULT);
-        $color = $this->db->escape($color);
-
-        $query = "  INSERT INTO USERS (userPwd, userColor, userName)
-                    VALUES ('$password', $color, $username);
+        $query = "  INSERT INTO USERS (userPwd, userColor, userName, userIp)
+                    VALUES ('$password', $color, $username, $userIp);
 
                     INSERT INTO USER_STATUS (lastSeen) 
                     VALUES (CURRENT_TIMESTAMP);
@@ -75,34 +76,18 @@ class Chat_model extends CI_Model {
     }
     
     /**
-     * Retorna todas as mensagens presentes no banco
-     */
-    public function returnAllMessages(){
-
-        $query = "  SELECT      * 
-                    FROM        STORED_MESSAGES AS STOR
-                    JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
-                    ORDER BY    messageID;";
-
-        $result = $this->db->query($query);
-
-        return $result;
-
-    }
-    
-    /**
      * Retorna as últimas mensagens baseado no último ID
      */
     public function returnLastMessages($id){
 
         $id = $this->db->escape($id);
 
-            $query = "  SELECT      *
-                        FROM        STORED_MESSAGES AS STOR
-                        JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
-                        WHERE       messageId       >  $id
-                        ORDER BY    messageStamp;
-                 ";
+        $query = "  SELECT      *
+                    FROM        STORED_MESSAGES AS STOR
+                    JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
+                    WHERE       messageId       >  $id
+                    ORDER BY    messageStamp;
+                ";
 
         $result = $this->db->query($query);
 
@@ -171,6 +156,21 @@ class Chat_model extends CI_Model {
     public function returnUsersColors(){
 
         $query = "SELECT userName, userColor FROM USERS";
+
+        $result = $this->db->query($query);
+
+        return $result;
+
+    }
+
+    /**
+     * Verifica se o ip enviado pelo controlador existe para algum usuário cadastrado
+     */
+    public function checkIfIpExists($userIp){
+
+        $userIp = $this->db->escape($userIp);
+
+        $query = "SELECT userIp FROM USERS WHERE userIp = $userIp";
 
         $result = $this->db->query($query);
 
