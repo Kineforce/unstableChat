@@ -16,8 +16,25 @@ class Chat extends CI_controller {
      */
     public function index(){
 
-        $this->load->view("login");
+        // Faz um get para API da Abstract, retornando o IP do client 
+        // --> Tratar ERRO 'too many requests'
+        @$api_abstract_response = file_get_contents("https://ipgeolocation.abstractapi.com/v1/?api_key=01555be128114291af82a560231a7a40");
 
+        // Converte de JSON para Array
+        @$parsed_data           = json_decode($api_abstract_response, true);
+
+        // Define o ip do client na variável
+        @$client_ip = $parsed_data['ip_address'];
+
+        if ($this->session->userdata('isAuthenticated', '1')){
+
+            header("Location: http://localhost:8000/everyone");
+
+        } else {
+
+            $this->load->view("login");
+
+        }
     }
 
     /**
@@ -26,60 +43,66 @@ class Chat extends CI_controller {
      */
     public function login(){
 
-        header('Content-Type: application/json');
+        if ($this->session->userdata('isAuthenticated', '1')){
 
-        $response_array = array();
-        $username       = htmlspecialchars($this->input->post('username'));
-        $color          = htmlspecialchars($this->input->post('color'));
-        $isValidated    = false;
-
-        if ($username == '' && $color){
-
-            $response_array['status'] = 'emptyUsername';
-
-        } else if (strlen($username) >= 20 && $color){
-
-            $response_array['status'] = 'lengthUsername';
+            header("Location: http://localhost:8000/everyone");
 
         } else {
-            
-            $isValidated = true;
 
-        }        
-    
-        // Se o input está validado, prosseguir para a verificação do usuário no banco
-    
-        if ($isValidated){
+            header('Content-Type: application/json');
 
-            $result = $this->Chat_model->checkIfUserExists($username);
+            $response_array = array();
+            $username       = htmlspecialchars($this->input->post('username'));
+            $color          = htmlspecialchars($this->input->post('color'));
+            $isValidated    = false;
 
-            if ($result > 0){
+            if ($username == '' && $color){
 
-                // Caso exista, definir variável na sessão para efetuar autenticação do usuário posteriormente
-                $this->session->set_userdata('userExists', '1');
+                $response_array['status'] = 'emptyUsername';
 
+            } else if (strlen($username) >= 20 && $color){
+
+                $response_array['status'] = 'lengthUsername';
+
+            } else {
                 
+                $isValidated = true;
+
+            }        
+        
+            // Se o input está validado, prosseguir para a verificação do usuário no banco
+        
+            if ($isValidated){
+
+                $result = $this->Chat_model->checkIfUserExists($username);
+
+                if ($result > 0){
+
+                    // Caso exista, definir variável na sessão para efetuar autenticação do usuário posteriormente
+                    $this->session->set_userdata('userExists', '1');
+
+                    
+                } else {
+
+                    // Caso não exista, definir variável na sessão para cadastrar usuário posteriormente
+                    $this->session->set_userdata('userExists', '0');
+
+                }
+
+                $this->session->set_userdata('username', $username);
+                $this->session->set_userdata('color', $color);
+
+
+                $response_array['status'] = 'goToPassword';
+
+                echo json_encode($response_array);
+
             } else {
 
-                // Caso não exista, definir variável na sessão para cadastrar usuário posteriormente
-                $this->session->set_userdata('userExists', '0');
+                echo json_encode($response_array);
 
             }
-
-            $this->session->set_userdata('username', $username);
-            $this->session->set_userdata('color', $color);
-
-
-            $response_array['status'] = 'goToPassword';
-
-            echo json_encode($response_array);
-
-        } else {
-
-            echo json_encode($response_array);
-
         }
-
     }
 
     /**
@@ -88,109 +111,115 @@ class Chat extends CI_controller {
      */
     public function pwd(){  
 
-        $isPreAuthenticated = $this->session->username;
-        $password           = $this->input->post('userpass');
-        $isPost             = $this->input->method() === 'post';
+        if ($this->session->userdata('isAuthenticated', '1')){
 
-        // Caso o usuário esteja pré autenticado e não tenha acontecido um post da senha
-        if ($isPreAuthenticated && !$isPost){
-            $data['token'] = md5(session_id() . time());
+            header("Location: http://localhost:8000/everyone");
 
-            $this->session->set_userdata('token', $data['token']);
+        } else {
 
-            $this->load->view('pwd', $data);
+            $isPreAuthenticated = $this->session->username;
+            $password           = $this->input->post('userpass');
+            $isPost             = $this->input->method() === 'post';
 
-        // Caso o usuário esteja pré autenticado e tenha efetuado o post com a senha 
-        } else if($isPreAuthenticated && $isPost && $password != '') {
+            // Caso o usuário esteja pré autenticado e não tenha acontecido um post da senha
+            if ($isPreAuthenticated && !$isPost){
+                $data['token'] = md5(session_id() . time());
 
-            header('Content-Type: application/json');
+                $this->session->set_userdata('token', $data['token']);
 
-            $password       = $this->input->post('userpass');
-            $post_token     = $this->input->post('token');
+                $this->load->view('pwd', $data);
 
-            $color          = $this->session->userdata('color');
-            $username       = $this->session->userdata('username');
-            $session_token  = $this->session->userdata('token');
-            $itExists       = $this->session->userdata('userExists');
+            // Caso o usuário esteja pré autenticado e tenha efetuado o post com a senha 
+            } else if($isPreAuthenticated && $isPost && $password != '') {
 
-            // Se o usuário não existir na base, efetuar o cadastro
-            if ($itExists == 0){
+                header('Content-Type: application/json');
 
-                // Se o token enviado pelo post for diferente do que está na sessão, ocorreu um double submit
-                if ($post_token != $session_token){
+                $password       = $this->input->post('userpass');
+                $post_token     = $this->input->post('token');
 
-                    $response_array['status'] = 'waitforit';
+                $color          = $this->session->userdata('color');
+                $username       = $this->session->userdata('username');
+                $session_token  = $this->session->userdata('token');
+                $itExists       = $this->session->userdata('userExists');
 
-                } else {
+                // Se o usuário não existir na base, efetuar o cadastro
+                if ($itExists == 0){
 
-                    // Envia dados para o método da model cadastrar o usuário no banco de dados
-                    $result = $this->Chat_model->insertNewUser($username, $password, $color);
+                    // Se o token enviado pelo post for diferente do que está na sessão, ocorreu um double submit
+                    if ($post_token != $session_token){
 
-                    if ($result){
-
-                        $response_array['status'] = 'success';
-                        $this->session->set_userdata('isAuthenticated', '1');
+                        $response_array['status'] = 'waitforit';
 
                     } else {
 
-                        $response_array['status'] = 'failed';
+                        // Envia dados para o método da model cadastrar o usuário no banco de dados
+                        $result = $this->Chat_model->insertNewUser($username, $password, $color);
 
-                    }
+                        if ($result){
 
-                    // Reseta o token da session
-                    $this->session->set_userdata('token', md5(session_id() . time()));
+                            $response_array['status'] = 'success';
+                            $this->session->set_userdata('isAuthenticated', '1');
 
-                }
+                        } else {
 
-                echo json_encode($response_array);
+                            $response_array['status'] = 'failed';
 
-            // Se o usuário já existir, efetuar a autenticação do mesmo
-            } else if ($itExists == 1) {
+                        }
 
-                $result = $this->Chat_model->validatePassword($username);
-
-                if ($result){
-
-                    $hash_password    = $result->userPwd;
-                    $user_password    = $password;
-
-                    $is_same_password = password_verify($user_password, $hash_password);
-
-                    if ($is_same_password){
-
-                        // Define que o usuário está autenticado e já pode ser redirecionado para o chat
-                        $this->session->set_userdata('isAuthenticated', '1');
-                        $response_array['status'] = 'success';
-
-                    } else {
-
-                        // Usuário errou a senha e será redirecionado a página de login
-                        $response_array['status'] = 'wrongpassword';
-                        $this->session->unset_userdata('username');
+                        // Reseta o token da session
+                        $this->session->set_userdata('token', md5(session_id() . time()));
 
                     }
 
                     echo json_encode($response_array);
 
-                } 
+                // Se o usuário já existir, efetuar a autenticação do mesmo
+                } else if ($itExists == 1) {
+
+                    $result = $this->Chat_model->validatePassword($username);
+
+                    if ($result){
+
+                        $hash_password    = $result->userPwd;
+                        $user_password    = $password;
+
+                        $is_same_password = password_verify($user_password, $hash_password);
+
+                        if ($is_same_password){
+
+                            // Define que o usuário está autenticado e já pode ser redirecionado para o chat
+                            $this->session->set_userdata('isAuthenticated', '1');
+                            $response_array['status'] = 'success';
+
+                        } else {
+
+                            // Usuário errou a senha e será redirecionado a página de login
+                            $response_array['status'] = 'wrongpassword';
+                            $this->session->unset_userdata('username');
+
+                        }
+
+                        echo json_encode($response_array);
+
+                    } 
+
+                }
+            
+            // Se o usuário está pré autenticado, fez um post, porém o campo da senha é vazio
+            } else if ($isPreAuthenticated && $isPost && $password == ''){
+
+                header('Content-Type: application/json');
+
+                $response_array['status'] = 'nopassword';
+                echo json_encode($response_array);
+        
+
+            } else {
+
+                redirect('http://localhost:8000/chat');
 
             }
-        
-        // Se o usuário está pré autenticado, fez um post, porém o campo da senha é vazio
-        } else if ($isPreAuthenticated && $isPost && $password == ''){
-
-            header('Content-Type: application/json');
-
-            $response_array['status'] = 'nopassword';
-            echo json_encode($response_array);
-    
-
-        } else {
-
-            redirect('http://localhost:8000/chat');
-
         }
-
     }
 
     /**

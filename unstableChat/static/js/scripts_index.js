@@ -1,12 +1,3 @@
-color_picker = document.getElementById("colorpicker");
-input = document.getElementById("login_input");
-
-color_picker.addEventListener("change", function(){
-    color_value = color_picker.value;
-    input.setAttribute("style", "color:" + color_value);
-})
-
-
 $("#login_form").submit(function(e) {
 
     e.preventDefault();
@@ -47,3 +38,13 @@ $("#login_form").submit(function(e) {
         })
     }
 });
+
+color_picker = document.getElementById("colorpicker");
+input = document.getElementById("login_input");
+
+color_picker.addEventListener("change", function(){
+    color_value = color_picker.value;
+    input.setAttribute("style", "color:" + color_value);
+})
+
+
