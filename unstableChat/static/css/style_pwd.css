@@ -40,6 +40,8 @@
     background-color: black;
 }
 
+/* Media querys para layout responsivo */
+
 @media only screen and (max-width: 400px) {
 
     .box {
