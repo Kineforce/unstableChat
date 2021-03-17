@@ -47,7 +47,7 @@ var checkbottom;
             //console.log("No Bottom");
         }
     });
-
+    
     setTimeout(checkScroll, 200);
 
 })();
@@ -90,7 +90,7 @@ loopingScroll();
 
 (function loadNewMessages(){
 
-    var all_msgs = $('.inner_message');    
+    var all_msgs = $('.chat_line');    
     var last_msg_div = $(all_msgs);
 
     if (last_msg_div.length == 0){
@@ -217,7 +217,7 @@ document.getElementById('colorpicker').addEventListener("change", function(){
 
 function updateColorChat(){
 
-    let message = $('.inner_message');
+    let message = $('.chat_line');
 
     $.ajax({
         url:"getColorMessages",
@@ -316,14 +316,14 @@ function isTabActive(){
                                        
                     if (last_seen < five_sec){
 
-                        last_seen = "<span style='color: #37ff00'>online</span>";
+                        sql_username = "<div class='line_user' style='color: #37ff00'>" + sql_username + "</div>";
 
                     } else { 
 
-                        last_seen = "<span style='color: grey'>offline</span>";
+                        sql_username = "<div class='line_user' style='color: grey'>" + sql_username + "</div>";
                     }
                          
-                    string_online_users = string_online_users + "<li>" + sql_username + ": <br>" + last_seen + " </li>";
+                    string_online_users = string_online_users + sql_username;
 
                 }
 
