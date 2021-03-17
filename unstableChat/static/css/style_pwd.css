@@ -22,29 +22,23 @@
     border-radius: 10px;
 }
 
-#login_form {
+#pass_form {
     padding-top: 2em;
     padding-left: 5em;
 }
 
-#login_input {
+#pwd_input {
     background-color: black;
     height: 3em;
     width: 20em;
     text-indent: 10px;
 }
 
-#submit_login {
+#submit_pwd {
     height: 3.5em;
     width: 2em;
     background-color: black;
 }
-
-#colorpicker {
-    margin-top: 1em;
-    background-color: black;
-}
-
 
 @media only screen and (max-width: 400px) {
 
@@ -55,19 +49,19 @@
         border-radius: 10px;
     }
 
-    #login_form {
+    #pass_form {
         padding-top: 1em;
         padding-left: 1em;
     }
     
-    #login_input {
+    #pwd_input {
         background-color: black;
         height: 3em;
         width: 93%;
         text-indent: 10px;
     }
 
-    #submit_login {
+    #submit_pwd {
         margin-top: 1em;
         width: 95%;
 
@@ -77,10 +71,6 @@
         margin-top: 2em;
     }
 
-    #colorpicker {
-        margin-top: 3em;
-    }
-    
 }
 
 @media screen and (max-height: 295px) {

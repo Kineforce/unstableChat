@@ -11,14 +11,16 @@
 </head>
 <body>
 
-<div class="container">
-    <form id="login_form" method="post" action="./login.php">
-        <label id="label_login" for="login"><h1>Enter your identity</h1></label>
-        <input type="text" name="username" id="login_input" placeholder="type your user here!" autocomplete="off">
-        <span id="feedback_message"></span>
-        <input type="submit" id="submit_login" value="Send it!">
-        <input type="color" id="colorpicker" value="#ADFF2F">
-    </form>
+<div id="container">
+    <div class="box">
+        <form id="login_form" method="post" action="./login.php">
+            <label id="label_login" for="login_input"><h1>Enter your login</h1></label>
+            <input type="text" name="username" id="login_input" placeholder="type your username here" autocomplete="off" maxlength="20">
+            <input type="submit" id="submit_login" value="->"><br>
+            <span id="feedback_message"></span><br>
+            <input type="color" id="colorpicker" value="#ADFF2F">
+        </form>
+    </div>
 </div>
 
 <script src="<?php echo BASE_URL(); ?>static/js/scripts_index.js"></script>

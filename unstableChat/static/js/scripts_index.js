@@ -35,7 +35,6 @@ $("#login_form").submit(function(e) {
                 }
             } 
         }).done(function(){
-            document.getElementById('login_input').value= ""
 
         })
     }
