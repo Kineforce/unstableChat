@@ -17,16 +17,16 @@
         <div class="box">
             <div class="left-side">
                 <div class="online_users">
+                <div class="title_div">
                     <span>USERS</span>
-                <div class="user"> 
+                </div>    
+                <div class="user css_scroll"> 
                 </div>
             </div>
             </div> 
             <div class="right-side">
                 <div class="chat">      
-                    <div id="go_to_bottom" class="fa fa-angle-double-down">
-                    </div>
-                    <div class="message_box">                                                                       
+                    <div class="message_box css_scroll">                                                                       
                     </div>   
                     <div class="insert_box">
                         <textarea name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" autocomplete="off"></textarea>
@@ -35,6 +35,8 @@
                         <button class="logout" id="logout">Logout</button>
                         <label for="colorpicker"></label>
                         <input type="color" id="colorpicker" hidden>
+                        <div id="go_to_bottom" class="fa fa-angle-double-down">
+                        </div>
                     </div>   
                 </div>
             </div>

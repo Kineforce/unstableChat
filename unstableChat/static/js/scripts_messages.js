@@ -186,16 +186,16 @@ document.addEventListener("keyup", function(event){
 
 });
 
-// Listener que escuta o botão para scrollar o chat
+//Listener que escuta o botão para scrollar o chat
 
-// document.getElementById("go_to_bottom").addEventListener("click", function(){
+document.getElementById("go_to_bottom").addEventListener("click", function(){
 
-//     var messageBody = document.querySelector('.message_box');
-//     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    var messageBody = document.querySelector('.message_box');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
-// });
+});
 
-// Faz um post para o banco alterar a cor do usuário
+//Faz um post para o banco alterar a cor do usuário
 
 document.getElementById('colorpicker').addEventListener("change", function(){
 
@@ -316,11 +316,11 @@ function isTabActive(){
                                        
                     if (last_seen < five_sec){
 
-                        sql_username = "<div class='line_user' style='color: green'>" + sql_username + "</div>";
+                        sql_username = "<div class='line_user' style='color: green'>" + sql_username + "</div><div class='line'></div>";
 
                     } else { 
 
-                        sql_username = "<div class='line_user' style='color: black'>" + sql_username + "</div>";
+                        sql_username = "<div class='line_user' style='color: black'>" + sql_username + "</div><div class='line'></div>";
                     }
                          
                     string_online_users = string_online_users + sql_username;
