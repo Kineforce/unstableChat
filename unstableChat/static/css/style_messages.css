@@ -10,62 +10,161 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
+    background-color: whitesmoke;
     overflow-y: hidden;
 
 }
 
 .box {
     position: absolute;
-    margin-left: 5%;
+    display: flex;
+    margin-left: 2%;
     margin-top: 2%;
-    height: 90%;
-    width: 90%;
-    min-width: 300px;
-    border: 1px solid white;
+    height: calc(100% - 50px);
+    width: calc(100% - 50px);
+    border: 1px solid black;
 
 }
 
-.online_users{
-    position: absolute;
-    margin-top: 1%;
-    margin-left: 1%;
-    height: 97%;
+.left-side {
+    flex: 30%;
+    position: relative;
+    z-index: 100;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.right-side {
+    flex: 70%;
+    position: relative;
+    z-index: 100;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.online_users {
+    position: relative;
+    height: 100%;
     overflow-y: auto;
+    border-right: 1px solid black;
+
+}
+
+.online_users span {
+    position: relative;
+    font-family: monospace;
+    font-size: 15px;
+    display: flex;
+    align-items: center; 
+    justify-content: center
 
 }
 
 .user {
-    margin-top: 1em;
-    width: 20em;
+    width: 100%;
+    height: max-content;
 }
 
 .line_user {
-    padding-bottom: 5px;
-    width: 19em;
-    margin-top: 20px;
-    border-bottom: 1px solid grey;
-
+    color: black;
+    width: 90%;
+    border-bottom: 1px solid black;
 }
 
-#go_to_bottom {
-    clear: both;
-    position: absolute;
-    right: 3%;
-    bottom: 10%;
-    z-index: 1;
+.line_user:not(:last-child) {
+    margin-bottom: 20px;  
+
 }
 
 .chat {
-    position: sticky;
+    display: flex;
+    height: 100%;    
+}
+
+.message_box {
+    position: relative;
+    height: calc(100% - 60px);
+    overflow: auto;
+    z-index: 100;
+}
+
+.insert_box {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    width: 100%;
+    z-index: 200;
+}
+
+#input_box {
+    position: relative;
+    width: 100%;
+    resize: none;
+}
+
+.chat_line {
+    overflow-wrap: break-word;
+    margin-top: 20px;
+}
+
+.left .msg_wrapper {
+    text-align: left;
+    width: 80%;
+
+}
+
+.right .msg_wrapper {
+    text-align: right;
+    width: 80%;
+
+}
+
+.left .msg_stamp {
+    position: relative;
+    margin-left: 15px;
+    left: 0;
+    font-size: 10px;
+
+}
+
+.right .msg_stamp {
+    position: relative;
+    margin-left: 15px;
+    right: 0;
+    font-size: 10px;
+}
+
+.right {
+    margin-left: 7%;
+}
+
+.left {
+    margin-left: 7%;
+}
+
+#go_to_bottom {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 1%;
+    padding-right: 5%;
+    z-index: 1;
+}
+
+
+/*
+
+
+
+.chat {
     padding-left: 23em;
     left: 23em;
     height: 100%;
     width: 100%;
     border-right: 1px solid white;
-    min-width: 100%;
+    min-width: 360px;
     overflow-y: hidden;
     overflow-x: hidden;
 
@@ -80,11 +179,7 @@
 
 }
 
-.chat_line {
-    overflow-wrap: break-word;
-    margin-top: 20px;
-    width: 50%;
-}
+
 
 .username {
     position: absolute;
@@ -106,13 +201,7 @@
 
 }
 
-.msg_stamp {
-    position: relative;
-    margin-left: 15px;
-    right: 0;
-    font-size: 10px;
 
-}
 
 .msg_wrapper {
     position: relative;
@@ -123,7 +212,7 @@
     white-space: pre-wrap;
 
 
-}
+} */
 
 /* Aplicando efeitos no scroll para a div de usuários online */
 
@@ -165,6 +254,7 @@
     background: grey; 
 }
 
+/* 
 @media only screen and (max-height: 700px) {
 
     * {
@@ -183,6 +273,7 @@
 
     .insert_box {
         position: absolute;
+        background-color: pink;
     }
     
 }
@@ -220,6 +311,7 @@
     .insert_box {
         position: relative;
         display: block;
+        background-color: pink;
     }
     
 
@@ -246,6 +338,7 @@
     .insert_box {
         position: absolute;
         bottom: 0;        
+        background-color: pink;
     }
     
     .online_users {
@@ -254,4 +347,4 @@
     }
 
 }
-    
+     */

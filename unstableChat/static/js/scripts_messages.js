@@ -1,10 +1,10 @@
 // Função que checa se o scroll da div do chat está carregado
 
-(function($) {
-    $.fn.hasScrollBar = function() {
-        return this.get(0).scrollHeight > this.height();
-    };
-})(jQuery);
+// (function($) {
+//     $.fn.hasScrollBar = function() {
+//         return this.get(0).scrollHeight > this.height();
+//     };
+// })(jQuery);
 
 // Faz um get para o controlador e retorna o username
 
@@ -24,33 +24,33 @@ $.ajax({
 
 // Variável que indica se está tudo scrollado
 
-var checkbottom;
+// var checkbottom;
                 
-// Verifica a cada 200ms se o chat está scrollado
+// // Verifica a cada 200ms se o chat está scrollado
 
-(function checkScroll(){
+// (function checkScroll(){
 
-    $('.message_box').on('scroll', function() {
-        var check = $(this).scrollTop() + $(this).innerHeight() >= $(this) 
-    [0].scrollHeight;
-        if(check) {
-           checkbottom = "bottom";
-           $('#go_to_bottom').removeAttr("class", "fa fa-arrow-down");
+//     $('.message_box').on('scroll', function() {
+//         var check = $(this).scrollTop() + $(this).innerHeight() >= $(this) 
+//     [0].scrollHeight;
+//         if(check) {
+//            checkbottom = "bottom";
+//            $('#go_to_bottom').removeAttr("class", "fa fa-arrow-down");
 
-           //console.log("Bottom");
-        }
-        else {
-            checkbottom = "nobottom";
-            $('#go_to_bottom').addClass("fa fa-arrow-down");
-            $('#go_to_bottom').addClass("go_to_bottom");
+//            //console.log("Bottom");
+//         }
+//         else {
+//             checkbottom = "nobottom";
+//             $('#go_to_bottom').addClass("fa fa-arrow-down");
+//             $('#go_to_bottom').addClass("go_to_bottom");
 
-            //console.log("No Bottom");
-        }
-    });
+//             //console.log("No Bottom");
+//         }
+//     });
     
-    setTimeout(checkScroll, 200);
+//     setTimeout(checkScroll, 200);
 
-})();
+// })();
 
 // Função para sleep
 
@@ -62,29 +62,29 @@ function sleep(ms) {
 
 // Função que scrolla o chat, checando enquanto o chat não estiver totalmente scrollado
 
-async function loopingScroll(){
-    if ($('.message_box').hasScrollBar() == true){
-        var chat_box = document.getElementsByClassName('message_box')[0];
+// async function loopingScroll(){
+//     if ($('.message_box').hasScrollBar() == true){
+//         var chat_box = document.getElementsByClassName('message_box')[0];
 
-        var i = 0;
+//         var i = 0;
 
-        while (checkbottom != "bottom"){
-            chat_box.scrollTop = i;
-            i += 5000;
-            await sleep(1);
-        }
+//         while (checkbottom != "bottom"){
+//             chat_box.scrollTop = i;
+//             i += 5000;
+//             await sleep(1);
+//         }
 
-    }else {
-        setTimeout(function(){
-            loopingScroll();
-        }, 200);
-    }
+//     }else {
+//         setTimeout(function(){
+//             loopingScroll();
+//         }, 200);
+//     }
     
-}
+// }
 
 // Chamada da função loopingScroll();
 
-loopingScroll();
+//loopingScroll();
 
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
@@ -112,7 +112,7 @@ loopingScroll();
  
             $('.message_box').append(response.status);
 
-            if (response.status != "" && checkbottom == "bottom"){
+            if (response.status != "" /*&& checkbottom == "bottom"*/){
 
                 var messageBody = document.querySelector('.message_box');
                 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -188,12 +188,12 @@ document.addEventListener("keyup", function(event){
 
 // Listener que escuta o botão para scrollar o chat
 
-document.getElementById("go_to_bottom").addEventListener("click", function(){
+// document.getElementById("go_to_bottom").addEventListener("click", function(){
 
-    var messageBody = document.querySelector('.message_box');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+//     var messageBody = document.querySelector('.message_box');
+//     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
-});
+// });
 
 // Faz um post para o banco alterar a cor do usuário
 
@@ -316,11 +316,11 @@ function isTabActive(){
                                        
                     if (last_seen < five_sec){
 
-                        sql_username = "<div class='line_user' style='color: #37ff00'>" + sql_username + "</div>";
+                        sql_username = "<div class='line_user' style='color: green'>" + sql_username + "</div>";
 
                     } else { 
 
-                        sql_username = "<div class='line_user' style='color: grey'>" + sql_username + "</div>";
+                        sql_username = "<div class='line_user' style='color: black'>" + sql_username + "</div>";
                     }
                          
                     string_online_users = string_online_users + sql_username;
