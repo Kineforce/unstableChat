@@ -59,12 +59,13 @@
 }
 
 .chat {
+    position: sticky;
     padding-left: 23em;
     left: 23em;
     height: 100%;
     width: 100%;
     border-right: 1px solid white;
-    min-width: 360px;
+    min-width: 100%;
     overflow-y: hidden;
     overflow-x: hidden;
 
@@ -170,6 +171,7 @@
         color: red;
     }
 
+
     #go_to_bottom {
         clear: both;
         position: absolute;
@@ -181,11 +183,6 @@
 
     .insert_box {
         position: absolute;
-        padding-top: 20px;
-        bottom: 0;
-        width: 100%;
-        min-width: 100%;
-        background-color: black;
     }
     
 }
@@ -220,6 +217,12 @@
     
     }
 
+    .insert_box {
+        position: relative;
+        display: block;
+    }
+    
+
     .online_users {
         display: none;
 
@@ -230,15 +233,21 @@
 @media only screen and (max-width: 360px) {
 
     .chat {
+        position: ab;
         height: 100%;
-        width: 100%;
+        width: 550px;
         border-right: 1px solid white;
         min-width: 100%;
         overflow-y: hidden;
         overflow-x: hidden;
     
     }
-
+    
+    .insert_box {
+        position: absolute;
+        bottom: 0;        
+    }
+    
     .online_users {
         display: none;
 
