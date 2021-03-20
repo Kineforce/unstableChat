@@ -336,19 +336,7 @@ class Chat extends CI_controller {
 
                 }
 
-                $message_div = " <div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'>
-                                    <div class='msg_wrapper'>
-                                        <span class='username' ".$loop_style.">
-                                            ".htmlspecialchars($data['userName'])."
-                                        </span>
-                                        <span class='msg' style='color:black'>
-                                            ".htmlspecialchars($data['messageText'])."                                               
-                                        </span>
-                                        <span class='msg_stamp' style='color:black'>
-                                            ".htmlspecialchars($hour_msg)."
-                                        </span>    
-                                    </div>
-                                </div>";  
+                $message_div = "<div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'><div class='msg_wrapper'><span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span><span class='msg' style='color:black'>".htmlspecialchars($data['messageText'])."</span><span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span></div></div>";  
 
                 $message_div_concat .= $message_div;
                     

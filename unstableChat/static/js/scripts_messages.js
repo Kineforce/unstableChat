@@ -1,11 +1,3 @@
-// Função que checa se o scroll da div do chat está carregado
-
-// (function($) {
-//     $.fn.hasScrollBar = function() {
-//         return this.get(0).scrollHeight > this.height();
-//     };
-// })(jQuery);
-
 // Faz um get para o controlador e retorna o username
 
 $.ajax({
@@ -22,36 +14,6 @@ $.ajax({
     setTimeout(isTabActive, 200);
 })
 
-// Variável que indica se está tudo scrollado
-
-// var checkbottom;
-                
-// // Verifica a cada 200ms se o chat está scrollado
-
-// (function checkScroll(){
-
-//     $('.message_box').on('scroll', function() {
-//         var check = $(this).scrollTop() + $(this).innerHeight() >= $(this) 
-//     [0].scrollHeight;
-//         if(check) {
-//            checkbottom = "bottom";
-//            $('#go_to_bottom').removeAttr("class", "fa fa-arrow-down");
-
-//            //console.log("Bottom");
-//         }
-//         else {
-//             checkbottom = "nobottom";
-//             $('#go_to_bottom').addClass("fa fa-arrow-down");
-//             $('#go_to_bottom').addClass("go_to_bottom");
-
-//             //console.log("No Bottom");
-//         }
-//     });
-    
-//     setTimeout(checkScroll, 200);
-
-// })();
-
 // Função para sleep
 
 function sleep(ms) {
@@ -59,32 +21,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 
 }
-
-// Função que scrolla o chat, checando enquanto o chat não estiver totalmente scrollado
-
-// async function loopingScroll(){
-//     if ($('.message_box').hasScrollBar() == true){
-//         var chat_box = document.getElementsByClassName('message_box')[0];
-
-//         var i = 0;
-
-//         while (checkbottom != "bottom"){
-//             chat_box.scrollTop = i;
-//             i += 5000;
-//             await sleep(1);
-//         }
-
-//     }else {
-//         setTimeout(function(){
-//             loopingScroll();
-//         }, 200);
-//     }
-    
-// }
-
-// Chamada da função loopingScroll();
-
-//loopingScroll();
 
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
@@ -210,7 +146,6 @@ document.getElementById('colorpicker').addEventListener("change", function(){
         }
     });
 
-    //
 })
 
 // Atualiza a cor do chat baseado em um json vindo do backend
@@ -232,7 +167,7 @@ function updateColorChat(){
 
                 for (k = 0; k<parsed_data.length; k++){
 
-                    if ( message[j].getElementsByTagName('span')[1].innerText == parsed_data[k].username){
+                    if ( message[j].getElementsByClassName('username')[0].innerText == parsed_data[k].username){
 
                         let color_style = parsed_data[k].color;
 
@@ -245,7 +180,7 @@ function updateColorChat(){
 
             for (i = 0; i<message.length; i++){
 
-                if ( message[i].getElementsByTagName('span')[1].innerText == sessionStorage.getItem("username") ){
+                if ( message[i].getElementsByClassName('username')[0].innerText == sessionStorage.getItem("username") ){
 
                     let user_color = message[i].getElementsByClassName("username")[0].getAttribute("style").substring(7);
             
@@ -260,13 +195,13 @@ function updateColorChat(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
-            //console.log("Busy database, retrying...")
+            console.log("Busy database, retrying...")
             setTimeout(updateColorChat, 300);
 
         }
     }).done(function() {
 
-        //("Color changed!")
+        ("Color changed!")
         setTimeout(updateColorChat, 200);
 
     })

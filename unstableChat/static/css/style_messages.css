@@ -59,6 +59,9 @@
 }
 
 .title_div span {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
     display:table;
     margin:0 auto;
 }
@@ -67,6 +70,7 @@
     position: relative;
     flex: 95%;
     overflow: auto;
+    font-weight: 700;
 
 }
 
@@ -76,13 +80,10 @@
 }
 
 .line {
-    width: 90%;
-}
-
-.line:not(:last-child) {
-    margin-bottom: 20px;  
     border-bottom: 1px solid #ccc;
-
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 90%;
 }
 
 .chat {
@@ -95,6 +96,12 @@
     margin-top: 10px;
     margin-bottom: 10px;
 
+}
+
+.line_user {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .message_box {
@@ -118,6 +125,16 @@
     position: relative;
     width: 100%;
     resize: none;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-indent: 5px;
+}
+
+.username {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .msg_wrapper {
@@ -126,12 +143,27 @@
     flex-direction: column;
     padding: 5px;
     border-radius: 15px;
-    word-wrap: break-word;
 
 }
 
+.msg {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.username_info_span {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 .msg_stamp {
-    font-size: 10px;
+    font-weight: 700;
+    font-size: 11px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: lighter;
 }
 
@@ -147,11 +179,13 @@
     max-width: 60%;
 }
 
-.right .msg_wrapper > * {
+.right .msg_wrapper .msg_stamp,
+.right .msg_wrapper .username {
     text-align: right;
 }
 
-.left .msg_wrapper > * {
+.left .msg_wrapper .msg_stamp,
+.left .msg_wrapper .username {
     text-align: left;
 }
 
@@ -162,6 +196,12 @@
     padding-bottom: 1%;
     padding-right: 5%;
     z-index: 1;
+}
+
+#logout {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 /* Aplicando efeitos no scroll para a div de usuários online */
