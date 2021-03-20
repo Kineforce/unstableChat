@@ -6,7 +6,6 @@ class Chat extends CI_controller {
 
         parent::__construct();
         $this->load->helper('url');
-        $this->load->helper('customRedir');
         $this->load->model('Chat_model');
         $this->load->library('session');
 
