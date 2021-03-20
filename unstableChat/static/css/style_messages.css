@@ -108,6 +108,7 @@
 
 .insert_box {
     position: relative;
+    padding: 15px;
     flex: 10%;
     width: 100%;
     z-index: 200;
@@ -121,10 +122,17 @@
 
 .msg_wrapper {
     border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
     padding: 5px;
     border-radius: 15px;
     word-wrap: break-word;
 
+}
+
+.msg_stamp {
+    font-size: 10px;
+    font-weight: lighter;
 }
 
 .right .msg_wrapper {
@@ -139,14 +147,12 @@
     max-width: 60%;
 }
 
-.right .msg_wrapper .username {
-    display: table;
-    margin-left: auto;
+.right .msg_wrapper > * {
+    text-align: right;
 }
 
-.left .msg_wrapper .username {
-    display: table;
-    margin-right: auto;
+.left .msg_wrapper > * {
+    text-align: left;
 }
 
 #go_to_bottom {

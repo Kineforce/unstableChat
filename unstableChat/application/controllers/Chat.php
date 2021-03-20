@@ -335,17 +335,28 @@ class Chat extends CI_controller {
 
                 if ($data['userName'] == $this->session->userdata('username')){
 
-                    $message_div            = "<div id='".htmlspecialchars($messageId)."' class='chat_line right'><div class='msg_wrapper'><span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."
-                    </span><span class='msg' style='color:black'><br>".htmlspecialchars($data['messageText'])."<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span></div></span></div>";
-                    
+                    $class_align = 'right';
+
                 } else {
 
-                    $message_div            = "<div id='".htmlspecialchars($messageId)."' class='chat_line left'><div class='msg_wrapper'><span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."
-                    </span><span class='msg' style='color:black'><br>".htmlspecialchars($data['messageText'])."<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span></div></span></div>";
-                    
+                    $class_align = 'left';
+
                 }
 
-            
+                $message_div = " <div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'>
+                                    <div class='msg_wrapper'>
+                                        <span class='username' ".$loop_style.">
+                                            ".htmlspecialchars($data['userName'])."
+                                        </span>
+                                        <span class='msg' style='color:black'>
+                                            ".htmlspecialchars($data['messageText'])."                                               
+                                        </span>
+                                        <span class='msg_stamp' style='color:black'>
+                                            ".htmlspecialchars($hour_msg)."
+                                        </span>    
+                                    </div>
+                                </div>";  
+
                 $message_div_concat .= $message_div;
                     
                 $response_array['status'] = $message_div_concat;
