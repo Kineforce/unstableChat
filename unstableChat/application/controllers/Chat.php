@@ -6,6 +6,7 @@ class Chat extends CI_controller {
 
         parent::__construct();
         $this->load->helper('url');
+        $this->load->helper('customRedir');
         $this->load->model('Chat_model');
         $this->load->library('session');
 
@@ -18,8 +19,7 @@ class Chat extends CI_controller {
 
         if ($this->session->userdata('isAuthenticated', '1')){
 
-            //header("Location: http://localhost:8000/everyone");
-            header("Location: http://unstablechat.000webhostapp.com/everyone");
+            customRedir('everyone');
 
         } else {
 
@@ -62,8 +62,7 @@ class Chat extends CI_controller {
 
         if ($this->session->userdata('isAuthenticated') == 1){
 
-            //header("Location: http://localhost:8000/everyone");
-            header("Location: http://unstablechat.000webhostapp.com/everyone");
+            customRedir('everyone');
 
         } else if ($this->input->post()){
 
@@ -139,8 +138,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            //header("Location: http://localhost:8000/chat");
-            header("Location: http://unstablechat.000webhostapp.com/everyone");
+            customRedir('');
 
         }
     }
@@ -153,8 +151,7 @@ class Chat extends CI_controller {
 
         if ($this->session->userdata('isAuthenticated') == 1){
 
-            //header("Location: http://localhost:8000/everyone");
-            header("Location: http://unstablechat.000webhostapp.com/everyone");
+            customRedir('everyone');
 
         } else {
 
@@ -258,8 +255,7 @@ class Chat extends CI_controller {
 
             } else {
 
-                redirect('http://localhost:8000/chat');
-                //redirect('http://unstablechat.000webhostapp.com/chat');
+                customRedir('');
 
             }
         }
@@ -276,8 +272,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect("http://localhost:8000/");
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -295,8 +290,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -367,8 +361,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -409,8 +402,7 @@ class Chat extends CI_controller {
             }
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -436,8 +428,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -485,8 +476,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -525,8 +515,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
@@ -563,8 +552,7 @@ class Chat extends CI_controller {
 
         } else {
 
-            redirect('http://localhost:8000/chat');
-            //redirect('http://unstablechat.000webhostapp.com/chat');
+            customRedir('');
 
         }
 
