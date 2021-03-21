@@ -96,7 +96,7 @@ class Chat_model extends CI_Model {
     }
 
     /**
-     * Atauliza o valor lastSeen do usuário no banco
+     * Atualiza o valor lastSeen do usuário no banco
      */
     public function updateLastSeen($username){
 

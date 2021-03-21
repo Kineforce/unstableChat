@@ -121,6 +121,12 @@
     z-index: 200;
 }
 
+.msg_date {
+    display: block;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
 #input_box {
     position: relative;
     width: 100%;

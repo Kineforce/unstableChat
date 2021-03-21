@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
+    background-color: whitesmoke;
 }
 
 .box {
@@ -61,7 +61,7 @@
     }
     
     #login_input {
-        background-color: black;
+        background-color: whitesmoke;
         height: 3em;
         width: 93%;
         text-indent: 10px;
@@ -95,7 +95,7 @@
         display: table;
         justify-content: center;
         align-items: center;
-        background-color: black;
+        background-color: whitesmoke;
     }
     
     .box {
@@ -121,7 +121,7 @@
         display: table;
         justify-content: center;
         align-items: center;
-        background-color: black;
+        background-color: whitesmoke;
     }
     
     .box {

@@ -289,3 +289,68 @@ function isTabActive(){
     }
 
 }
+
+// Criando observer que observa a caixa de mensagens e notifica quando novas mensagens chegaram
+
+(function messageBoxObserver(){
+
+    const targetNode = document.getElementsByClassName('message_box')[0];
+
+    const config = { childList: true};
+    
+    const callback = function(mutationsList, observer){
+    
+        for (const mutation of mutationsList) {
+            if(mutation.type === 'childList'){
+                filterDates();
+            }
+        }
+    }
+    
+    const observer = new MutationObserver(callback);
+    
+    observer.observe(targetNode, config);
+
+})();
+
+// Função que ordena as mensagens pelo dia em que foram enviadas
+
+function filterDates(){
+
+    // Coleta todas as mensagens
+    let msg_dates = $('.msg_date');
+
+    // Cria o array auxiliar para as datas das mensagens
+
+    let aux_msg_date = {};
+
+    aux_msg_date = {
+        'day'   : new Date(msg_dates[0].innerText).getUTCDate(),
+        'month' : new Date(msg_dates[0].innerText).getMonth(),
+        'year'  : new Date(msg_dates[0].innerText).getFullYear()
+    };
+
+    msg_dates[0].removeAttribute('style');
+
+    for (i = 0; i < msg_dates.length; i++){
+
+        curr_msg_date = {
+            'day'   : new Date(msg_dates[i].innerText).getUTCDate(),
+            'month' : new Date(msg_dates[i].innerText).getMonth(),
+            'year'  : new Date(msg_dates[i].innerText).getFullYear()
+        }
+        
+        if (aux_msg_date.day != curr_msg_date.day && aux_msg_date.month == curr_msg_date.month && aux_msg_date.year == curr_msg_date.year){
+
+            msg_dates[i].removeAttribute('style');  
+            aux_msg_date = curr_msg_date;
+
+        } else if (aux_msg_date.day == curr_msg_date.day && (aux_msg_date.month != curr_msg_date.month || aux_msg_date.year != curr_msg_date.year))
+            
+            msg_dates[i].removeAttribute('style');  
+            aux_msg_date = curr_msg_date;
+
+    }
+
+
+}
