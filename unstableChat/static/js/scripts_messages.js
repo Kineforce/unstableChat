@@ -325,9 +325,9 @@ function filterDates(){
     let aux_msg_date = {};
 
     aux_msg_date = {
-        'day'   : new Date(msg_dates[0].innerText).getUTCDate(),
-        'month' : new Date(msg_dates[0].innerText).getMonth(),
-        'year'  : new Date(msg_dates[0].innerText).getFullYear()
+        'day'   : new Date(msg_dates[0].getAttribute('value')).getUTCDate(),
+        'month' : new Date(msg_dates[0].getAttribute('value')).getMonth(),
+        'year'  : new Date(msg_dates[0].getAttribute('value')).getFullYear()
     };
 
     msg_dates[0].removeAttribute('style');
@@ -335,18 +335,10 @@ function filterDates(){
     for (i = 0; i < msg_dates.length; i++){
 
         curr_msg_date = {
-            'day'   : new Date(msg_dates[i].innerText).getUTCDate(),
-            'month' : new Date(msg_dates[i].innerText).getMonth(),
-            'year'  : new Date(msg_dates[i].innerText).getFullYear()
+            'day'   : new Date(msg_dates[i].getAttribute('value')).getUTCDate(),
+            'month' : new Date(msg_dates[i].getAttribute('value')).getMonth(),
+            'year'  : new Date(msg_dates[i].getAttribute('value')).getFullYear()
         }
-        
-        console.log(aux_msg_date.day    + " <-- Dia");
-        console.log(aux_msg_date.month  + " <-- Mês");
-        console.log(aux_msg_date.year   + " <-- Ano");
-        console.log(curr_msg_date.day    + " <-- Dia");
-        console.log(curr_msg_date.month  + " <-- Mês");
-        console.log(curr_msg_date.year   + " <-- Ano");
-        console.log(" --------------------- ");
 
         if (aux_msg_date.year != curr_msg_date.year || aux_msg_date.month != curr_msg_date.month || aux_msg_date.day != curr_msg_date.day){
 

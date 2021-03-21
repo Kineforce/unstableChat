@@ -336,7 +336,7 @@ class Chat extends CI_controller {
 
                 }
 
-                $message_div  = "<div class='msg_date' style='display: none'>" . date("Y-m-d h:m:s", $time_in_past) . "</div>";
+                $message_div  = "<div class='msg_date' value='".date("Y-m-d h:m:s", $time_in_past)."' style='display: none'>" . date("d/m/Y", $time_in_past) . "</div>";
                 $message_div .= "<div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'>";  
                 $message_div .=     "<div class='msg_wrapper'>";
                 $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span>";
