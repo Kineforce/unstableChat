@@ -157,7 +157,7 @@
     font-size: 15px;
     font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
     word-break: break-word;
-    white-space: pre;
+    white-space: pre-wrap;
 }
 
 .username_info_span {
