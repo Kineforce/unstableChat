@@ -340,17 +340,21 @@ function filterDates(){
             'year'  : new Date(msg_dates[i].innerText).getFullYear()
         }
         
-        if (aux_msg_date.day != curr_msg_date.day && aux_msg_date.month == curr_msg_date.month && aux_msg_date.year == curr_msg_date.year){
+        console.log(aux_msg_date.day    + " <-- Dia");
+        console.log(aux_msg_date.month  + " <-- Mês");
+        console.log(aux_msg_date.year   + " <-- Ano");
+        console.log(curr_msg_date.day    + " <-- Dia");
+        console.log(curr_msg_date.month  + " <-- Mês");
+        console.log(curr_msg_date.year   + " <-- Ano");
+        console.log(" --------------------- ");
+
+        if (aux_msg_date.year != curr_msg_date.year || aux_msg_date.month != curr_msg_date.month || aux_msg_date.day != curr_msg_date.day){
 
             msg_dates[i].removeAttribute('style');  
             aux_msg_date = curr_msg_date;
 
-        } else if (aux_msg_date.day == curr_msg_date.day && (aux_msg_date.month != curr_msg_date.month || aux_msg_date.year != curr_msg_date.year))
-            
-            msg_dates[i].removeAttribute('style');  
-            aux_msg_date = curr_msg_date;
+        }
 
     }
-
 
 }
