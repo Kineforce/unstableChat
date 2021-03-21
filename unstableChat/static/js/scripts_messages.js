@@ -1,3 +1,40 @@
+// Função que checa se o usuário está no bottom ou top do chat
+
+let isBottom = false;
+
+(function checkBottom(){
+
+    let message_box     = $('.message_box')[0];
+    let scrollHeight    = message_box.scrollHeight
+    let scrollTop       = Math.abs(message_box.scrollTop)
+    let clientHeight    = message_box.clientHeight
+
+    let m_scrollHeight    = scrollHeight
+    let m_scrollTop       = scrollTop
+    let m_clientHeight    = clientHeight + 100
+
+    isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
+
+    setTimeout(checkBottom, 200);
+
+})();
+
+// Função que checa se houve uma mudança na height da div e scrolla para o bottom
+
+(function checkDivResize(new_height){
+
+    let message_box = $('.message_box')[0];
+    let boxHeight = message_box.offsetHeight
+
+    if (new_height != boxHeight){
+        var messageBody = document.querySelector('.message_box');
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    }
+
+    setTimeout(checkDivResize.bind(null, boxHeight), 200);
+
+})();
+
 // Faz um get para o controlador e retorna o username
 
 $.ajax({
@@ -48,7 +85,7 @@ function sleep(ms) {
  
             $('.message_box').append(response.status);
 
-            if (response.status != "" /*&& checkbottom == "bottom"*/){
+            if (response.status != "" && isBottom){
 
                 var messageBody = document.querySelector('.message_box');
                 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;

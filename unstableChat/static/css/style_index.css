@@ -28,7 +28,6 @@
 }
 
 #login_input {
-    background-color: black;
     height: 3em;
     width: 20em;
     text-indent: 10px;
@@ -84,9 +83,6 @@
 }
 
 @media screen and (max-height: 295px) {
-    * {
-        color: white;
-    }
 
     #container {
         position: absolute;
@@ -110,9 +106,6 @@
 }
 
 @media screen and (max-height: 420px) {
-    * {
-        color: white;
-    }
 
     #container {
         position: absolute;
