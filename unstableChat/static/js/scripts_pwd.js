@@ -1,3 +1,19 @@
+// Função que redireciona o usuário para a tela de login
+
+document.getElementById("get_back").addEventListener("click", function(){
+
+    $.ajax({
+        url: 'logout',
+        type: 'post',
+        data: {exit: 'true'},
+        dataType: 'text',
+        success: function(response){
+            location.reload();
+        }
+    });
+});
+
+
 $('#pass_form').submit(function(e) {
 
     e.preventDefault();

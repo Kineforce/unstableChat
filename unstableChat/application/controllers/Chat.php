@@ -160,7 +160,8 @@ class Chat extends CI_controller {
 
             // Caso o usuário esteja pré autenticado e não tenha acontecido um post da senha
             if ($isPreAuthenticated && !$isPost){
-                $data['token'] = md5(session_id() . time());
+                $data['token']      = md5(session_id() . time());
+                $data['username']   = $this->session->userdata('username');
 
                 $this->session->set_userdata('token', $data['token']);
 
@@ -282,7 +283,7 @@ class Chat extends CI_controller {
      */
     public function logout(){
 
-        if ($this->session->userdata('isAuthenticated') == 1){
+        if ($this->input->post('exit') == 'true' && $this->session->userdata('isAuthenticated') == 1 || $this->session->userdata('username')){
 
             $this->session->unset_userdata('isAuthenticated');
             $this->session->unset_userdata('username');

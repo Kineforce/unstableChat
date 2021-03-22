@@ -13,13 +13,20 @@
 
 <div id="container">
     <div class="box">
-        <form id="pass_form" method="post" action="./login.php">
-            <label id="label_pwd" for="pwd"><h1>Enter your password</h1></label>
-            <input type="password" name="userpass" id="pwd_input" placeholder="type your user here!" autocomplete="off">
-            <input type="submit" id="submit_pwd" value="->"><br>
-            <span id="feedback_message"></span>
-            <input type="hidden" name="token" value="<?=$token?>">
-        </form>
+        <div class="upper_box">
+            <form id="pass_form" method="post" action="./login.php">
+                <label id="label_pwd" for="pwd"><h1>Enter your password</h1></label>
+                <input type="password" name="userpass" id="pwd_input" placeholder="type your user here!" autocomplete="off">
+                <input type="submit" id="submit_pwd" value="->"><br>
+                <span id="feedback_message"></span>
+                <input type="hidden" name="token" value="<?=$token?>">
+            </form>
+        </div>
+        <div class="lower_box">
+            <div class="wrapper_get_back">
+                <span id="get_back"><span><?=$username?></span> isn't your username? Click here!</span>
+            </div>
+        </div>
     </div>
 </div>
 

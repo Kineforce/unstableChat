@@ -16,10 +16,22 @@
 }
 
 .box {
+    display: flex;
+    flex-direction: column;
     width: 400px;
     height: 400px;
     border: 1px solid grey;
     border-radius: 10px;
+}
+
+.upper_box {
+    flex: 80%;
+
+}
+
+.lower_box {
+    flex: 20%;
+    
 }
 
 #pass_form {
@@ -39,7 +51,40 @@
     background-color: black;
 }
 
+.wrapper_get_back {
+    position: relative;
+    display: block;
+    text-align: center;   
+}
+
+#get_back {
+    border: 1px solid grey;
+    padding: 4px;
+    background-color: rgba(128, 128, 128, 0.1);
+    cursor: pointer;
+}
+
+#get_back:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#get_back span {
+    color: black;
+}
+
 /* Media querys para layout responsivo */
+
+@media only screen and (max-width: 297px){
+
+    #get_back {
+        border: none;
+    }
+
+    #get_back span {
+        color: black;
+}
+
+}
 
 @media only screen and (max-width: 400px) {
 
