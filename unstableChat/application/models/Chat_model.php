@@ -170,7 +170,7 @@ class Chat_model extends CI_Model {
 
         $userIp = $this->db->escape($userIp);
 
-        $query = "SELECT userIp FROM USERS WHERE userIp = ?";
+        $query = "SELECT userIp FROM USERS WHERE userIp = $userIp";
 
         $result = $this->db->query($query);
 
