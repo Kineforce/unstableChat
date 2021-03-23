@@ -12,8 +12,6 @@ application/logs/*
 
 !application/*/.htaccess
 
-application/config/database.php
-
 vendor
 
 user_guide/*
