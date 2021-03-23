@@ -81,7 +81,7 @@ $db['default'] = array(
 	'username' => $database_url["user"],
 	'password' => $database_url["pass"],
 	'database' => APPPATH.'/messages.db',
-	'dbdriver' => 'pgsql',
+	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
