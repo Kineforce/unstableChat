@@ -18,7 +18,7 @@
             <div class="left-side">
                 <div class="online_users">
                 <div class="title_div">
-                    <span>USERS</span>
+                    <span>Chat</span>
                 </div>    
                 <div class="user css_scroll"> 
                 </div>
@@ -41,6 +41,15 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal" style="display: none">
+            <h1>Open a new chat and have fun!</h1><br>
+            <h2>made by: Kineforce</h2>
+        </div>
+
+        <!-- /.modal -->
+
     </div>
 
     <script src="<?php echo BASE_URL(); ?>static/js/scripts_messages.js"></script>

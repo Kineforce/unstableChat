@@ -76,7 +76,8 @@
 
 .line_user {
     margin-left: 5%;
-
+    padding: 10px;
+    cursor: pointer;
 }
 
 .line {
@@ -209,6 +210,17 @@
     font-size: 15px;
     font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+.modal {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 90%;
+    z-index: 100;
+}
+
 
 /* Aplicando efeitos no scroll para a div de usuários online */
 

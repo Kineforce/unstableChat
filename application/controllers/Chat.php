@@ -305,52 +305,68 @@ class Chat extends CI_controller {
 
             header('Content-Type: application/json');
 
-            $load_last_msg  = $this->input->get('load_last_msg');
+            $load_last_msg      = $this->input->get('load_last_msg');
+            $targetUser         = $this->input->get('send_to_who');
+            $username           = $this->session->userdata('username');
+
+            if ($targetUser == 'nobody'){
+
+                $response_array['status'] = 'needOpenChat';
+
+            } else {
+
+                $result = $this->Chat_model->returnTargetMessages($load_last_msg, $username, $targetUser);
+
+            }
+
+            if ($result){
+
+                $message_div_concat = "";
+
+                foreach ($result->result_array() as $data){
     
-            $result = $this->Chat_model->returnLastMessages($load_last_msg);
+                    // Tratando hora do banco e ajustando para GMT -3
+                    $stamp_msg              = $data['messageStamp'];
+                    $convert_date           = strtotime($stamp_msg);
+                    $time_msg               = date($convert_date);
+                    $hours_to_subtract      = 3;
+                    $time_to_subtract       = ($hours_to_subtract * 60 * 60);
+                    $time_in_past           = $time_msg - $time_to_subtract;
+                    $hour_msg               = date("H:i", $time_in_past);
+    
+                    // Criando varáveis de estilo
+                    $style                  = "style='color: ";
+                    $loop_style             = $style . $data['userColor']. "'";
+                    $messageId              = $data['messageId'];
+    
+                    if ($data['userName'] == $this->session->userdata('username')){
+    
+                        $class_align = 'right';
+    
+                    } else {
+    
+                        $class_align = 'left';
+    
+                    }
+    
+                    $message_div  = "<div class='msg_date' value='".date("Y-m-d h:m:s", $time_in_past)."' style='display: none'>" . date("d/m/Y", $time_in_past) . "</div>";
+                    $message_div .= "<div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'>";  
+                    $message_div .=     "<div class='msg_wrapper'>";
+                    $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span>";
+                    $message_div .=         "<span class='msg' style='color:black'>".htmlspecialchars($data['messageText'])."</span>";
+                    $message_div .=         "<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span>";
+                    $message_div .=     "</div>";
+                    $message_div .= "</div>";
+    
+                    $message_div_concat .= $message_div;
+                        
+                    $response_array['status'] = $message_div_concat;
+    
+                } 
+
+            }
+
             
-            $message_div_concat = "";
-
-            foreach ($result->result_array() as $data){
-
-                // Tratando hora do banco e ajustando para GMT -3
-                $stamp_msg              = $data['messageStamp'];
-                $convert_date           = strtotime($stamp_msg);
-                $time_msg               = date($convert_date);
-                $hours_to_subtract      = 3;
-                $time_to_subtract       = ($hours_to_subtract * 60 * 60);
-                $time_in_past           = $time_msg - $time_to_subtract;
-                $hour_msg               = date("H:i", $time_in_past);
-
-                // Criando varáveis de estilo
-                $style                  = "style='color: ";
-                $loop_style             = $style . $data['userColor']. "'";
-                $messageId              = $data['messageId'];
-
-                if ($data['userName'] == $this->session->userdata('username')){
-
-                    $class_align = 'right';
-
-                } else {
-
-                    $class_align = 'left';
-
-                }
-
-                $message_div  = "<div class='msg_date' value='".date("Y-m-d h:m:s", $time_in_past)."' style='display: none'>" . date("d/m/Y", $time_in_past) . "</div>";
-                $message_div .= "<div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'>";  
-                $message_div .=     "<div class='msg_wrapper'>";
-                $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span>";
-                $message_div .=         "<span class='msg' style='color:black'>".htmlspecialchars($data['messageText'])."</span>";
-                $message_div .=         "<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span>";
-                $message_div .=     "</div>";
-                $message_div .= "</div>";
-
-                $message_div_concat .= $message_div;
-                    
-                $response_array['status'] = $message_div_concat;
-
-            } 
 
             echo json_encode($response_array);
 
@@ -377,6 +393,9 @@ class Chat extends CI_controller {
                 $userMessage    = $this->input->post('message'); 
 
                 if (strlen($userMessage) != 0){
+
+
+
 
                     $result = $this->Chat_model->insertNewMessage($username, $userMessage);
 

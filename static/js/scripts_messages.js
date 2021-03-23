@@ -1,19 +1,26 @@
+// Variável que controla se o usuário selecionou algum chat
+
+let send_to_who = 'nobody';
+
 // Função que checa se o usuário está no bottom ou top do chat
 
 let isBottom = false;
 
 (function checkBottom(){
 
-    let message_box     = $('.message_box')[0];
-    let scrollHeight    = message_box.scrollHeight
-    let scrollTop       = Math.abs(message_box.scrollTop)
-    let clientHeight    = message_box.clientHeight
+    if (send_to_who != 'nobody'){
+        let message_box     = $('.message_box')[0];
+        let scrollHeight    = message_box.scrollHeight
+        let scrollTop       = Math.abs(message_box.scrollTop)
+        let clientHeight    = message_box.clientHeight
+    
+        let m_scrollHeight    = scrollHeight
+        let m_scrollTop       = scrollTop
+        let m_clientHeight    = clientHeight + 100
+    
+        isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
 
-    let m_scrollHeight    = scrollHeight
-    let m_scrollTop       = scrollTop
-    let m_clientHeight    = clientHeight + 100
-
-    isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
+    } 
 
     setTimeout(checkBottom, 200);
 
@@ -23,15 +30,24 @@ let isBottom = false;
 
 (function checkDivResize(new_height){
 
-    let message_box = $('.message_box')[0];
-    let boxHeight = message_box.offsetHeight
+    if (send_to_who != 'nobody' ){
 
-    if (new_height != boxHeight){
-        var messageBody = document.querySelector('.message_box');
-        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        let message_box = $('.message_box')[0];
+        let boxHeight = message_box.offsetHeight
+    
+        if (new_height != boxHeight){
+            var messageBody = document.querySelector('.message_box');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        }
+
+        setTimeout(checkDivResize.bind(null, boxHeight), 200);
+
+    } else {
+
+        setTimeout(checkDivResize, 200);
+
     }
 
-    setTimeout(checkDivResize.bind(null, boxHeight), 200);
 
 })();
 
@@ -76,20 +92,47 @@ function sleep(ms) {
 
     }
 
+    if (sessionStorage.getItem('send_to_user')){
+
+        send_to_who = sessionStorage.getItem('send_to_user')
+        console.log("Requisição para abrir um chat para o usuário: " + send_to_who);
+
+    } 
+
     $.ajax({
         url:"getMessages",
         type:"GET",
-        data:{load_last_msg:last_msg},
+        data:{
+            load_last_msg: last_msg,
+            send_to_who: send_to_who
+        },
         dataType:"JSON",
         success:function(response){
- 
-            $('.message_box').append(response.status);
+            
+            console.log(send_to_who);
 
-            if (response.status != "" && isBottom){
+            let temp_modal = $('.modal');
 
-                var messageBody = document.querySelector('.message_box');
-                messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+            if (response.status == 'needOpenChat') {
+                
+                $('.message_box').replaceWith(temp_modal);
+                temp_modal.removeAttr('style', 'display');
 
+                $('.insert_box').attr('style', 'display: none');
+                
+
+            } else {
+
+                temp_modal.attr('style', 'display: none');
+
+                $('.message_box').append(response.status);
+
+                    if (response.status != "" && isBottom){
+
+                        var messageBody = document.querySelector('.message_box');
+                        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+                    }
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -104,7 +147,7 @@ function sleep(ms) {
     }).done(function(){
 
         //console.log("Messages loaded!")
-        setTimeout(loadNewMessages, 200);
+        setTimeout(loadNewMessages, 2000);
 
     })
 
@@ -122,7 +165,10 @@ function sendMessageToChat(){
     $.ajax({
         url:"setNewMessage",
         type:"POST",
-        data:{message:input_box_message},
+        data:{
+            message:input_box_message
+            
+        },
         dataType:"JSON",
         success:function(response){
 
@@ -288,11 +334,11 @@ function isTabActive(){
                                        
                     if (last_seen < five_sec){
 
-                        sql_username = "<div class='line_user' style='color: green'>" + sql_username + "</div><div class='line'></div>";
+                        sql_username = "<div class='line_user' style='color: green' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";
 
                     } else { 
 
-                        sql_username = "<div class='line_user' style='color: black'>" + sql_username + "</div><div class='line'></div>";
+                        sql_username = "<div class='line_user' style='color: black' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";
                     }
                          
                     string_online_users = string_online_users + sql_username;
@@ -354,36 +400,55 @@ function isTabActive(){
 
 function filterDates(){
 
-    // Coleta todas as mensagens
-    let msg_dates = $('.msg_date');
+    if (send_to_who == 0){
 
-    // Cria o array auxiliar para as datas das mensagens
 
-    let aux_msg_date = {};
+    } else {
 
-    aux_msg_date = {
-        'day'   : new Date(msg_dates[0].getAttribute('value')).getUTCDate(),
-        'month' : new Date(msg_dates[0].getAttribute('value')).getMonth(),
-        'year'  : new Date(msg_dates[0].getAttribute('value')).getFullYear()
-    };
+        // Coleta todas as mensagens se houver mensagens
+        let msg_dates = $('.msg_date');
 
-    msg_dates[0].removeAttribute('style');
+        if (msg_dates.length > 0){
 
-    for (i = 0; i < msg_dates.length; i++){
+            // Cria o array auxiliar para as datas das mensagens
 
-        curr_msg_date = {
-            'day'   : new Date(msg_dates[i].getAttribute('value')).getUTCDate(),
-            'month' : new Date(msg_dates[i].getAttribute('value')).getMonth(),
-            'year'  : new Date(msg_dates[i].getAttribute('value')).getFullYear()
+            let aux_msg_date = {};
+
+            aux_msg_date = {
+                'day'   : new Date(msg_dates[0].getAttribute('value')).getUTCDate(),
+                'month' : new Date(msg_dates[0].getAttribute('value')).getMonth(),
+                'year'  : new Date(msg_dates[0].getAttribute('value')).getFullYear()
+            };
+
+            msg_dates[0].removeAttribute('style');
+
+            for (i = 0; i < msg_dates.length; i++){
+
+                curr_msg_date = {
+                    'day'   : new Date(msg_dates[i].getAttribute('value')).getUTCDate(),
+                    'month' : new Date(msg_dates[i].getAttribute('value')).getMonth(),
+                    'year'  : new Date(msg_dates[i].getAttribute('value')).getFullYear()
+                }
+
+                if (aux_msg_date.year != curr_msg_date.year || aux_msg_date.month != curr_msg_date.month || aux_msg_date.day != curr_msg_date.day){
+
+                    msg_dates[i].removeAttribute('style');  
+                    aux_msg_date = curr_msg_date;
+
+                }
+            }
         }
-
-        if (aux_msg_date.year != curr_msg_date.year || aux_msg_date.month != curr_msg_date.month || aux_msg_date.day != curr_msg_date.day){
-
-            msg_dates[i].removeAttribute('style');  
-            aux_msg_date = curr_msg_date;
-
-        }
-
     }
+
+}
+
+// Função que abre uma nova conversa na message_box
+
+function openNewChat($username){
+
+    console.log("--> " + $username);
+    $('.message_box')[0].innerHTML = "";
+    sessionStorage.setItem('send_to_user', $username);
+
 
 }

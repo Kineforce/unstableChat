@@ -66,8 +66,8 @@ class Chat_model extends CI_Model {
         $username = $this->db->escape($username);
         $message  = $this->db->escape($message);
 
-        $query =    "   INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText)
-                        VALUES ($username, CURRENT_TIMESTAMP, $message);
+        $query =    "   INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText, targetUser)
+                        VALUES ($username, CURRENT_TIMESTAMP, $message, null);
                     ";
 
         $result = $this->db->query($query);
@@ -86,6 +86,30 @@ class Chat_model extends CI_Model {
                     FROM        STORED_MESSAGES AS STOR
                     JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
                     WHERE       messageId       >  $id
+                    ORDER BY    messageStamp;
+                ";
+
+        $result = $this->db->query($query);
+
+        return $result;
+
+    }
+
+     /**
+     * Retorna as últimas mensagens baseado no último ID
+     */
+    public function returnTargetMessages($load_last_msg, $username, $targetUser){
+
+        $id              = $this->db->escape($load_last_msg);
+        $username        = $this->db->escape($username);
+        $targetUsername  = $this->db->escape($targetUser);
+
+
+        $query = "  SELECT      *
+                    FROM        STORED_MESSAGES AS STOR
+                    JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
+                    WHERE       US.USERNAME     IN ($targetUsername, $username)
+                    AND         messageId       > $id
                     ORDER BY    messageStamp;
                 ";
 
@@ -170,7 +194,7 @@ class Chat_model extends CI_Model {
 
         $userIp = $this->db->escape($userIp);
 
-        $query = "SELECT userIp FROM USERS WHERE userIp = $userIp";
+        $query = "SELECT userIp FROM USERS WHERE userIp = ?";
 
         $result = $this->db->query($query);
 
