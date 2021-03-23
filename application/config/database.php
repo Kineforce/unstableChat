@@ -73,14 +73,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$database_url = parse_url(getenv("DATABASE_URL"));
+//$database_url = parse_url(getenv("DATABASE_URL"));
 
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => $database_url["host"],
-	'username' => $database_url["user"],
-	'password' => $database_url["pass"],
-	'database' => substr($database_url["path"], 1),
+	'dsn'	   => '',
+	'hostname' => 'localhost',
+	'username' => 'postgres',
+	'password' => 'kl  promitere  kl',
+	'database' => 'unstablechat',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -96,3 +96,5 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+
