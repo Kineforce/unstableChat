@@ -1,0 +1,231 @@
+* {
+    font-family: monospace;
+    margin-left: 0px;
+    margin-top: 0px;
+    color: grey;
+    box-sizing: border-box;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: whitesmoke;
+    overflow-y: hidden;
+
+}
+
+.box {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    margin-left: 2%;
+    margin-top: 2%;
+    height: calc(100% - 50px);
+    width: calc(100% - 50px);
+    border: 1px solid #ccc;
+
+}
+
+.left-side {
+    flex: 30%;
+    position: relative;
+    border-right: 1px solid #ccc ;
+    z-index: 100;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.right-side {
+    flex: 70%;
+    position: relative;
+    z-index: 100;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.online_users {
+    display: flex;
+    flex-direction: column;
+    height: 100%;    
+
+}
+
+.title_div {
+    position: relative;
+    flex: 5%;
+}
+
+.title_div span {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+    display:table;
+    margin:0 auto;
+}
+
+.user {
+    position: relative;
+    flex: 95%;
+    overflow: auto;
+    font-weight: 700;
+
+}
+
+.line_user {
+    margin-left: 5%;
+
+}
+
+.line {
+    border-bottom: 1px solid #ccc;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 90%;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;    
+}
+
+.chat_line {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.line_user {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.message_box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 90%;
+    overflow-y: scroll;
+    z-index: 100;
+}
+
+.insert_box {
+    position: relative;
+    padding: 15px;
+    flex: 10%;
+    width: 100%;
+    z-index: 200;
+}
+
+.msg_date {
+    display: block;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+
+#input_box {
+    position: relative;
+    width: 100%;
+    resize: none;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-indent: 5px;
+}
+
+.username {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.msg_wrapper {
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 15px;
+
+}
+
+.msg {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.username_info_span {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.msg_stamp {
+    font-weight: 700;
+    font-size: 11px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: lighter;
+}
+
+.right .msg_wrapper {
+    float: right;
+    margin-right: 20%;    
+    max-width: 60%;
+}
+
+.left .msg_wrapper {
+    float: left;
+    margin-left: 20%;
+    max-width: 60%;
+}
+
+.right .msg_wrapper .msg_stamp,
+.right .msg_wrapper .username {
+    text-align: right;
+}
+
+.left .msg_wrapper .msg_stamp,
+.left .msg_wrapper .username {
+    text-align: left;
+}
+
+#go_to_bottom {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 1%;
+    padding-right: 5%;
+    z-index: 1;
+}
+
+#logout {
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+/* Aplicando efeitos no scroll para a div de usuários online */
+
+.css_scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.css_scroll::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px grey;
+    border-radius: 10px;
+}
+
+.css_scroll::-webkit-scrollbar-thumb{
+    background: grey;
+    border-radius: 10px;
+}
+
+.css_scroll::-webkit-scrollbar-thumb:hover {
+    background: grey; 
+}
