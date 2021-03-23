@@ -12,8 +12,6 @@ application/logs/*
 
 !application/*/.htaccess
 
-composer.lock
-
 vendor
 
 user_guide/*
