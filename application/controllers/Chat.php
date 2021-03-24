@@ -319,7 +319,7 @@ class Chat extends CI_controller {
 
             }
 
-            if ($result){
+            if (isset($result)){
 
                 $message_div_concat = "";
 
@@ -365,8 +365,6 @@ class Chat extends CI_controller {
                 } 
 
             }
-
-            
 
             echo json_encode($response_array);
 
@@ -552,8 +550,8 @@ class Chat extends CI_controller {
                 foreach ($result->result_array() as $data){
 
                     array_push($user_colors, array(
-                        'username' => htmlspecialchars($data['userName']),
-                        'color'    => htmlspecialchars($data['userColor'])
+                        'username' => htmlspecialchars($data['username']),
+                        'color'    => htmlspecialchars($data['usercolor'])
                     ));
 
                 }

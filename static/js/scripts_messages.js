@@ -147,7 +147,7 @@ function sleep(ms) {
     }).done(function(){
 
         //console.log("Messages loaded!")
-        setTimeout(loadNewMessages, 2000);
+        setTimeout(loadNewMessages, 200);
 
     })
 
@@ -356,18 +356,18 @@ function isTabActive(){
                 // console.log(errorThrown)
                 // console.log(textStatus);
 
-                setTimeout(isTabActive, 2000);
+                setTimeout(isTabActive, 200);
 
             }
         }).done(function(){
 
-            setTimeout(isTabActive, 2000);
+            setTimeout(isTabActive, 200);
 
         })
 
     } else {
 
-        setTimeout(isTabActive, 2000);
+        setTimeout(isTabActive, 200);
 
     }
 
