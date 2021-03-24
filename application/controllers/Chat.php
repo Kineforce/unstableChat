@@ -218,7 +218,7 @@ class Chat extends CI_controller {
 
                     if ($result){
 
-                        $hash_password    = $result->userPwd;
+                        $hash_password    = $result->userpwd;
                         $user_password    = $password;
 
                         $is_same_password = password_verify($user_password, $hash_password);
@@ -305,27 +305,25 @@ class Chat extends CI_controller {
             header('Content-Type: application/json');
 
             $load_last_msg      = $this->input->get('load_last_msg');
-            $targetUser         = $this->input->get('send_to_who');
+            $targetUser         = $this->input->get('targetUser');
             $username           = $this->session->userdata('username');
 
-            if ($targetUser == 'nobody'){
+            $this->session->set_userdata('targetUser', $targetUser);
 
-                $response_array['status'] = 'needOpenChat';
-
-            } else {
+            if ($load_last_msg != "" && $targetUser != ""){
 
                 $result = $this->Chat_model->returnTargetMessages($load_last_msg, $username, $targetUser);
 
             }
 
-            if (isset($result)){
+            if (count($result->result_array()) != 0){
 
                 $message_div_concat = "";
 
                 foreach ($result->result_array() as $data){
     
                     // Tratando hora do banco e ajustando para GMT -3
-                    $stamp_msg              = $data['messageStamp'];
+                    $stamp_msg              = $data['messagestamp'];
                     $convert_date           = strtotime($stamp_msg);
                     $time_msg               = date($convert_date);
                     $hours_to_subtract      = 3;
@@ -335,10 +333,10 @@ class Chat extends CI_controller {
     
                     // Criando varáveis de estilo
                     $style                  = "style='color: ";
-                    $loop_style             = $style . $data['userColor']. "'";
-                    $messageId              = $data['messageId'];
+                    $loop_style             = $style . $data['usercolor']. "'";
+                    $messageId              = $data['messageid'];
     
-                    if ($data['userName'] == $this->session->userdata('username')){
+                    if ($data['username'] == $this->session->userdata('username')){
     
                         $class_align = 'right';
     
@@ -351,8 +349,8 @@ class Chat extends CI_controller {
                     $message_div  = "<div class='msg_date' value='".date("Y-m-d h:m:s", $time_in_past)."' style='display: none'>" . date("d/m/Y", $time_in_past) . "</div>";
                     $message_div .= "<div id='".htmlspecialchars($messageId)."' class='chat_line $class_align'>";  
                     $message_div .=     "<div class='msg_wrapper'>";
-                    $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['userName'])."</span>";
-                    $message_div .=         "<span class='msg' style='color:black'>".htmlspecialchars($data['messageText'])."</span>";
+                    $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['username'])."</span>";
+                    $message_div .=         "<span class='msg' style='color:black'>".htmlspecialchars($data['messagetext'])."</span>";
                     $message_div .=         "<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span>";
                     $message_div .=     "</div>";
                     $message_div .= "</div>";
@@ -362,10 +360,14 @@ class Chat extends CI_controller {
                     $response_array['status'] = $message_div_concat;
     
                 } 
+    
+                echo json_encode($response_array);
+    
+            } else {
 
+                $response_array['status'] = 'nothing';
+                echo json_encode($response_array);
             }
-
-            echo json_encode($response_array);
 
         } else {
 
@@ -388,13 +390,11 @@ class Chat extends CI_controller {
 
                 $username       = $this->session->userdata('username');
                 $userMessage    = $this->input->post('message'); 
+                $targetUser     = $this->session->userdata('targetUser');
 
                 if (strlen($userMessage) != 0){
 
-
-
-
-                    $result = $this->Chat_model->insertNewMessage($username, $userMessage);
+                    $result = $this->Chat_model->insertNewMessage($username, $userMessage, $targetUser);
 
                     if ($result){
 
@@ -442,7 +442,7 @@ class Chat extends CI_controller {
             customRedir('');
 
         }
-
+        
     }
 
     /**
@@ -467,8 +467,8 @@ class Chat extends CI_controller {
                     foreach ($result_query->result_array() as $data){
 
                         array_push($online_users, array(
-                            'username' => htmlspecialchars($data['userName']),
-                            'lastSeen' => htmlspecialchars($data['lastSeen']),
+                            'username' => htmlspecialchars($data['username']),
+                            'lastSeen' => htmlspecialchars($data['lastseen']),
                         ));
     
                     }

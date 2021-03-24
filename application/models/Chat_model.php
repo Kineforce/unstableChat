@@ -29,7 +29,7 @@ class Chat_model extends CI_Model {
                     VALUES ('$password', $color, $username, $userIp);
 
                     INSERT INTO USER_STATUS (lastSeen) 
-                    VALUES (CURRENT_TIMESTAMP);
+                    VALUES (current_timestamp);
                 ";
 
         $result = $this->db->query($query);
@@ -45,7 +45,7 @@ class Chat_model extends CI_Model {
 
         $username = $this->db->escape($username);
 
-        $query = "  SELECT userPwd, userName
+        $query = "  SELECT userpwd, username
                     FROM   USERS
                     WHERE  USERNAME = $username;
                 ";
@@ -61,38 +61,19 @@ class Chat_model extends CI_Model {
     /**
      * Insere uma nova mensagem no banco de dados
      */
-    public function insertNewMessage($username, $message){
+    public function insertNewMessage($username, $message, $userTarget){
 
-        $username = $this->db->escape($username);
-        $message  = $this->db->escape($message);
+        $username    = $this->db->escape($username);
+        $message     = $this->db->escape($message);
+        $userTarget  = $this->db->escape($userTarget);
 
         $query =    "   INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText, targetUser)
-                        VALUES ($username, CURRENT_TIMESTAMP, $message, null);
+                        VALUES ($username, current_timestamp, $message, $userTarget);
                     ";
 
         $result = $this->db->query($query);
 
         return $result;
-    }
-    
-    /**
-     * Retorna as últimas mensagens baseado no último ID
-     */
-    public function returnLastMessages($id){
-
-        $id = $this->db->escape($id);
-
-        $query = "  SELECT      *
-                    FROM        STORED_MESSAGES AS STOR
-                    JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
-                    WHERE       messageId       >  $id
-                    ORDER BY    messageStamp;
-                ";
-
-        $result = $this->db->query($query);
-
-        return $result;
-
     }
 
      /**
@@ -106,10 +87,11 @@ class Chat_model extends CI_Model {
 
 
         $query = "  SELECT      *
-                    FROM        STORED_MESSAGES AS STOR
-                    JOIN        USERS           AS US ON US.USERNAME = STOR.USERNAME
-                    WHERE       US.USERNAME     IN ($targetUsername, $username)
-                    AND         messageId       > $id
+                    FROM        STORED_MESSAGES      AS STOR
+                    JOIN        USERS                AS US ON US.USERNAME = STOR.USERNAME
+                    WHERE       STOR.targetuser      IN ($targetUsername, $username)
+                    AND			STOR.username        IN ($targetUsername, $username)
+                    AND         messageId            > $id
                     ORDER BY    messageStamp;
                 ";
 
@@ -126,8 +108,8 @@ class Chat_model extends CI_Model {
 
         $username = $this->db->escape($username);
 
-        $query    = "   UPDATE USER_STATUS SET lastSeen = CURRENT_TIMESTAMP
-                        WHERE  userId IN ( SELECT userID 
+        $query    = "   UPDATE USER_STATUS SET lastseen = now()::timestamp
+                        WHERE  userId IN ( SELECT userid 
                                            FROM   USERS 
                                            WHERE  userName = $username);";
 
