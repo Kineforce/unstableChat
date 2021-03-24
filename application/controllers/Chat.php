@@ -99,7 +99,6 @@ class Chat extends CI_controller {
                     // Caso exista, definir variável na sessão para efetuar autenticação do usuário posteriormente
                     $this->session->set_userdata('userExists', '1');
 
-                    
                 } else {
 
                     $checkIp    = $this->Chat_model->checkIfIpExists($userIp);

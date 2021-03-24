@@ -9,7 +9,7 @@ class Chat_model extends CI_Model {
     public function checkIfUserExists($username){
 
         $username = $this->db->escape($username);
-        $query = $this->db->query("SELECT 1 FROM USERS WHERE USERNAME = $username");
+        $query = $this->db->query("SELECT 1 FROM users WHERE username = $username");
 
         return $query;
 

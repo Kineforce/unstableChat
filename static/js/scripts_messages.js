@@ -109,8 +109,6 @@ function sleep(ms) {
         dataType:"JSON",
         success:function(response){
             
-            console.log(send_to_who);
-
             let temp_modal = $('.modal');
 
             if (response.status == 'needOpenChat') {
@@ -118,7 +116,10 @@ function sleep(ms) {
                 $('.message_box').replaceWith(temp_modal);
                 temp_modal.removeAttr('style', 'display');
 
-                $('.insert_box').attr('style', 'display: none');
+                $('.username_info_span').attr('style', 'display: none'); //done
+                $('#input_box').attr('style', 'display: none');
+                $('#go_to_bottom').attr('style', 'display: none');
+                
                 
 
             } else {

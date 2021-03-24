@@ -221,6 +221,11 @@
     z-index: 100;
 }
 
+.modal h1, h2 {
+    display: flex;
+    text-align: center;
+}
+
 
 /* Aplicando efeitos no scroll para a div de usuários online */
 
