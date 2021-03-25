@@ -407,7 +407,6 @@ let isBottom = false;
     } else {
 
         setTimeout(checkDivResize, 200);
-        console.log("Checking bottom...");
 
     }
 
