@@ -383,7 +383,6 @@ let isBottom = false;
     } else {
 
         setTimeout(checkBottom, 200);
-        console.log("Checking bottom...");
 
     }
 
