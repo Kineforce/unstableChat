@@ -20,15 +20,14 @@
                     let db_timestamp        = parsed_users[value].lastSeen;
 
                     let db_date             = new Date(db_timestamp);
+                    db_date                 = db_date.setHours(db_date.getHours()-3)
+                    db_date                 = new Date(db_date);
                     let curr_date           = new Date();
 
                     let diffTime            = Math.abs(curr_date - db_date);
 
                     let sql_username        = parsed_users[value].username;
                     let limit_sec           = 5000;
-                                    
-                    console.log(db_date);
-                    console.log(curr_date);
 
                     if (diffTime < limit_sec){
 
