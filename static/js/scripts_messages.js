@@ -97,11 +97,12 @@ function logoutUser(){
         data: {exit: 'true'},
         dataType: 'text',
         success: function(response){
+
+            sessionStorage.clear();
             location.reload();
         }
     });
 
-    sessionStorage.clear();
 
 };
 
@@ -134,10 +135,11 @@ function resetAndLoad(){
                 
                 let msgResponse = response.status;
                 $('.message_box')[0].innerHTML = msgResponse;
-                runPolling = true;
 
-                filterDates()
-                return;
+                var messageBody = document.querySelector('.message_box');
+                messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+                runPolling = true;
 
             } else {
 
@@ -200,13 +202,6 @@ function resetAndLoad(){
                         $('.message_box').append(response.status);
 
                     }
-
-                    if (response.status != "nothing" && isBottom){
-
-                        var messageBody = document.querySelector('.message_box');
-                        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-
-                    }
                 
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -216,6 +211,7 @@ function resetAndLoad(){
                     setTimeout(loadNewMessages, 300);
 
                 }
+                
             }).done(function(){
 
                 setTimeout(loadNewMessages, 200);
@@ -302,7 +298,7 @@ function resetAndLoad(){
 
 })();
 
-// Criando observer que observa a caixa de mensagens e executa função para filtrar datas
+// Criando observer que observa a caixa de mensagens e executa funções
 
 (function messageBoxObserver(){
 
@@ -317,11 +313,17 @@ function resetAndLoad(){
                 if(mutation.type === 'childList'){
                     filterDates();
                 }
+                if(mutation.type === 'childList' && isBottom){
+                    var messageBody = document.querySelector('.message_box');
+                    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+                }
+                
             }
         }
 
         const observer = new MutationObserver(callback);
         observer.observe(targetNode, config);
+
     } else {
 
         setTimeout(messageBoxObserver, 200);
@@ -333,46 +335,39 @@ function resetAndLoad(){
 // Função que ordena as mensagens pelo dia em que foram enviadas
 
 function filterDates(){
+ 
+    // Coleta todas as mensagens se houver mensagens
+    let msg_dates = $('.msg_date');
 
-    if(runPolling) {
-            
-        // Coleta todas as mensagens se houver mensagens
-        let msg_dates = $('.msg_date');
+    if (msg_dates.length > 0){
 
-        if (msg_dates.length > 0){
+        // Cria o array auxiliar para as datas das mensagens
 
-            // Cria o array auxiliar para as datas das mensagens
+        let aux_msg_date = {};
 
-            let aux_msg_date = {};
+        aux_msg_date = {
+            'day'   : new Date(msg_dates[0].getAttribute('value')).getUTCDate(),
+            'month' : new Date(msg_dates[0].getAttribute('value')).getMonth(),
+            'year'  : new Date(msg_dates[0].getAttribute('value')).getFullYear()
+        };
 
-            aux_msg_date = {
-                'day'   : new Date(msg_dates[0].getAttribute('value')).getUTCDate(),
-                'month' : new Date(msg_dates[0].getAttribute('value')).getMonth(),
-                'year'  : new Date(msg_dates[0].getAttribute('value')).getFullYear()
-            };
+        msg_dates[0].removeAttribute('style');
 
-            msg_dates[0].removeAttribute('style');
+        for (i = 0; i < msg_dates.length; i++){
 
-            for (i = 0; i < msg_dates.length; i++){
+            curr_msg_date = {
+                'day'   : new Date(msg_dates[i].getAttribute('value')).getUTCDate(),
+                'month' : new Date(msg_dates[i].getAttribute('value')).getMonth(),
+                'year'  : new Date(msg_dates[i].getAttribute('value')).getFullYear()
+            }
 
-                curr_msg_date = {
-                    'day'   : new Date(msg_dates[i].getAttribute('value')).getUTCDate(),
-                    'month' : new Date(msg_dates[i].getAttribute('value')).getMonth(),
-                    'year'  : new Date(msg_dates[i].getAttribute('value')).getFullYear()
-                }
+            if (aux_msg_date.year != curr_msg_date.year || aux_msg_date.month != curr_msg_date.month || aux_msg_date.day != curr_msg_date.day){
 
-                if (aux_msg_date.year != curr_msg_date.year || aux_msg_date.month != curr_msg_date.month || aux_msg_date.day != curr_msg_date.day){
+                msg_dates[i].removeAttribute('style');  
+                aux_msg_date = curr_msg_date;
 
-                    msg_dates[i].removeAttribute('style');  
-                    aux_msg_date = curr_msg_date;
-
-                }
             }
         }
-    } else {
-
-        setTimeout(filterDates, 200);
-
     }
 }      
 
@@ -414,7 +409,7 @@ let isBottom = false;
         let message_box = $('.message_box')[0];
         let boxHeight = message_box.offsetHeight
 
-        if (new_height != boxHeight){
+        if (new_height != boxHeight  && isBottom){
             var messageBody = document.querySelector('.message_box');
             messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
         }
@@ -468,10 +463,8 @@ document.getElementById('colorpicker').addEventListener("change", function(){
 
 document.addEventListener("keyup", function(event){
     
-    if (runPolling){
-        if (event.key == "Enter" && !event.shiftKey){
-            sendMessageToChat();
-        }
+    if (event.key == "Enter" && !event.shiftKey){
+        sendMessageToChat();
     }
 
 });
