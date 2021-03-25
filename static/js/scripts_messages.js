@@ -101,6 +101,8 @@ function logoutUser(){
         }
     });
 
+    sessionStorage.clear();
+
 };
 
 // Esconde a modal, reseta a div e carrega todas as mensagens daquele chat
@@ -132,8 +134,10 @@ function resetAndLoad(){
                 
                 let msgResponse = response.status;
                 $('.message_box')[0].innerHTML = msgResponse;
+                runPolling = true;
 
                 filterDates()
+                return;
 
             } else {
 
@@ -141,8 +145,6 @@ function resetAndLoad(){
                 setTimeout(resetAndLoad, 200);
 
             }
-
-            runPolling = true;
 
         }
     })
@@ -483,36 +485,52 @@ document.getElementById("go_to_bottom").addEventListener("click", function(){
 
 });
 
+$(document).ready(function() {
+
+    if (sessionStorage.getItem('targetUser')){
+
+        resetAndLoad();
+
+    }
+
+});
 
 // Função que abre uma nova conversa na message_box
 
 function openNewChat(username){
+    
+    // Apenas se tiver tiver inicializado a janela pela primeira vez ou se trocou de janelas 
 
-    // Unsets de variáveis
+    if (username != sessionStorage.getItem('targetUser')){
 
-    sessionStorage.clear();
+        // Unsets de variáveis
 
-    // --------------------
+        sessionStorage.clear();
 
-    // Seta o usuário clicado na session para ser o receptor de mensagens
-    sessionStorage.setItem('targetUser', username);
+        // --------------------
 
-    // Recupera o username do usuário logado 
+        // Seta o usuário clicado na session para ser o receptor de mensagens
+        sessionStorage.setItem('targetUser', username);
 
-    $.ajax({
-        type: "GET",
-        url: "getUsername",
-        data: {retorna_username: 1},
-        dataType: 'json',
-        success: function(response){
+        // Recupera o username do usuário logado 
 
-            // Seta o username do usuário na session
-            sessionStorage.setItem('username', response.username);
-        }
-    })
+        $.ajax({
+            type: "GET",
+            url: "getUsername",
+            data: {retorna_username: 1},
+            dataType: 'json',
+            success: function(response){
 
+                // Seta o username do usuário na session
+                sessionStorage.setItem('username', response.username);
+            }
+        }).then(function(){
 
-    // Chama a função para resetar o chat e carregar novas mensagens
-    resetAndLoad();
+            // Chama a função para resetar o chat e carregar novas mensagens
+
+            resetAndLoad();
+
+        })
+    }
 
 }
