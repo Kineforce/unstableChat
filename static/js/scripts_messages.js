@@ -139,6 +139,8 @@ function resetAndLoad(){
                 var messageBody = document.querySelector('.message_box');
                 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
+                filterDates();
+
                 runPolling = true;
 
             } else {
