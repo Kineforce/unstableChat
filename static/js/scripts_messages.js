@@ -451,12 +451,8 @@ document.getElementById('colorpicker').addEventListener("change", function(){
 
 document.addEventListener("keyup", function(event){
 
-    console.log("Enter!");
-    
-    if (runPolling){
-        if (event.key == "Enter" && !event.shiftKey){
-            sendMessageToChat();
-        }
+    if (event.key == "Enter" && !event.shiftKey){
+        sendMessageToChat();
     }
 
 });
