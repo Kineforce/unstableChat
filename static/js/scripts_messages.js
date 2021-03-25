@@ -53,7 +53,7 @@
                 // console.log(errorThrown)
                 // console.log(textStatus);
 
-                console.log("Error")
+                //console.log("Error")
                 setTimeout(isTabActive, 200);
 
             }
@@ -155,7 +155,7 @@ function resetAndLoad(){
 
     if (runPolling){
         
-        console.log("Run polling is working!");
+        //("Run polling is working!");
 
         let run_ajax = true;
         let all_msgs = $('.chat_line');    
@@ -179,7 +179,7 @@ function resetAndLoad(){
 
         if (run_ajax){
 
-            console.log("Run polling is working!");
+            //console.log("Run polling is working!");
 
             $.ajax({
                 url:"getMessages",
@@ -191,7 +191,7 @@ function resetAndLoad(){
                 dataType:"JSON",
                 success:function(response){
                     
-                    console.log(response.status);
+                    //(response.status);
 
                     if (response.status != "nothing"){
 
@@ -209,8 +209,8 @@ function resetAndLoad(){
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                    console.log("Busy database, retrying...")
-                    console.log("textStatus --> " + textStatus);
+                    //console.log("Busy database, retrying...")
+                    //console.log("textStatus --> " + textStatus);
                     setTimeout(loadNewMessages, 300);
 
                 }
@@ -283,7 +283,7 @@ function resetAndLoad(){
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                console.log("Busy database, retrying...")
+                //console.log("Busy database, retrying...")
                 setTimeout(updateColorChat, 300);
 
             }
