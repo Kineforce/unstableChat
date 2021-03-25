@@ -132,9 +132,16 @@ function resetAndLoad(){
                 $('.message_box')[0].innerHTML = msgResponse;
 
                 filterDates()
-                runPolling = true;
+
+            } else {
+                
+                runPolling = false;
+                setTimeout(resetAndLoad, 200);
 
             }
+
+            runPolling = true;
+
         }
     })
 
@@ -145,6 +152,8 @@ function resetAndLoad(){
 (function loadNewMessages(){
 
     if (runPolling){
+        
+        console.log("Run polling is working!");
 
         let run_ajax = true;
         let all_msgs = $('.chat_line');    
@@ -168,6 +177,8 @@ function resetAndLoad(){
 
         if (run_ajax){
 
+            console.log("Run polling is working!");
+
             $.ajax({
                 url:"getMessages",
                 type:"GET",
@@ -178,6 +189,8 @@ function resetAndLoad(){
                 dataType:"JSON",
                 success:function(response){
                     
+                    console.log(response.status);
+
                     if (response.status != "nothing"){
 
                         $('.message_box').append(response.status);
@@ -450,9 +463,11 @@ document.getElementById('colorpicker').addEventListener("change", function(){
 // Listener que escuta a tecla enter e chama a função de enviar mensagens
 
 document.addEventListener("keyup", function(event){
-
-    if (event.key == "Enter" && !event.shiftKey){
-        sendMessageToChat();
+    
+    if (runPolling){
+        if (event.key == "Enter" && !event.shiftKey){
+            sendMessageToChat();
+        }
     }
 
 });
