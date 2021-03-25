@@ -8,7 +8,7 @@ function customRedir($appName){
 
     if ($server_name != 'localhost'){
 
-        header("Location: http://unstablechat.000webhostapp.com/$appName");
+        header("Location: https://unstablechat.herokuapp.com/$appName");
 
     } else {
         header("Location: http://localhost:8000/$appName");
