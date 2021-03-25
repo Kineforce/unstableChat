@@ -17,16 +17,19 @@
 
                 for (var value in parsed_users){
 
-                    let sqlite_timestamp    = parsed_users[value].lastSeen;
+                    let db_timestamp        = parsed_users[value].lastSeen;
 
-                    let sqlite_date         = new Date(sqlite_timestamp);
+                    let db_date             = new Date(db_timestamp);
                     let curr_date           = new Date();
 
-                    let diffTime            = Math.abs(curr_date - sqlite_date);
+                    let diffTime            = Math.abs(curr_date - db_date);
 
                     let sql_username        = parsed_users[value].username;
                     let limit_sec           = 5000;
                                     
+                    console.log(db_date);
+                    console.log(curr_date);
+
                     if (diffTime < limit_sec){
 
                         sql_username = "<div class='line_user' style='color: green' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";
@@ -134,7 +137,7 @@ function resetAndLoad(){
                 filterDates()
 
             } else {
-                
+
                 runPolling = false;
                 setTimeout(resetAndLoad, 200);
 
