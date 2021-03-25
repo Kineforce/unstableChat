@@ -131,42 +131,34 @@ function resetAndLoad(){
                 let msgResponse = response.status;
                 $('.message_box')[0].innerHTML = msgResponse;
 
+                filterDates()
+                runPolling = true;
+
             }
-
-            runPolling = true;
-
         }
     })
 
 };
 
-
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
-
-var last_msg = 0;
 
 (function loadNewMessages(){
 
     if (runPolling){
 
+        let run_ajax = true;
         let all_msgs = $('.chat_line');    
+        let last_msg = 0
 
-        if (last_msg != 0){
+        try {
 
+            last_msg = all_msgs.last()[0].id;
 
+        } catch (err) {
 
-        } else {
-            
-            let last_msg = (all_msgs.length == 0)? 0 : all_msgs.last()[0].id;
-
+            run_ajax = false;
 
         }
-
-        console.clear();
-        console.log("Divs .chat_line --> " + all_msgs);
-        console.log("Last_msg ID     --> " + last_msg);
-        console.log("runPolling      --> " + runPolling);
-
 
         if (sessionStorage.getItem('targetUser')){
 
@@ -174,45 +166,54 @@ var last_msg = 0;
 
         } 
 
-        $.ajax({
-            url:"getMessages",
-            type:"GET",
-            data:{
-                load_last_msg: last_msg,
-                targetUser: targetUser
-            },
-            dataType:"JSON",
-            success:function(response){
+        if (run_ajax){
+
+            $.ajax({
+                url:"getMessages",
+                type:"GET",
+                data:{
+                    load_last_msg: last_msg,
+                    targetUser: targetUser
+                },
+                dataType:"JSON",
+                success:function(response){
+                    
+                    if (response.status != "nothing"){
+
+                        $('.message_box').append(response.status);
+
+                    }
+
+                    if (response.status != "nothing" && isBottom){
+
+                        var messageBody = document.querySelector('.message_box');
+                        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+                    }
                 
-                if (response.status != "nothing"){
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                    $('.message_box').append(response.status);
-
-                }
-
-                if (response.status != "nothing" && isBottom){
-
-                    var messageBody = document.querySelector('.message_box');
-                    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+                    console.log("Busy database, retrying...")
+                    console.log("textStatus --> " + textStatus);
+                    setTimeout(loadNewMessages, 300);
 
                 }
-            
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown){
+            }).done(function(){
 
-                console.log("Busy database, retrying...")
-                console.log("textStatus --> " + textStatus);
-                setTimeout(loadNewMessages, 300);
+                setTimeout(loadNewMessages, 200);
 
-            }
-        }).done(function(){
+            })
 
-            setTimeout(loadNewMessages, 2000);
+        } else {
 
-        })
+            setTimeout(loadNewMessages, 200);
+
+        }
+
     } else {
 
-        setTimeout(loadNewMessages, 2000);
+        setTimeout(loadNewMessages, 200);
 
     }
 
@@ -378,9 +379,11 @@ let isBottom = false;
         isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
 
         setTimeout(checkBottom, 200);
+
     } else {
 
         setTimeout(checkBottom, 200);
+        console.log("Checking bottom...");
 
     }
 
@@ -405,6 +408,7 @@ let isBottom = false;
     } else {
 
         setTimeout(checkDivResize, 200);
+        console.log("Checking bottom...");
 
     }
 
