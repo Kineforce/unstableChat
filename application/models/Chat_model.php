@@ -101,6 +101,27 @@ class Chat_model extends CI_Model {
 
     }
 
+     /**
+     * Retorna todas as mensagens do chat aberto
+     */
+    public function returnAllMessages($username, $targetUser){
+
+        $username = $this->db->escape($username);
+        $targetUser = $this->db->escape($targetUser);
+
+        $query = "  SELECT      *
+                    FROM        STORED_MESSAGES      AS STOR
+                    JOIN        USERS                AS US ON US.USERNAME = STOR.USERNAME
+                    WHERE       STOR.targetuser      IN ($targetUser, $username)
+                    AND			STOR.username        IN ($targetUser, $username)
+                    ORDER BY    messageStamp;
+                ";
+
+        $result = $this->db->query($query);
+
+        return $result;
+    }   
+
     /**
      * Atualiza o valor lastSeen do usuário no banco
      */

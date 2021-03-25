@@ -314,6 +314,10 @@ class Chat extends CI_controller {
 
                 $result = $this->Chat_model->returnTargetMessages($load_last_msg, $username, $targetUser);
 
+            } else {
+                
+                $result = $this->Chat_model->returnAllMessages($username, $targetUser);
+
             }
 
             if (count($result->result_array()) != 0){

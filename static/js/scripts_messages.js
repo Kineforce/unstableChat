@@ -101,7 +101,11 @@ function logoutUser(){
 
 };
 
-function main (){
+// Esconde a modal, reseta a div e carrega todas as mensagens daquele chat
+
+var runPolling = false;
+
+function resetAndLoad(){
 
     // Liberar div para o chat
 
@@ -110,50 +114,59 @@ function main (){
     $('#input_box').show();
     $('#go_to_bottom').show();
     $('.modal').hide();
+    $('.message_box')[0].innerHTML = "";
 
-    // Função que checa se o usuário está no bottom ou top do chat
 
-    let isBottom = false;
+    // Reseta a message_box
 
-    (function checkBottom(){
+    $.ajax({
+        type: "GET",
+        url: "getMessages",
+        data: {targetUser: sessionStorage.getItem('targetUser')},
+        dataType: 'json',
+        success: function(response){
 
-        let message_box     = $('.message_box')[0];
-        let scrollHeight    = message_box.scrollHeight
-        let scrollTop       = Math.abs(message_box.scrollTop)
-        let clientHeight    = message_box.clientHeight
-    
-        let m_scrollHeight    = scrollHeight
-        let m_scrollTop       = scrollTop
-        let m_clientHeight    = clientHeight + 100
-    
-        isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
+            if (response.status != "nothing"){
+                
+                let msgResponse = response.status;
+                $('.message_box')[0].innerHTML = msgResponse;
 
-        setTimeout(checkBottom, 200);
+            }
 
-    })();
+            runPolling = true;
 
-    // Função que checa se houve uma mudança na height da div e scrolla para o bottom
+        }
+    })
 
-    (function checkDivResize(new_height){
+};
 
-        let message_box = $('.message_box')[0];
-        let boxHeight = message_box.offsetHeight
-    
-        if (new_height != boxHeight){
-            var messageBody = document.querySelector('.message_box');
-            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+// Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
+
+var last_msg = 0;
+
+(function loadNewMessages(){
+
+    if (runPolling){
+
+        let all_msgs = $('.chat_line');    
+
+        if (last_msg != 0){
+
+
+
+        } else {
+            
+            let last_msg = (all_msgs.length == 0)? 0 : all_msgs.last()[0].id;
+
+
         }
 
-        setTimeout(checkDivResize.bind(null, boxHeight), 200);
+        console.clear();
+        console.log("Divs .chat_line --> " + all_msgs);
+        console.log("Last_msg ID     --> " + last_msg);
+        console.log("runPolling      --> " + runPolling);
 
-    })();
-
-    // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
-
-    (function loadNewMessages(){
-
-        var all_msgs = $('.chat_line');    
-        var last_msg = (all_msgs.length == 0)? 0 : all_msgs.last()[0].id;
 
         if (sessionStorage.getItem('targetUser')){
 
@@ -170,20 +183,20 @@ function main (){
             },
             dataType:"JSON",
             success:function(response){
-
-                if (response.status != 'nothing'){
+                
+                if (response.status != "nothing"){
 
                     $('.message_box').append(response.status);
 
                 }
 
-                if (response.status != "" && isBottom){
+                if (response.status != "nothing" && isBottom){
 
                     var messageBody = document.querySelector('.message_box');
                     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
                 }
-              
+            
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
@@ -194,16 +207,22 @@ function main (){
             }
         }).done(function(){
 
-            console.log("Messages loaded!")
-            setTimeout(loadNewMessages, 200);
+            setTimeout(loadNewMessages, 2000);
 
         })
+    } else {
 
-    })();
+        setTimeout(loadNewMessages, 2000);
 
-    // Atualiza a cor do chat baseado em um json vindo do backend
+    }
 
-    (function updateColorChat(){
+})();
+
+// Atualiza a cor do chat baseado em um json vindo do backend
+
+(function updateColorChat(){
+
+    if (runPolling){
 
         let message = $('.chat_line');
 
@@ -257,12 +276,19 @@ function main (){
             setTimeout(updateColorChat, 200);
 
         })
+    } else {
 
-    })();
+        setTimeout(updateColorChat, 200);
 
-    // Criando observer que observa a caixa de mensagens e executa função para filtrar datas
+    }
 
-    (function messageBoxObserver(){
+})();
+
+// Criando observer que observa a caixa de mensagens e executa função para filtrar datas
+
+(function messageBoxObserver(){
+
+    if (runPolling) {
 
         const targetNode = document.getElementsByClassName('message_box')[0];
         const config = { childList: true};
@@ -275,16 +301,23 @@ function main (){
                 }
             }
         }
-    
+
         const observer = new MutationObserver(callback);
         observer.observe(targetNode, config);
+    } else {
 
-    })();
+        setTimeout(messageBoxObserver, 200);
 
-    // Função que ordena as mensagens pelo dia em que foram enviadas
+    }
 
-    function filterDates(){
+})();
 
+// Função que ordena as mensagens pelo dia em que foram enviadas
+
+function filterDates(){
+
+    if(runPolling) {
+            
         // Coleta todas as mensagens se houver mensagens
         let msg_dates = $('.msg_date');
 
@@ -318,64 +351,121 @@ function main (){
                 }
             }
         }
+    } else {
+
+        setTimeout(filterDates, 200);
+
+    }
+}      
+
+// Função que checa se o usuário está no bottom ou top do chat
+
+let isBottom = false;
+
+(function checkBottom(){
+
+    if (runPolling) {
+        
+        let message_box     = $('.message_box')[0];
+        let scrollHeight    = message_box.scrollHeight
+        let scrollTop       = Math.abs(message_box.scrollTop)
+        let clientHeight    = message_box.clientHeight
+
+        let m_scrollHeight    = scrollHeight
+        let m_scrollTop       = scrollTop
+        let m_clientHeight    = clientHeight + 100
+
+        isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
+
+        setTimeout(checkBottom, 200);
+    } else {
+
+        setTimeout(checkBottom, 200);
 
     }
 
-    // Função que envia a mensagem pro banco de dados
+})();
 
-    function sendMessageToChat(){
-            
-        let input_box_message = $('#input_box').val().trimStart().trimEnd();
-        document.getElementById("input_box").value = "";
+// Função que checa se houve uma mudança na height da div e scrolla para o bottom
 
-        $.ajax({
-            url:"setNewMessage",
-            type:"POST",
-            data:{message:input_box_message},
-            dataType:"JSON",
-            success:function(response){
+(function checkDivResize(new_height){
 
-            }
-        })
+    if (runPolling){
+
+        let message_box = $('.message_box')[0];
+        let boxHeight = message_box.offsetHeight
+
+        if (new_height != boxHeight){
+            var messageBody = document.querySelector('.message_box');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        }
+
+        setTimeout(checkDivResize.bind(null, boxHeight), 200);
+
+    } else {
+
+        setTimeout(checkDivResize, 200);
+
     }
 
-    //Faz um post para o banco alterar a cor do usuário
+})();
 
-    document.getElementById('colorpicker').addEventListener("change", function(){
+// Função que envia a mensagem pro banco de dados
 
-        var color = $('#colorpicker')[0].value;
+function sendMessageToChat(){
+        
+    let input_box_message = $('#input_box').val().trimStart().trimEnd();
+    document.getElementById("input_box").value = "";
 
-        $.ajax({
-            url:"setUserColor",
-            type:"POST",
-            data:{color:color},
-            dataType:"JSON",
-            success:function(response){
-            }
-        });
+    $.ajax({
+        url:"setNewMessage",
+        type:"POST",
+        data:{message:input_box_message},
+        dataType:"JSON",
+        success:function(response){
 
+        }
     })
+}
 
-    // Listener que escuta a tecla enter e chama a função de enviar mensagens
+//Faz um post para o banco alterar a cor do usuário
 
-    document.addEventListener("keyup", function(event){
+document.getElementById('colorpicker').addEventListener("change", function(){
 
+    var color = $('#colorpicker')[0].value;
+
+    $.ajax({
+        url:"setUserColor",
+        type:"POST",
+        data:{color:color},
+        dataType:"JSON",
+        success:function(response){
+        }
+    });
+
+})
+
+// Listener que escuta a tecla enter e chama a função de enviar mensagens
+
+document.addEventListener("keyup", function(event){
+
+    if (runPolling){
         if (event.key == "Enter" && !event.shiftKey){
             sendMessageToChat();
         }
+    }
 
-    });
+});
 
-    //Listener que escuta o botão para scrollar o chat
+//Listener que escuta o botão para scrollar o chat
 
-    document.getElementById("go_to_bottom").addEventListener("click", function(){
+document.getElementById("go_to_bottom").addEventListener("click", function(){
 
-        var messageBody = document.querySelector('.message_box');
-        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    var messageBody = document.querySelector('.message_box');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
-    });
+});
 
-};
 
 // Função que abre uma nova conversa na message_box
 
@@ -386,14 +476,6 @@ function openNewChat(username){
     sessionStorage.clear();
 
     // --------------------
-
-    let msg_box = $('.message_box');
-
-    if (msg_box.length != 0){
-
-        $('.message_box')[0].innerHTML = "";
-
-    }
 
     // Seta o usuário clicado na session para ser o receptor de mensagens
     sessionStorage.setItem('targetUser', username);
@@ -409,12 +491,11 @@ function openNewChat(username){
 
             // Seta o username do usuário na session
             sessionStorage.setItem('username', response.username);
-            console.log(response.username)
         }
     })
 
 
-    // Chama a função principal
-    main();
+    // Chama a função para resetar o chat e carregar novas mensagens
+    resetAndLoad();
 
 }
