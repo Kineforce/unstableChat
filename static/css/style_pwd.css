@@ -74,10 +74,15 @@
 
 /* Media querys para layout responsivo */
 
-@media only screen and (max-width: 297px){
+@media only screen and (max-width: 310px){
 
     #get_back {
         border: none;
+        background-color: transparent;
+    }
+
+    .wrapper_get_back {
+        border: 1px solid grey;
     }
 
     #get_back span {
