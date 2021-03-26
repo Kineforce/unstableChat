@@ -57,16 +57,16 @@ function getTargetStatus(){
             let diffTime            = Math.abs(curr_date - db_date);
             let limit_sec           = 5000;
 
-            console.log(curr_date);
-            console.log(db_date);
+            // console.log(curr_date);
+            // console.log(db_date);
 
             if (diffTime < limit_sec){
 
-                target_status = "Online"
+                target_status = "<span style='color: green'>Online</span>";
 
             } else { 
 
-                target_status = "Offline";
+                target_status = "<span style='color: black'>Offline</span>";
 
             }
                                         
