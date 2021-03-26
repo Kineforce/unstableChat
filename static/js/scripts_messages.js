@@ -43,40 +43,46 @@ function getTargetStatus(){
         data:{return_status: "1"},
         dataType:"JSON",
         success:function(response){
+    
+            try {
 
-            console.log(response);
-            
-            $('#user_header')[0].innerText = response.status[0].username;
-            
-            let target_status = "";
-            let db_timestamp        = response.status[0].lastseen;
-            let db_date             = new Date(db_timestamp);
+                $('#user_header')[0].innerText = response.status[0].username;
 
-            db_date                 = db_date.setHours(db_date.getHours()-3)
-            db_date                 = new Date(db_date);
-            let curr_date           = new Date();
+            } catch (err) {
 
-            let diffTime            = Math.abs(curr_date - db_date);
-            let limit_sec           = 5000;
-
-            // console.log(curr_date);
-            // console.log(db_date);
-
-            if (diffTime < limit_sec){
-
-                target_status = "<span style='color: olivergreen'>Online</span>";
-
-            } else { 
-
-                target_status = "<span style='color: black'>Offline</span>";
+                let target_status = "";
+                let db_timestamp        = response.status[0].lastseen;
+                let db_date             = new Date(db_timestamp);
+    
+                db_date                 = db_date.setHours(db_date.getHours()-3)
+                db_date                 = new Date(db_date);
+                let curr_date           = new Date();
+    
+                let diffTime            = Math.abs(curr_date - db_date);
+                let limit_sec           = 5000;
+    
+                // console.log(curr_date);
+                // console.log(db_date);
+    
+                if (diffTime < limit_sec){
+    
+                    target_status = "<span style='color: olivergreen'>Online</span>";
+    
+                } else { 
+    
+                    target_status = "<span style='color: black'>Offline</span>";
+    
+                }
+                                            
+                $('#user_status')[0].innerHTML = target_status
 
             }
-                                        
-            $('#user_status')[0].innerHTML = target_status
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
+            //console.log("Busy database, retrying...")
+            //console.log("textStatus --> " + textStatus);
             setTimeout(getTargetStatus, 200);
 
         }
