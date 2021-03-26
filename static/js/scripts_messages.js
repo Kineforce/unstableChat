@@ -48,8 +48,6 @@ function getTargetStatus(){
 
                 $('#user_header')[0].innerText = response.status[0].username;
 
-            } catch (err) {
-
                 let target_status = "";
                 let db_timestamp        = response.status[0].lastseen;
                 let db_date             = new Date(db_timestamp);
@@ -76,13 +74,17 @@ function getTargetStatus(){
                                             
                 $('#user_status')[0].innerHTML = target_status
 
+            } catch (err) {
+
+                console.log("We got an error...");
+
             }
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
-            //console.log("Busy database, retrying...")
-            //console.log("textStatus --> " + textStatus);
+            console.log("Busy database, retrying...")
+            console.log("textStatus --> " + textStatus);
             setTimeout(getTargetStatus, 200);
 
         }
