@@ -62,7 +62,7 @@ function getTargetStatus(){
 
             if (diffTime < limit_sec){
 
-                target_status = "<span style='color: green'>Online</span>";
+                target_status = "<span style='color: darkgreen'>Online</span>";
 
             } else { 
 
