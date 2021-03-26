@@ -165,7 +165,8 @@ function resetAndLoad(){
     $('.modal').replaceWith(temp_msg);
     $('.modal').hide();
     $('.message_box')[0].innerHTML = "";
-
+    
+    getTargetStatus();
 
     // Reseta a message_box
 
@@ -569,7 +570,6 @@ function openNewChat(username){
             // Chama a função para resetar o chat e carregar novas mensagens
 
             resetAndLoad();
-            getTargetStatus();
 
         })
     }
