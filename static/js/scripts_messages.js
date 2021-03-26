@@ -70,7 +70,7 @@ function getTargetStatus(){
 
             }
                                         
-            $('#user_status')[0].innerText = target_status
+            $('#user_status')[0].innerHTML = target_status
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
