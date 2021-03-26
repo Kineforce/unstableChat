@@ -44,6 +44,8 @@ function getTargetStatus(){
         dataType:"JSON",
         success:function(response){
 
+            console.log(response);
+            
             $('#user_header')[0].innerText = response.status[0].username;
             
             let target_status = "";
@@ -62,7 +64,7 @@ function getTargetStatus(){
 
             if (diffTime < limit_sec){
 
-                target_status = "<span style='color: darkgreen'>Online</span>";
+                target_status = "<span style='color: olivergreen'>Online</span>";
 
             } else { 
 
