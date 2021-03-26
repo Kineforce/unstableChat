@@ -85,7 +85,7 @@ function getTargetStatus(){
 
             console.log("Busy database, retrying...")
             console.log("textStatus --> " + textStatus);
-            setTimeout(getTargetStatus, 200);
+            setTimeout(getTargetStatus, 2000);
 
         }
     }).done(function(){
@@ -175,8 +175,6 @@ function resetAndLoad(){
     $('.modal').replaceWith(temp_msg);
     $('.modal').hide();
     $('.message_box')[0].innerHTML = "";
-    
-    getTargetStatus();
 
     // Reseta a message_box
 
@@ -580,7 +578,8 @@ function openNewChat(username){
             // Chama a função para resetar o chat e carregar novas mensagens
 
             resetAndLoad();
-
+            getTargetStatus();
+            
         })
     }
 
