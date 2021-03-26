@@ -25,17 +25,24 @@
             </div>
             </div> 
             <div class="right-side">
-                <div class="chat">      
+                <div class="chat">
+                    <div class="header_user">
+                        <div class="info_user">
+                            <span id="user_header"></span>
+                            <span id="user_status"></span>
+                        </div>
+                    </div>      
                     <div class="message_box css_scroll" hidden>                                                                       
                     </div>   
                     <div class="insert_box">
                         <textarea name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" autocomplete="off"></textarea>
-                        <div class="username_info">
-                        <label class="username_info_span" for="logout">You are logged in as: <?=htmlspecialchars($_SESSION['username'])?></label>
-                        <button class="logout" id="logout" onclick="logoutUser();">Logout</button>
-                        <label for="colorpicker"></label>
-                        <input type="color" id="colorpicker" hidden>
-                        <div id="go_to_bottom" class="fa fa-angle-double-down">
+                        <div class="ibox">
+                            <div class="ibox_inner">                                
+                                <label class="username_info_span" for="logout">You are logged in as: <?=htmlspecialchars($_SESSION['username'])?></label>
+                                <button class="logout" id="logout" onclick="logoutUser();">Logout</button>
+                                <input type="color" id="colorpicker" onchange="changeColor();" style="display: none">
+                                <div id="go_to_bottom" class="fa fa-angle-double-down" onclick="scrollToBottom();">
+                            </div>                                   
                         </div>
                     </div>   
                 </div>
@@ -44,8 +51,9 @@
 
         <!-- Modal -->
         <div class="modal" style="display: none">
-            <h1>Open a new chat and have fun!</h1><br>
-            <h2>made by: Kineforce</h2>
+            <h1>Welcome <?=$username?></h1>
+            <h2>Open a new chat and have fun!</h2>
+            <button class="logout" id="logout" onclick="logoutUser();">Logout</button>
         </div>
 
         <!-- /.modal -->

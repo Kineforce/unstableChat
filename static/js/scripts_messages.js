@@ -1,59 +1,21 @@
-// Função que começa a rodar para alimentar a aba de usuários e definir quem está online
+// Função que atualiza o status de online do usuário
 
 (function isTabActive(){
 
     if (document.visibilityState == 'visible'){
 
         $.ajax({
-            url:"getUserStatus",
+            url:"updateUserStatus",
             type:"POST",
             data:{update_status: "1"},
             dataType:"JSON",
             success:function(response){
-                
-                let parsed_users = response.status;
-
-                let string_online_users = '';
-
-                for (var value in parsed_users){
-
-                    let db_timestamp        = parsed_users[value].lastSeen;
-
-                    let db_date             = new Date(db_timestamp);
-                    db_date                 = db_date.setHours(db_date.getHours()-3)
-                    db_date                 = new Date(db_date);
-                    let curr_date           = new Date();
-
-                    let diffTime            = Math.abs(curr_date - db_date);
-
-                    let sql_username        = parsed_users[value].username;
-                    let limit_sec           = 5000;
-
-                    if (diffTime < limit_sec){
-
-                        sql_username = "<div class='line_user' style='color: green' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";
-
-                    } else { 
-
-                        sql_username = "<div class='line_user' style='color: black' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";
-                    }
-                        
-                    string_online_users = string_online_users + sql_username;
-
-                }
-
-                $('.user')[0].innerHTML = string_online_users;
 
                 //console.log(response.status);
+                
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                // console.log("Erro!")
-                // console.log(XMLHttpRequest);
-                // console.log(errorThrown)
-                // console.log(textStatus);
-
-                //console.log("Error")
                 setTimeout(isTabActive, 200);
 
             }
@@ -71,17 +33,103 @@
 
 })();
 
+// Função que recupera o status do usuário do chat ativo
+
+function getTargetStatus(){
+
+    $.ajax({
+        url:"getUserStatus",
+        type:"POST",
+        data:{return_status: "1"},
+        dataType:"JSON",
+        success:function(response){
+
+            $('#user_header')[0].innerText = response.status[0].username;
+            
+            let target_status = "";
+            let db_timestamp        = response.status[0].lastseen;
+            let db_date             = new Date(db_timestamp);
+
+            db_date                 = db_date.setHours(db_date.getHours()-3)
+            db_date                 = new Date(db_date);
+            let curr_date           = new Date();
+
+            let diffTime            = Math.abs(curr_date - db_date);
+            let limit_sec           = 5000;
+
+            console.log(curr_date);
+            console.log(db_date);
+
+            if (diffTime < limit_sec){
+
+                target_status = "Online"
+
+            } else { 
+
+                target_status = "Offline";
+
+            }
+                                        
+            $('#user_status')[0].innerText = target_status
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+
+            setTimeout(getTargetStatus, 200);
+
+        }
+    }).done(function(){
+
+        setTimeout(getTargetStatus, 2000);
+
+    })
+
+};
+
+
+// Função que retorna todos os usuários cadastrados no banco
+
+(function returnUsers(){
+
+    $.ajax({
+        url:"getUsers",
+        type:"GET",
+        data:{get_users: "1"},
+        dataType:"JSON",
+        success:function(response){
+                        
+            let parsed_users = response.status;
+            let string_online_users = '';
+
+            for (var value in parsed_users){
+
+                let sql_username = parsed_users[value].username;
+        
+                sql_username = "<div class='line_user' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";     
+                string_online_users = string_online_users + sql_username;
+                
+            }
+
+            $('.user')[0].innerHTML = string_online_users;
+            
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+
+            setTimeout(isTabActive, 200);
+
+        }
+    })
+
+})();
+
 // Função que realiza o load da modal para cobrir a caixa de mensagens
 
-var temp_msg = $('.message_box').clone(true);
+var temp_msg = $('.chat').clone(true);
 
 (function loadModal(){
     // Mostra o banner 
 
-    $('.message_box').replaceWith($('.modal'));
-    $('.username_info_span').hide();
-    $('#input_box').hide();
-    $('#go_to_bottom').hide();
+    $('.chat').replaceWith($('.modal'));
     $('.modal').show();
     
     
@@ -115,9 +163,6 @@ function resetAndLoad(){
     // Liberar div para o chat
 
     $('.modal').replaceWith(temp_msg);
-    $('.username_info_span').show();
-    $('#input_box').show();
-    $('#go_to_bottom').show();
     $('.modal').hide();
     $('.message_box')[0].innerHTML = "";
 
@@ -136,9 +181,7 @@ function resetAndLoad(){
                 let msgResponse = response.status;
                 $('.message_box')[0].innerHTML = msgResponse;
 
-                var messageBody = document.querySelector('.message_box');
-                messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-
+                scrollToBottom();
                 filterDates();
 
                 runPolling = true;
@@ -250,7 +293,7 @@ function resetAndLoad(){
             success:function(response){
 
                 let parsed_data = response.cores;
-                
+
                 for (j = 0; j<message.length; j++){
 
                     for (k = 0; k<parsed_data.length; k++){
@@ -273,7 +316,7 @@ function resetAndLoad(){
                         let user_color = message[i].getElementsByClassName("username")[0].getAttribute("style").substring(7);
                 
                         $('#colorpicker').attr("value", user_color);   
-                        $('#colorpicker').removeAttr("hidden");
+                        $('#colorpicker').removeAttr("style");
 
                         break;
 
@@ -412,8 +455,7 @@ let isBottom = false;
         let boxHeight = message_box.offsetHeight
 
         if (new_height != boxHeight  && isBottom){
-            var messageBody = document.querySelector('.message_box');
-            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+            scrollToBottom();
         }
 
         setTimeout(checkDivResize.bind(null, boxHeight), 200);
@@ -444,9 +486,10 @@ function sendMessageToChat(){
     })
 }
 
+
 //Faz um post para o banco alterar a cor do usuário
 
-document.getElementById('colorpicker').addEventListener("change", function(){
+function changeColor(){
 
     var color = $('#colorpicker')[0].value;
 
@@ -459,7 +502,7 @@ document.getElementById('colorpicker').addEventListener("change", function(){
         }
     });
 
-})
+};
 
 // Listener que escuta a tecla enter e chama a função de enviar mensagens
 
@@ -473,19 +516,21 @@ document.addEventListener("keyup", function(event){
 
 //Listener que escuta o botão para scrollar o chat
 
-document.getElementById("go_to_bottom").addEventListener("click", function(){
+function scrollToBottom(){
 
     var messageBody = document.querySelector('.message_box');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
-});
+};
+
+
 
 $(document).ready(function() {
 
     if (sessionStorage.getItem('targetUser')){
 
         resetAndLoad();
-
+        getTargetStatus();
     }
 
 });
@@ -524,6 +569,7 @@ function openNewChat(username){
             // Chama a função para resetar o chat e carregar novas mensagens
 
             resetAndLoad();
+            getTargetStatus();
 
         })
     }

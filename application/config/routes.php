@@ -70,9 +70,11 @@ $route['getMessages'] = 'Chat/getMessages';
 $route['getColorMessages'] = 'Chat/getColorMessages';
 $route['getUserStatus'] = 'Chat/getUserStatus';
 $route['getUsername'] = 'Chat/getUsername';
+$route['getUsers'] = 'Chat/getUsers';
 
 // Setting data
 
 $route['setNewMessage'] = 'Chat/setNewMessage';
 $route['setUserColor'] = 'Chat/setUserColor';
+$route['updateUserStatus'] = 'Chat/updateUserStatus';
 

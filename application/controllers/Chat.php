@@ -267,7 +267,9 @@ class Chat extends CI_controller {
 
         if ($this->session->userdata('isAuthenticated') == 1){
 
-            $this->load->view('chat');
+            $data['username'] = htmlspecialchars($this->session->userdata('username'));
+
+            $this->load->view('chat', $data);
 
         } else {
 
@@ -435,7 +437,7 @@ class Chat extends CI_controller {
             if ($this->input->get('retorna_username')){
 
                 $session_username           = $this->session->userdata('username');
-                $response_array['username'] = $session_username;
+                $response_array['username'] = htmlspecialchars($session_username);
 
                 echo json_encode($response_array);
 
@@ -450,9 +452,55 @@ class Chat extends CI_controller {
     }
 
     /**
-     * Retorna para a view um JSON indicando os usuários que estão online ou não
+     * Retorna para a view um JSON indicando os usuários que estão cadastrados
      */
-    public function getUserStatus(){
+    public function getUsers(){
+
+        if ($this->session->userdata('isAuthenticated') == 1){
+
+            header('Content-Type: application/json');
+
+            if ($this->input->get('get_users')){
+
+                $username           = $this->session->userdata('username');
+                $result_query       = $this->Chat_model->returnAllUsers($username);
+
+                $all_users = array();
+
+                if ($result_query){
+
+                    foreach ($result_query->result_array() as $data){
+
+                        array_push($all_users, array(
+                            'username' => htmlspecialchars($data['username']),
+                        ));
+    
+                    }
+
+                    $response_array['status'] = $all_users;
+
+                } else {
+
+                    $response_array['status'] = 'Something went wrong!';
+
+                }
+
+                echo json_encode($response_array);
+
+            }
+
+        } else {
+
+            customRedir('');
+
+        }
+
+    }
+
+    /**
+     * Atualiza no banco o usuário da sessão, definindo que ele esteve online
+    */
+    public function updateUserStatus(){
 
         if ($this->session->userdata('isAuthenticated') == 1){
 
@@ -462,17 +510,52 @@ class Chat extends CI_controller {
 
                 $username           = $this->session->userdata('username');
                 $result_update      = $this->Chat_model->updateLastSeen($username);
-                $result_query       = $this->Chat_model->returnUserStatus($username);
+
+                if ($result_update){
+
+                    $response_array['status'] = 'Updated last seen successfully!';
+
+                } else {
+
+                    $response_array['status'] = 'Something went wrong!';
+
+                }
+
+                echo json_encode($response_array);
+
+            }
+
+        } else {
+
+            customRedir('');
+
+        }
+
+    }
+
+    /**
+     * Retorna para a view um JSON indicando os usuários que estão online ou não
+     */
+    public function getUserStatus(){
+
+        if ($this->session->userdata('isAuthenticated') == 1){
+
+            header('Content-Type: application/json');
+
+            if ($this->input->post('return_status')){
+
+                $targetUser         = $this->session->userdata('targetUser');
+                $result_query       = $this->Chat_model->returnUserStatus($targetUser);
 
                 $online_users = array();
 
-                if ($result_query && $result_update){
+                if ($result_query){
 
                     foreach ($result_query->result_array() as $data){
 
                         array_push($online_users, array(
                             'username' => htmlspecialchars($data['username']),
-                            'lastSeen' => htmlspecialchars($data['lastseen']),
+                            'lastseen' => htmlspecialchars($data['lastseen']),
                         ));
     
                     }
@@ -560,6 +643,7 @@ class Chat extends CI_controller {
                 }
 
                 $response_array['cores'] = $user_colors;
+                $response_array['status'] = $result->row();
 
                 echo json_encode($response_array);
 

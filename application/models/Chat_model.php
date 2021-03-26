@@ -142,18 +142,35 @@ class Chat_model extends CI_Model {
     }
 
     /**
-     * Retorna os status de todos os usuários do banco 
+     * Retorna todos os usuários cadastrados
     */
-    public function returnUserStatus($username){
+    public function returnAllUsers($username){
 
         $username = $this->db->escape($username);
+
+        $query = "  SELECT   username
+                    FROM     users 
+                    WHERE    username <> $username
+                    ORDER BY userid ASC;";
+
+
+        $result = $this->db->query($query);
+
+        return $result;
+
+    }
+
+    /**
+     * Retorna os status do usuário e verifica se ele está online
+    */
+    public function returnUserStatus($targetUser){
+
+        $targetUser = $this->db->escape($targetUser);
 
         $query = "  SELECT   US.USERNAME, US_ST.lastSeen 
                     FROM     USER_STATUS AS US_ST
                     JOIN     USERS  AS US ON US_ST.userId = US.userID
-                    WHERE    US.USERNAME <> $username
-                    ORDER BY US_ST.lastSeen DESC;";
-
+                    WHERE    US.USERNAME = $targetUser ";
 
         $result = $this->db->query($query);
 
@@ -182,7 +199,8 @@ class Chat_model extends CI_Model {
     */
     public function returnUsersColors(){
 
-        $query = "SELECT userName, userColor FROM USERS";
+        $query = "  SELECT username, usercolor 
+                    FROM USERS";
 
         $result = $this->db->query($query);
 

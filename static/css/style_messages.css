@@ -84,7 +84,7 @@
     border-bottom: 1px solid #ccc;
     margin-top: 5px;
     margin-bottom: 5px;
-    width: 90%;
+    width: calc(100% - 5px);
 }
 
 .chat {
@@ -105,21 +105,81 @@
     font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.header_user {
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    flex: 5%;
+    min-height: 3em;
+    width: 100%;
+}
+
+.info_user {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-left: 2em;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
+#user_header {
+    font-size: 20px;
+}
+
+#user_status {
+    font-size: 10px;
+}
+
 .message_box {
     position: relative;
     display: flex;
     flex-direction: column;
-    flex: 90%;
+    flex: 85%;
     overflow-y: scroll;
     z-index: 100;
 }
 
 .insert_box {
     position: relative;
+    display: flex;
+    flex-direction: column;
     padding: 15px;
     flex: 10%;
     width: 100%;
     z-index: 200;
+}
+
+.ibox {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.ibox_inner {
+    position: relative;
+    display: table;
+    width: 100%;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.ibox_inner > button, input, #go_to_bottom {
+    display: table-cell;
+    margin-left: 2px;
+}
+
+#go_to_bottom {
+    position: relative;
+    font-size: 25px;
+}
+
+#logout {
+    font-weight: 700;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .msg_date {
@@ -161,12 +221,6 @@
     white-space: pre-wrap;
 }
 
-.username_info_span {
-    font-weight: 700;
-    font-size: 15px;
-    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-
 .msg_stamp {
     font-weight: 700;
     font-size: 11px;
@@ -196,36 +250,23 @@
     text-align: left;
 }
 
-#go_to_bottom {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding-bottom: 1%;
-    padding-right: 5%;
-    z-index: 1;
-}
-
-#logout {
-    font-weight: 700;
-    font-size: 15px;
-    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-
 .modal {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    flex: 90%;
+    flex: 100%;
     z-index: 100;
+    height: 100%;
+
 }
 
-.modal h1, h2 {
+.modal h1, h2, button{
     display: flex;
     text-align: center;
-}
 
+}
 
 /* Aplicando efeitos no scroll para a div de usuários online */
 
