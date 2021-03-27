@@ -8,6 +8,9 @@
 
 .container {
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     background-color: whitesmoke;
@@ -19,11 +22,42 @@
     position: absolute;
     display: flex;
     flex-direction: row;
-    margin-left: 2%;
-    margin-top: 2%;
-    height: calc(100% - 50px);
-    width: calc(100% - 50px);
+    height: 90%;
+    width: 90%;
+    /* height: calc(100% - 50px); */
+    /* width: calc(100% - 50px); */
     border: 1px solid #ccc;
+
+}
+
+@media only screen and (max-width: 443px){
+
+    .container {
+        position: absolute;
+        display: flex;
+        justify-content: left;
+        width: 100%;
+        height: 100%;
+        background-color: whitesmoke;
+        overflow-y: hidden;
+    
+    }
+    
+    .box {
+        position: absolute;
+        min-width: 443px;
+    }
+    
+
+}
+
+@media only screen and (max-width: 1200px){
+    
+    .box {
+        height: 100%;
+        width: 100%;
+    }
+    
 
 }
 
