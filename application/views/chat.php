@@ -38,8 +38,8 @@
                         <textarea name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" autocomplete="off"></textarea>
                         <div class="ibox">
                             <div class="ibox_inner">                                
-                                <label class="username_info_span" for="logout">You are logged in as: <?=htmlspecialchars($_SESSION['username'])?></label>
-                                <button class="logout" id="logout" onclick="logoutUser();">Logout</button>
+                                <label class="username_info_span" for="">You are logged in as: <?=htmlspecialchars($_SESSION['username'])?></label>
+                                <button class="logout" id="logout" onclick="alert('heh')">Logout</button>
                                 <input type="color" id="colorpicker" onchange="changeColor();" style="display: none">
                                 <div id="go_to_bottom" class="fa fa-angle-double-down" onclick="scrollToBottom();">
                             </div>                                   
