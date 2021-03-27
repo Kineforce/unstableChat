@@ -85,12 +85,21 @@ class Chat_model extends CI_Model {
         $username        = $this->db->escape($username);
         $targetUsername  = $this->db->escape($targetUser);
 
+        if ($targetUser == 'grupoDeEstudoIESBxD'){
+
+            $middle_query = " WHERE       STOR.targetUser IN ($targetUsername)";
+
+        } else {
+
+            $middle_query = " WHERE       STOR.targetuser      IN ($targetUsername, $username)
+                              AND			STOR.username        IN ($targetUsername, $username)";
+
+        }
 
         $query = "  SELECT      *
                     FROM        STORED_MESSAGES      AS STOR
                     JOIN        USERS                AS US ON US.USERNAME = STOR.USERNAME
-                    WHERE       STOR.targetuser      IN ($targetUsername, $username)
-                    AND			STOR.username        IN ($targetUsername, $username)
+                    $middle_query
                     AND         messageId            > $id
                     ORDER BY    messageStamp;
                 ";
