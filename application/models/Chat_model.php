@@ -85,7 +85,7 @@ class Chat_model extends CI_Model {
         $username        = $this->db->escape($username);
         $targetUsername  = $this->db->escape($targetUser);
 
-        if ($targetUser == 'grupoDeEstudoIESBxD'){
+        if ($targetUser === 'grupoDeEstudoIESBxD'){
 
             $middle_query = " WHERE       STOR.targetUser IN ($targetUsername)";
 
