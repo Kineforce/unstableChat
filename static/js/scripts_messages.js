@@ -1,5 +1,7 @@
-var pollingSpeed = 1000;
-var DOMListenerCheck = 100;
+var shortPollingSpeed   = 1000;
+var DOMListenerCheck    = 100;
+var longPollingSpeed    = 10000;
+var canTrackStatus      = false;
 
 // Função que atualiza o status de online do usuário
 
@@ -19,18 +21,18 @@ var DOMListenerCheck = 100;
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                setTimeout(isTabActive, pollingSpeed);
+                setTimeout(isTabActive, shortPollingSpeed);
 
             }
         }).done(function(){
 
-            setTimeout(isTabActive, pollingSpeed);
+            setTimeout(isTabActive, shortPollingSpeed);
 
         })
 
     } else {
 
-        setTimeout(isTabActive, pollingSpeed);
+        setTimeout(isTabActive, shortPollingSpeed);
 
     }
 
@@ -38,66 +40,64 @@ var DOMListenerCheck = 100;
 
 // Função que recupera o status do usuário do chat ativo
 
-function getTargetStatus(){
+(function getTargetStatus(){
 
-    $.ajax({
-        url:"getUserStatus",
-        type:"POST",
-        data:{return_status: "1"},
-        dataType:"JSON",
-        success:function(response){
-    
-            try {
+    if (canTrackStatus){
 
-                $('#user_header')[0].innerText = response.status[0].username;
-
+        $.ajax({
+            url:"getUserStatus",
+            type:"POST",
+            data:{return_status: "1"},
+            dataType:"JSON",
+            success:function(response){
+        
                 let target_status = "";
                 let db_timestamp        = response.status[0].lastseen;
                 let db_date             = new Date(db_timestamp);
-    
+
                 db_date                 = db_date.setHours(db_date.getHours()-3)
                 db_date                 = new Date(db_date);
                 let curr_date           = new Date();
-    
+
                 let diffTime            = Math.abs(curr_date - db_date);
                 let limit_sec           = 5000;
-    
+
                 // console.log(curr_date);
                 // console.log(db_date);
-    
+
                 if (diffTime < limit_sec){
-    
+
                     target_status = "<span style='color: green'>Online</span>";
-    
+
                 } else { 
-    
+
                     target_status = "<span style='color: black'>Offline</span>";
-    
+
                 }
                                             
                 $('#user_status')[0].innerHTML = target_status
 
-            } catch (err) {
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                console.log("We got an error...");
+                console.log("Busy database, retrying...")
+                console.log("textStatus --> " + textStatus);
+                setTimeout(getTargetStatus, shortPollingSpeed);
+                console.log("Error GetUserStatus")
 
             }
+        }).done(function(){
 
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
+            setTimeout(getTargetStatus, shortPollingSpeed);
 
-            console.log("Busy database, retrying...")
-            console.log("textStatus --> " + textStatus);
-            setTimeout(getTargetStatus, pollingSpeed);
+        })
+    } else {
 
-        }
-    }).done(function(){
+        setTimeout(getTargetStatus, shortPollingSpeed);
 
-        setTimeout(getTargetStatus, pollingSpeed);
+    }
 
-    })
-
-};
+})();
 
 
 // Função que retorna todos os usuários cadastrados no banco
@@ -113,24 +113,35 @@ function getTargetStatus(){
                         
             let parsed_users = response.status;
             let string_online_users = '';
+            let line_user = $('.line_user');
 
-            for (var value in parsed_users){
-
-                let sql_username = parsed_users[value].username;
-        
-                sql_username = "<div class='line_user' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";     
-                string_online_users = string_online_users + sql_username;
                 
-            }
+                for (var value in parsed_users){
 
-            $('.user')[0].innerHTML = string_online_users;
+                    let sql_username = parsed_users[value].username;
+            
+                    sql_username = "<div class='line_user' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";     
+                    string_online_users = string_online_users + sql_username;
+                    
+                }
+
+                if (line_user.length < parsed_users.length) {
+
+                    $('.user')[0].innerHTML = string_online_users;
+
+                }
+
             
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
-            setTimeout(isTabActive, pollingSpeed);
+            setTimeout(isTabActive, 2000);
 
         }
+    }).done(function(){
+
+        setTimeout(returnUsers, 2000);
+
     })
 
 })();
@@ -173,24 +184,32 @@ var runPolling = false;
 
 function resetAndLoad(){
 
+
+
+
     // Liberar div para o chat
 
-    $('.modal').replaceWith(temp_msg);
-    $('.modal').hide();
-    $('.message_box')[0].innerHTML = "";
+    if ($('.modal').length != 0){
+
+        $('.modal').replaceWith(temp_msg);
+        $('.modal').hide();
+
+    }
 
     // Reseta a message_box
 
-    $.ajax({
+    var firstAjax = $.ajax({
         type: "GET",
         url: "getMessages",
         data: {targetUser: sessionStorage.getItem('targetUser')},
         dataType: 'json',
+        async: false,
         success: function(response){
 
             if (response.status != "nothing"){
                 
                 let msgResponse = response.status;
+
                 $('.message_box')[0].innerHTML = msgResponse;
 
                 scrollToBottom();
@@ -200,13 +219,24 @@ function resetAndLoad(){
 
             } else {
 
+                $('.message_box')[0].innerHTML = "";
+        
                 runPolling = false;
-                setTimeout(resetAndLoad, pollingSpeed);
 
             }
 
         }
     })
+
+    let user_header = $('#user_header')[0].innerText;
+
+    if ( user_header != sessionStorage.getItem('targetUser')){
+
+        $('#user_header')[0].innerText = sessionStorage.getItem('targetUser');
+        
+    }
+
+    canTrackStatus = true;
 
 };
 
@@ -265,25 +295,25 @@ function resetAndLoad(){
 
                     //console.log("Busy database, retrying...")
                     //console.log("textStatus --> " + textStatus);
-                    setTimeout(loadNewMessages, pollingSpeed);
+                    setTimeout(loadNewMessages, shortPollingSpeed);
 
                 }
                 
             }).done(function(){
 
-                setTimeout(loadNewMessages, pollingSpeed);
+                setTimeout(loadNewMessages, shortPollingSpeed);
 
             })
 
         } else {
 
-            setTimeout(loadNewMessages, pollingSpeed);
+            setTimeout(loadNewMessages, shortPollingSpeed);
 
         }
 
     } else {
 
-        setTimeout(loadNewMessages, pollingSpeed);
+        setTimeout(loadNewMessages, shortPollingSpeed);
 
     }
 
@@ -339,17 +369,17 @@ function resetAndLoad(){
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
                 //console.log("Busy database, retrying...")
-                setTimeout(updateColorChat, pollingSpeed);
+                setTimeout(updateColorChat, shortPollingSpeed);
 
             }
         }).done(function() {
 
-            setTimeout(updateColorChat, pollingSpeed);
+            setTimeout(updateColorChat, shortPollingSpeed);
 
         })
     } else {
 
-        setTimeout(updateColorChat, pollingSpeed);
+        setTimeout(updateColorChat, shortPollingSpeed);
 
     }
 
@@ -542,7 +572,6 @@ $(document).ready(function() {
     if (sessionStorage.getItem('targetUser')){
 
         resetAndLoad();
-        getTargetStatus();
     }
 
 });
@@ -579,11 +608,11 @@ function openNewChat(username){
         }).then(function(){
 
             // Chama a função para resetar o chat e carregar novas mensagens
-
+            
             resetAndLoad();
-            getTargetStatus();
 
         })
+
     }
 
 }
