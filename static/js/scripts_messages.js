@@ -209,7 +209,7 @@ function resetAndLoad(){
 
     // Reseta a message_box
 
-    var firstAjax = $.ajax({
+    $.ajax({
         type: "GET",
         url: "getMessages",
         data: {targetUser: sessionStorage.getItem('targetUser')},
