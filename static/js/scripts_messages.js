@@ -1,3 +1,6 @@
+var pollingSpeed = 1000;
+var DOMListenerCheck = 100;
+
 // Função que atualiza o status de online do usuário
 
 (function isTabActive(){
@@ -16,18 +19,18 @@
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                setTimeout(isTabActive, 200);
+                setTimeout(isTabActive, pollingSpeed);
 
             }
         }).done(function(){
 
-            setTimeout(isTabActive, 2000);
+            setTimeout(isTabActive, pollingSpeed);
 
         })
 
     } else {
 
-        setTimeout(isTabActive, 2000);
+        setTimeout(isTabActive, pollingSpeed);
 
     }
 
@@ -85,12 +88,12 @@ function getTargetStatus(){
 
             console.log("Busy database, retrying...")
             console.log("textStatus --> " + textStatus);
-            setTimeout(getTargetStatus, 2000);
+            setTimeout(getTargetStatus, pollingSpeed);
 
         }
     }).done(function(){
 
-        setTimeout(getTargetStatus, 2000);
+        setTimeout(getTargetStatus, pollingSpeed);
 
     })
 
@@ -125,7 +128,7 @@ function getTargetStatus(){
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
-            setTimeout(isTabActive, 200);
+            setTimeout(isTabActive, pollingSpeed);
 
         }
     })
@@ -198,7 +201,7 @@ function resetAndLoad(){
             } else {
 
                 runPolling = false;
-                setTimeout(resetAndLoad, 200);
+                setTimeout(resetAndLoad, pollingSpeed);
 
             }
 
@@ -262,25 +265,25 @@ function resetAndLoad(){
 
                     //console.log("Busy database, retrying...")
                     //console.log("textStatus --> " + textStatus);
-                    setTimeout(loadNewMessages, 300);
+                    setTimeout(loadNewMessages, pollingSpeed);
 
                 }
                 
             }).done(function(){
 
-                setTimeout(loadNewMessages, 200);
+                setTimeout(loadNewMessages, pollingSpeed);
 
             })
 
         } else {
 
-            setTimeout(loadNewMessages, 200);
+            setTimeout(loadNewMessages, pollingSpeed);
 
         }
 
     } else {
 
-        setTimeout(loadNewMessages, 200);
+        setTimeout(loadNewMessages, pollingSpeed);
 
     }
 
@@ -336,17 +339,17 @@ function resetAndLoad(){
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
                 //console.log("Busy database, retrying...")
-                setTimeout(updateColorChat, 300);
+                setTimeout(updateColorChat, pollingSpeed);
 
             }
         }).done(function() {
 
-            setTimeout(updateColorChat, 200);
+            setTimeout(updateColorChat, pollingSpeed);
 
         })
     } else {
 
-        setTimeout(updateColorChat, 200);
+        setTimeout(updateColorChat, pollingSpeed);
 
     }
 
@@ -380,7 +383,7 @@ function resetAndLoad(){
 
     } else {
 
-        setTimeout(messageBoxObserver, 200);
+        setTimeout(messageBoxObserver, DOMListenerCheck);
 
     }
 
@@ -444,11 +447,11 @@ let isBottom = false;
 
         isBottom = ( (m_scrollHeight - m_scrollTop) <= m_clientHeight) ? true : false;
 
-        setTimeout(checkBottom, 200);
+        setTimeout(checkBottom, DOMListenerCheck);
 
     } else {
 
-        setTimeout(checkBottom, 200);
+        setTimeout(checkBottom, DOMListenerCheck);
 
     }
 
@@ -467,11 +470,11 @@ let isBottom = false;
             scrollToBottom();
         }
 
-        setTimeout(checkDivResize.bind(null, boxHeight), 200);
+        setTimeout(checkDivResize.bind(null, boxHeight), DOMListenerCheck);
 
     } else {
 
-        setTimeout(checkDivResize, 200);
+        setTimeout(checkDivResize, DOMListenerCheck);
 
     }
 
