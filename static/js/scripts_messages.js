@@ -52,6 +52,7 @@ var canTrackStatus      = false;
             success:function(response){
         
                 let target_status       = "";
+                console.log(response);
 
                 try {
                     
@@ -65,8 +66,8 @@ var canTrackStatus      = false;
                     let diffTime            = Math.abs(curr_date - db_date);
                     let limit_sec           = 5000;
     
-                    console.log(curr_date);
-                    console.log(db_date);
+                    // console.log(curr_date);
+                    // console.log(db_date);
     
                     if (diffTime < limit_sec){
     
@@ -83,7 +84,7 @@ var canTrackStatus      = false;
                 } catch (err) {
 
                     console.log("We got an error!");
-
+                    
                 }
                
 
