@@ -2,9 +2,15 @@ $("#login_form").submit(function(e) {
 
     e.preventDefault();
 
-    login_form = document.getElementById('login_form')
-    
+    let login_form = document.getElementById('login_form')
+
     var formData = new FormData(login_form);
+    let username = formData.get('username');
+    username = username.trimStart().trimEnd();
+
+    formData.set('username', username)
+
+    console.log(username);
 
     formData.append('color', color_picker.value);
 

@@ -195,9 +195,6 @@ var runPolling = false;
 
 function resetAndLoad(){
 
-
-
-
     // Liberar div para o chat
 
     if ($('.modal').length != 0){
