@@ -51,7 +51,7 @@ var canTrackStatus      = false;
             dataType:"JSON",
             success:function(response){
         
-                let target_status = "";
+                let target_status       = "";
                 let db_timestamp        = response.status[0].lastseen;
                 let db_date             = new Date(db_timestamp);
 
