@@ -52,30 +52,40 @@ var canTrackStatus      = false;
             success:function(response){
         
                 let target_status       = "";
-                let db_timestamp        = response.status[0].lastseen;
-                let db_date             = new Date(db_timestamp);
 
-                db_date                 = db_date.setHours(db_date.getHours()-3)
-                db_date                 = new Date(db_date);
-                let curr_date           = new Date();
+                try {
+                    
+                    let db_timestamp        = response.status[0].lastseen;
+                    let db_date             = new Date(db_timestamp);
+    
+                    db_date                 = db_date.setHours(db_date.getHours()-3)
+                    db_date                 = new Date(db_date);
+                    let curr_date           = new Date();
+    
+                    let diffTime            = Math.abs(curr_date - db_date);
+                    let limit_sec           = 5000;
+    
+                    // console.log(curr_date);
+                    // console.log(db_date);
+    
+                    if (diffTime < limit_sec){
+    
+                        target_status = "<span style='color: green'>Online</span>";
+    
+                    } else { 
+    
+                        target_status = "<span style='color: black'>Offline</span>";
+    
+                    }
+                                                
+                    $('#user_status')[0].innerHTML = target_status
 
-                let diffTime            = Math.abs(curr_date - db_date);
-                let limit_sec           = 5000;
+                } catch (err) {
 
-                // console.log(curr_date);
-                // console.log(db_date);
-
-                if (diffTime < limit_sec){
-
-                    target_status = "<span style='color: green'>Online</span>";
-
-                } else { 
-
-                    target_status = "<span style='color: black'>Offline</span>";
-
+                    console.log("We got an error!");
+                    
                 }
-                                            
-                $('#user_status')[0].innerHTML = target_status
+               
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
