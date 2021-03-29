@@ -120,6 +120,7 @@ class Chat extends CI_controller {
 
                 }
 
+                
                 $this->session->set_userdata('username', $username);
                 $this->session->set_userdata('color', $color);
 
@@ -280,6 +281,34 @@ class Chat extends CI_controller {
     }
 
     /**
+     * Seta na sessão o userTarget
+     */
+    public function setUserTarget(){
+
+        if ($this->session->userdata('isAuthenticated') == 1){
+
+            $targetUser_id         = $this->input->post('targetUser_id');
+
+            if ($targetUser_id){
+
+                header('Content-Type: application/json');
+
+                $this->session->set_userdata('targetUser_id', $targetUser_id);
+
+                $response_array['status'] = $targetUser_id;
+                echo json_encode($response_array);
+
+            }
+
+        } else {
+
+            customRedir('');
+
+        }
+
+    }
+
+    /**
      * Remove as sessões do usuário para impedir que ele acesse a aplicação
      */
     public function logout(){
@@ -307,18 +336,16 @@ class Chat extends CI_controller {
             header('Content-Type: application/json');
 
             $load_last_msg      = $this->input->get('load_last_msg');
-            $targetUser         = $this->input->get('targetUser');
+            $targetUser_id      = $this->session->userdata('targetUser_id');
             $username           = $this->session->userdata('username');
 
-            $this->session->set_userdata('targetUser', $targetUser);
+            if ($load_last_msg != "" && $targetUser_id != ""){
 
-            if ($load_last_msg != "" && $targetUser != ""){
-
-                $result = $this->Chat_model->returnTargetMessages($load_last_msg, $username, $targetUser);
+                $result = $this->Chat_model->returnTargetMessages($load_last_msg, $username, $targetUser_id);
 
             } else {
                 
-                $result = $this->Chat_model->returnAllMessages($username, $targetUser);
+                $result = $this->Chat_model->returnAllMessages($username, $targetUser_id);
 
             }
 
@@ -372,6 +399,7 @@ class Chat extends CI_controller {
             } else {
 
                 $response_array['status'] = 'nothing';
+
                 echo json_encode($response_array);
             }
 
@@ -396,11 +424,11 @@ class Chat extends CI_controller {
 
                 $username       = $this->session->userdata('username');
                 $userMessage    = $this->input->post('message'); 
-                $targetUser     = $this->session->userdata('targetUser');
+                $targetUser_id  = $this->session->userdata('targetUser_id');
 
                 if (strlen($userMessage) != 0){
 
-                    $result = $this->Chat_model->insertNewMessage($username, $userMessage, $targetUser);
+                    $result = $this->Chat_model->insertNewMessage($username, $userMessage, $targetUser_id);
 
                     if ($result){
 
@@ -473,6 +501,7 @@ class Chat extends CI_controller {
 
                         array_push($all_users, array(
                             'username' => htmlspecialchars($data['username']),
+                            'userid'   => htmlspecialchars($data['userid'])
                         ));
     
                     }

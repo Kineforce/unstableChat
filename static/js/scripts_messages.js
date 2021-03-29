@@ -52,7 +52,7 @@ var canTrackStatus      = false;
             success:function(response){
         
                 let target_status       = "";
-                console.log(response);
+                //console.log(response);
 
                 try {
                     
@@ -83,7 +83,7 @@ var canTrackStatus      = false;
 
                 } catch (err) {
 
-                    console.log("We got an error!");
+                    //console.log("We got an error!");
                     
                 }
                
@@ -125,13 +125,13 @@ var canTrackStatus      = false;
             let parsed_users = response.status;
             let string_online_users = '';
             let line_user = $('.line_user');
-
                 
                 for (var value in parsed_users){
 
                     let sql_username = parsed_users[value].username;
-            
-                    sql_username = "<div class='line_user' onclick='openNewChat(this.innerText)' >" + sql_username + "</div><div class='line'></div>";     
+                    let sql_id       = parsed_users[value].userid;
+
+                    sql_username = `<div class="line_user" onclick="openNewChat(this.getAttribute('value'))" value="${sql_id}">${sql_username}</div><div class='line'></div>`;     
                     string_online_users = string_online_users + sql_username;
                     
                 }
@@ -209,11 +209,13 @@ function resetAndLoad(){
     $.ajax({
         type: "GET",
         url: "getMessages",
-        data: {targetUser: sessionStorage.getItem('targetUser')},
+        data: {targetUser_id: sessionStorage.getItem('targetUser_id')},
         dataType: 'json',
         async: false,
         success: function(response){
 
+
+            console.log(response);
             if (response.status != "nothing"){
                 
                 let msgResponse = response.status;
@@ -230,18 +232,36 @@ function resetAndLoad(){
                 $('.message_box')[0].innerHTML = "";
         
                 runPolling = false;
+                setTimeout(resetAndLoad, shortPollingSpeed);
 
             }
 
         }
     })
 
-    let user_header = $('#user_header')[0].innerText;
+    // Se o targetUser_id da session (que veio do banco) for igual ao id dos usuários retornados pela returnUsers
+    // Então, definir o user_header como o inner text do line user!
 
-    if ( user_header != sessionStorage.getItem('targetUser')){
+    let arr_line_user = [];
 
-        $('#user_header')[0].innerText = sessionStorage.getItem('targetUser');
+    for (i = 0; i < $('.line_user').length; i++){
+
+        arr_line_user.push({
+            'nome' : $('.line_user')[i].innerText,
+            'valor': $('.line_user')[i].getAttribute('value')
+
+        });
+
+    }
+
+    for (i = 0; i < arr_line_user.length; i++){
         
+        if (sessionStorage.getItem('targetUser_id') == arr_line_user[i].valor){
+            
+            $('#user_header')[0].innerText = arr_line_user[i].nome;
+
+        }
+
     }
 
     canTrackStatus = true;
@@ -270,27 +290,28 @@ function resetAndLoad(){
 
         }
 
-        if (sessionStorage.getItem('targetUser')){
+        if (sessionStorage.getItem('targetUser_id')){
 
-            targetUser = sessionStorage.getItem('targetUser')
+            targetUser_id = sessionStorage.getItem('targetUser_id')
 
         } 
 
         if (run_ajax){
 
             //console.log("Run polling is working!");
+            console.log(targetUser_id);
 
             $.ajax({
                 url:"getMessages",
                 type:"GET",
                 data:{
                     load_last_msg: last_msg,
-                    targetUser: targetUser
+                    targetUser_id: targetUser_id
                 },
                 dataType:"JSON",
                 success:function(response){
-                    
-                    //(response.status);
+
+                    console.log(response);
 
                     if (response.status != "nothing"){
 
@@ -577,29 +598,30 @@ function scrollToBottom(){
 
 $(document).ready(function() {
 
-    if (sessionStorage.getItem('targetUser')){
+    if (sessionStorage.getItem('targetUser_id')){
 
-        resetAndLoad();
+        sessionStorage.clear();
+        //resetAndLoad();
     }
 
 });
 
 // Função que abre uma nova conversa na message_box
 
-function openNewChat(username){
+function openNewChat(user_id){
     
     // Apenas se tiver tiver inicializado a janela pela primeira vez ou se trocou de janelas 
 
-    if (username != sessionStorage.getItem('targetUser')){
+    // console.log(user_id)
+    // console.log(sessionStorage.getItem('targetUser_id'))
+
+    if (user_id != sessionStorage.getItem('targetUser_id')){
 
         // Unsets de variáveis
 
         sessionStorage.clear();
 
         // --------------------
-
-        // Seta o usuário clicado na session para ser o receptor de mensagens
-        sessionStorage.setItem('targetUser', username);
 
         // Recupera o username do usuário logado 
 
@@ -615,10 +637,27 @@ function openNewChat(username){
             }
         }).then(function(){
 
-            // Chama a função para resetar o chat e carregar novas mensagens
             
-            resetAndLoad();
+            // Envia pro backend o id do usuário clicado, para ser o userTarget
+            
+            $.ajax({
+                type: "POST",
+                url: "setUserTarget",
+                data: {targetUser_id: user_id},
+                dataType: 'json',
+                success: function(response){
+                                        
+                    // Seta o id do usuário clicado na session para ser o receptor de mensagens
+                    sessionStorage.setItem('targetUser_id', response.status);
+                    
+                }
+            }).then(function(){
 
+                // Chama a função para resetar o chat e carregar novas mensagens
+                resetAndLoad();
+
+            })
+           
         })
 
     }

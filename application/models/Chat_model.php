@@ -61,14 +61,14 @@ class Chat_model extends CI_Model {
     /**
      * Insere uma nova mensagem no banco de dados
      */
-    public function insertNewMessage($username, $message, $userTarget){
+    public function insertNewMessage($username, $message, $targetUser_id){
 
         $username    = $this->db->escape($username);
         $message     = $this->db->escape($message);
-        $userTarget  = $this->db->escape($userTarget);
+        $targetUser_id  = $this->db->escape($targetUser_id);
 
         $query =    "   INSERT INTO STORED_MESSAGES (userName, messageStamp, messageText, targetUser)
-                        VALUES ($username, current_timestamp, $message, $userTarget);
+                        VALUES ($username, current_timestamp, $message, $targetUser_id);
                     ";
 
         $result = $this->db->query($query);
@@ -79,20 +79,29 @@ class Chat_model extends CI_Model {
      /**
      * Retorna as últimas mensagens baseado no último ID
      */
-    public function returnTargetMessages($load_last_msg, $username, $targetUser){
+    public function returnTargetMessages($load_last_msg, $username, $targetUser_id){
 
         $id              = $this->db->escape($load_last_msg);
         $username        = $this->db->escape($username);
-        $targetUsername  = $this->db->escape($targetUser);
+        $targetUser_id   = $this->db->escape($targetUser_id);
+
+        $get_user_id =     "SELECT  userid
+                            FROM    USERS AS US
+                            WHERE   US.USERNAME = $username";
+
+        $res_user_id = $this->db->query($get_user_id);
+        $res_user_id = $res_user_id->result_array();
+        $user_id     = $res_user_id[0]['userid'];
 
         $query = "  SELECT      *
-                    FROM        STORED_MESSAGES      AS STOR
-                    JOIN        USERS                AS US ON US.USERNAME = STOR.USERNAME
-                    WHERE       STOR.targetuser      IN ($targetUsername, $username)
-                    AND			STOR.username        IN ($targetUsername, $username)
-                    AND         messageId            > $id
+                    FROM        stored_messages      AS stor
+                    JOIN        users                AS users ON stor.username = users.username
+                    WHERE       (users.userid         = $user_id AND stor.targetuser = $targetUser_id
+                    OR          users.userid          = $targetUser_id AND stor.targetuser = $user_id)
+                    AND         stor.messageid        > $id  
                     ORDER BY    messageStamp;
                 ";
+
 
         $result = $this->db->query($query);
 
@@ -103,16 +112,24 @@ class Chat_model extends CI_Model {
      /**
      * Retorna todas as mensagens do chat aberto
      */
-    public function returnAllMessages($username, $targetUser){
+    public function returnAllMessages($username, $targetUser_id){
 
-        $username = $this->db->escape($username);
-        $targetUser = $this->db->escape($targetUser);
+        $username      = $this->db->escape($username);
+        $targetUser_id = $this->db->escape($targetUser_id);
+
+        $get_user_id =     "SELECT  userid
+                            FROM    USERS AS US
+                            WHERE   US.USERNAME = $username";
+
+        $res_user_id = $this->db->query($get_user_id);
+        $res_user_id = $res_user_id->result_array();
+        $user_id     = $res_user_id[0]['userid'];
 
         $query = "  SELECT      *
-                    FROM        STORED_MESSAGES      AS STOR
-                    JOIN        USERS                AS US ON US.USERNAME = STOR.USERNAME
-                    WHERE       STOR.targetuser      IN ($targetUser, $username)
-                    AND			STOR.username        IN ($targetUser, $username)
+                    FROM        stored_messages      AS stor
+                    JOIN        users                AS users ON stor.username = users.username
+                    WHERE       (users.userid         = $user_id AND stor.targetuser = $targetUser_id
+                    OR          users.userid         = $targetUser_id AND stor.targetuser = $user_id)
                     ORDER BY    messageStamp;
                 ";
 
@@ -148,7 +165,7 @@ class Chat_model extends CI_Model {
         $username = $this->db->escape($username);
         
 
-        $query = "  SELECT   username
+        $query = "  SELECT   username, userid
                     FROM     users 
                     WHERE    username <> $username
                     ORDER BY userid ASC;";
