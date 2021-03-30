@@ -139,6 +139,12 @@
     font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.line_user:hover {
+
+    background-color: rgba(128, 128, 128, 0.2);
+
+}
+
 .header_user {
     position: relative;
     display: flex;

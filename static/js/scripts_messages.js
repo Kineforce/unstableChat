@@ -192,80 +192,98 @@ function logoutUser(){
 // Esconde a modal, reseta a div e carrega todas as mensagens daquele chat
 
 var runPolling = false;
+var clickableElement = false;
 
-function resetAndLoad(){
+(function resetAndLoad(){
 
-    // Liberar div para o chat
+    if (clickableElement){
 
-    if ($('.modal').length != 0){
+        console.log("Clickable Element is runnnig");
 
-        $('.modal').replaceWith(temp_msg);
-        $('.modal').hide();
+        // Liberar div para o chat
 
-    }
+        if ($('.modal').length != 0){
 
-    // Reseta a message_box
+            $('.modal').replaceWith(temp_msg);
+            $('.modal').hide();
 
-    $.ajax({
-        type: "GET",
-        url: "getMessages",
-        data: {targetUser_id: sessionStorage.getItem('targetUser_id')},
-        dataType: 'json',
-        success: function(response){
+        }
 
+        // Reseta a message_box
 
-            console.log(response);
-            if (response.status != "nothing"){
+        $.ajax({
+            type: "GET",
+            url: "getMessages",
+            data: {targetUser_id: sessionStorage.getItem('targetUser_id')},
+            dataType: 'json',
+            success: function(response){
+
+                console.log(response);
                 
-                let msgResponse = response.status;
+                if (response.status != "nothing"){
+                    
+                    let msgResponse = response.status;
 
-                $('.message_box')[0].innerHTML = msgResponse;
+                    $('.message_box')[0].innerHTML = msgResponse;
 
-                scrollToBottom();
-                filterDates();
+                    scrollToBottom();
+                    filterDates();
 
-                runPolling = true;
+                    runPolling = true;
+                    clickableElement = false;
 
-            } else {
+                } else {
 
-                $('.message_box')[0].innerHTML = "";
-        
-                runPolling = false;
-                setTimeout(resetAndLoad, shortPollingSpeed);
+                    $('.message_box')[0].innerHTML = "";
+            
+                    runPolling = false;
+                    setTimeout(resetAndLoad, shortPollingSpeed);
+
+                }
+
+            }
+        })
+
+        // Se o targetUser_id da session (que veio do banco) for igual ao id dos usuários retornados pela returnUsers
+        // Então, definir o user_header como o inner text do line user!
+
+        let arr_line_user = [];
+
+        for (i = 0; i < $('.line_user').length; i++){
+
+            arr_line_user.push({
+                'nome' : $('.line_user')[i].innerText,
+                'valor': $('.line_user')[i].getAttribute('value')
+
+            });
+
+        }
+
+        for (i = 0; i < arr_line_user.length; i++){
+            
+            if (sessionStorage.getItem('targetUser_id') == arr_line_user[i].valor){
+                
+                $('#user_header')[0].innerText = arr_line_user[i].nome;
 
             }
 
         }
-    })
 
-    // Se o targetUser_id da session (que veio do banco) for igual ao id dos usuários retornados pela returnUsers
-    // Então, definir o user_header como o inner text do line user!
+        canTrackStatus = true;
 
-    let arr_line_user = [];
+        if (clickableElement){
 
-    for (i = 0; i < $('.line_user').length; i++){
-
-        arr_line_user.push({
-            'nome' : $('.line_user')[i].innerText,
-            'valor': $('.line_user')[i].getAttribute('value')
-
-        });
-
-    }
-
-    for (i = 0; i < arr_line_user.length; i++){
-        
-        if (sessionStorage.getItem('targetUser_id') == arr_line_user[i].valor){
-            
-            $('#user_header')[0].innerText = arr_line_user[i].nome;
+            setTimeout(resetAndLoad, shortPollingSpeed);
 
         }
 
+    } else {
+
+        setTimeout(resetAndLoad, shortPollingSpeed);
+
     }
 
-    canTrackStatus = true;
-
-};
+})();
 
 // Verifica se novas mensagens estão presentes no banco, e carrega elas no chat
 
@@ -297,9 +315,6 @@ function resetAndLoad(){
 
         if (run_ajax){
 
-            //console.log("Run polling is working!");
-            console.log(targetUser_id);
-
             $.ajax({
                 url:"getMessages",
                 type:"GET",
@@ -309,8 +324,6 @@ function resetAndLoad(){
                 },
                 dataType:"JSON",
                 success:function(response){
-
-                    console.log(response);
 
                     if (response.status != "nothing"){
 
@@ -611,8 +624,7 @@ function openNewChat(user_id){
     
     // Apenas se tiver tiver inicializado a janela pela primeira vez ou se trocou de janelas 
 
-    // console.log(user_id)
-    // console.log(sessionStorage.getItem('targetUser_id'))
+    clickableElement = false;
 
     if (user_id != sessionStorage.getItem('targetUser_id')){
 
@@ -648,12 +660,14 @@ function openNewChat(user_id){
                                         
                     // Seta o id do usuário clicado na session para ser o receptor de mensagens
                     sessionStorage.setItem('targetUser_id', response.status);
+
+                    console.log("Setei!")
                     
                 }
             }).then(function(){
 
                 // Chama a função para resetar o chat e carregar novas mensagens
-                resetAndLoad();
+                clickableElement = true;
 
             })
            
