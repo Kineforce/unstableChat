@@ -180,14 +180,14 @@ class Chat_model extends CI_Model {
     /**
      * Retorna os status do usuário e verifica se ele está online
     */
-    public function returnUserStatus($targetUser){
+    public function returnUserStatus($targetUser_id){
 
-        $targetUser = $this->db->escape($targetUser);
+        $targetUser_id = $this->db->escape($targetUser_id);
 
-        $query = "  SELECT   US.USERNAME, US_ST.lastSeen 
+        $query = "  SELECT   US_ST.lastSeen 
                     FROM     USER_STATUS AS US_ST
                     JOIN     USERS  AS US ON US_ST.userId = US.userID
-                    WHERE    US.USERNAME = $targetUser ";
+                    WHERE    US.USERID = $targetUser_id ";
 
         $result = $this->db->query($query);
 

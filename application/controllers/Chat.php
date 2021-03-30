@@ -573,8 +573,8 @@ class Chat extends CI_controller {
 
             if ($this->input->post('return_status')){
 
-                $targetUser         = $this->session->userdata('targetUser');
-                $result_query       = $this->Chat_model->returnUserStatus($targetUser);
+                $targetUser_id         = $this->session->userdata('targetUser_id');
+                $result_query       = $this->Chat_model->returnUserStatus($targetUser_id);
 
                 $online_users = array();
 
@@ -583,7 +583,6 @@ class Chat extends CI_controller {
                     foreach ($result_query->result_array() as $data){
 
                         array_push($online_users, array(
-                            'username' => htmlspecialchars($data['username']),
                             'lastseen' => htmlspecialchars($data['lastseen']),
                         ));
     
