@@ -63,22 +63,31 @@ var canTrackStatus      = false;
                     let diffTime            = Math.abs(curr_date - db_date);
                     let limit_sec           = 5000;
     
+                    let status              = "";
+
                     if (diffTime < limit_sec){
     
-                        target_status = "<span style='color: green'>Online</span>";
-    
+                        target_status = `<span style='color: green'>Online</span>`;
+                        status = "Online"
+
                     } else { 
     
-                        target_status = "<span style='color: black'>Offline</span>";
+                        target_status = `<span style='color: black'>Offline</span>`;
+                        status = "Offline"
     
                     }
-                                                
-                    $('#user_status')[0].innerHTML = target_status
+                                       
+                    let curr_status = $('#user_status')[0].innerText;
+
+                    if (curr_status != status){
+
+                        $('#user_status')[0].innerHTML = target_status
+
+                    }
 
                 } catch (err) {
-
-                    //
-                    
+                     
+                    // Do nothing
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
