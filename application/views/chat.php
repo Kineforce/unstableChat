@@ -26,15 +26,15 @@
             </div> 
             <div class="right-side">
                 <div class="chat">
-                    <div class="header_user">
+                    <div class="header_user" style="display: none">
                         <div class="info_user">
                             <span id="user_header"></span>
                             <span id="user_status"></span>
                         </div>
                     </div>      
-                    <div class="message_box css_scroll" hidden>                                                                       
+                    <div class="message_box css_scroll" style="display: none">                                                                       
                     </div>   
-                    <div class="insert_box">
+                    <div class="insert_box" style="display: none">
                         <textarea name="message" id="input_box" placeholder="start typing..." rows="1" cols="50" autocomplete="off"></textarea>
                         <div class="ibox">
                             <div class="ibox_inner">                                

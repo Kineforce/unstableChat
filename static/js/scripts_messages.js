@@ -2,6 +2,7 @@ var shortPollingSpeed   = 1000;
 var DOMListenerCheck    = 100;
 var longPollingSpeed    = 10000;
 var canTrackStatus      = false;
+var pageRefresh         = false;
 
 // Função que atualiza o status de online do usuário
 
@@ -31,6 +32,14 @@ var canTrackStatus      = false;
     } else {
 
         setTimeout(isTabActive, shortPollingSpeed);
+
+    }
+
+    let header_user = document.getElementsByClassName('header_user')[0];
+
+    if (document.visibilityState == 'visible' && header_user && header_user.getAttribute('style') == "" ) {
+
+        console.log("Visualizou as mensagens do chat!");
 
     }
 
@@ -77,11 +86,11 @@ var canTrackStatus      = false;
     
                     }
                                        
-                    let curr_status = $('#user_status')[0].innerText;
+                    let curr_status = document.getElementById('user_status')
 
-                    if (curr_status != status){
+                    if (curr_status.innerText != status){
 
-                        $('#user_status')[0].innerHTML = target_status
+                        curr_status.innerHTML = target_status
 
                     }
 
@@ -121,7 +130,7 @@ var canTrackStatus      = false;
                         
             let parsed_users = response.status;
             let string_online_users = '';
-            let line_user = $('.line_user');
+            let line_user = document.getElementsByClassName('line_user'); 
                 
                 for (var value in parsed_users){
 
@@ -135,7 +144,7 @@ var canTrackStatus      = false;
 
                 if (line_user.length < parsed_users.length) {
 
-                    $('.user')[0].innerHTML = string_online_users;
+                    document.getElementsByClassName('user')[0].innerHTML = string_online_users;
 
                 }           
         },
@@ -152,35 +161,37 @@ var canTrackStatus      = false;
 
 })();
 
-// Função que realiza o load da modal para cobrir a caixa de mensagens
-
-var temp_msg = $('.chat').clone(true);
-
-(function loadModal(){
-    // Mostra o banner 
-
-    $('.chat').replaceWith($('.modal'));
-    $('.modal').show();
-    
-    
-})();
-
- // Função que efetua o logout do usuário
+// Função que efetua o logout do usuário
 
 function logoutUser(){
-
+    
     $.ajax({
         url: "logout",
         type: "POST",
         data: {exit: 'true'},
         dataType: 'text',
         success: function(response){
-
+            
             sessionStorage.clear();
             location.reload();
         }
     });
 };
+
+// Função que realiza o load da modal para cobrir a caixa de mensagens
+
+var temp_msg = document.getElementsByClassName('chat')[0];
+
+(function loadModal(){
+    // Mostra o banner 
+
+    let chat  = document.getElementsByClassName('chat')[0]
+    let modal = document.getElementsByClassName('modal')[0]
+
+    chat.replaceWith(modal);
+    modal.style.display = "";
+    
+})();
 
 // Esconde a modal, reseta a div e carrega todas as mensagens daquele chat
 
@@ -191,14 +202,22 @@ var clickableElement = false;
 
     if (clickableElement){
 
+        let modal = document.getElementsByClassName('modal')[0];
+
         // Liberar div para o chat
 
-        if ($('.modal').length != 0){
+        if (modal && modal.length != 0){
 
-            $('.modal').replaceWith(temp_msg);
-            $('.modal').hide();
+            modal.replaceWith(temp_msg);
+
+            document.getElementsByClassName('header_user')[0].style.display = "";
+            document.getElementsByClassName('message_box')[0].style.display = "";
+            document.getElementsByClassName('insert_box')[0].style.display = "";
 
         }
+
+        
+        $('.message_box')[0].innerHTML = "";
 
         // Reseta a message_box
 
@@ -279,13 +298,14 @@ var clickableElement = false;
 
     if (runPolling){
         
-        let run_ajax = true;
-        let all_msgs = $('.chat_line');    
-        let last_msg = 0
+        let run_ajax    = true;
+        let all_msgs    = document.getElementsByClassName('chat_line');    
+        let message_box = document.getElementsByClassName('message_box')[0]; 
+        let last_msg    = 0
 
         try {
 
-            last_msg = all_msgs.last()[0].id;
+            last_msg = all_msgs[all_msgs.length - 1].id;
 
         } catch (err) {
 
@@ -313,7 +333,7 @@ var clickableElement = false;
 
                     if (response.status != "nothing"){
 
-                        $('.message_box').append(response.status);
+                        message_box.innerHTML += (response.status);
 
                     }
                 
@@ -593,6 +613,7 @@ $(document).ready(function() {
     if (sessionStorage.getItem('targetUser_id')){
 
         sessionStorage.clear();
+        pageRefresh = true;
 
     }
 
