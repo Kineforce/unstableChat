@@ -63,6 +63,7 @@
 
 .left-side {
     flex: 30%;
+    min-width: 15em;
     position: relative;
     border-right: 1px solid #ccc ;
     z-index: 100;
@@ -140,7 +141,6 @@
 }
 
 .line_user:hover {
-
     background-color: rgba(128, 128, 128, 0.2);
 
 }

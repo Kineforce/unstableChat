@@ -237,7 +237,6 @@ var clickableElement = false;
                     $('.message_box')[0].innerHTML = "";
             
                     runPolling = false;
-                    setTimeout(resetAndLoad, shortPollingSpeed);
 
                 }
 
@@ -273,12 +272,14 @@ var clickableElement = false;
 
         if (clickableElement){
 
+            console.log("It's clickable")
             setTimeout(resetAndLoad, shortPollingSpeed);
 
         }
 
     } else {
 
+        console.log("Hmm...")
         setTimeout(resetAndLoad, shortPollingSpeed);
 
     }
