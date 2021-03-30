@@ -15,8 +15,6 @@ var canTrackStatus      = false;
             data:{update_status: "1"},
             dataType:"JSON",
             success:function(response){
-
-                //console.log(response.status);
                 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -51,8 +49,7 @@ var canTrackStatus      = false;
             dataType:"JSON",
             success:function(response){
         
-                let target_status       = "";
-                //console.log(response);
+                let target_status           = "";
 
                 try {
                     
@@ -65,9 +62,6 @@ var canTrackStatus      = false;
     
                     let diffTime            = Math.abs(curr_date - db_date);
                     let limit_sec           = 5000;
-    
-                    // console.log(curr_date);
-                    // console.log(db_date);
     
                     if (diffTime < limit_sec){
     
@@ -83,19 +77,14 @@ var canTrackStatus      = false;
 
                 } catch (err) {
 
-                    //console.log("We got an error!");
+                    //
                     
                 }
-               
-
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
-
-                console.log("Busy database, retrying...")
-                console.log("textStatus --> " + textStatus);
+             
                 setTimeout(getTargetStatus, shortPollingSpeed);
-                console.log("Error GetUserStatus")
-
+            
             }
         }).done(function(){
 
@@ -109,7 +98,6 @@ var canTrackStatus      = false;
     }
 
 })();
-
 
 // Função que retorna todos os usuários cadastrados no banco
 
@@ -140,9 +128,7 @@ var canTrackStatus      = false;
 
                     $('.user')[0].innerHTML = string_online_users;
 
-                }
-
-            
+                }           
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
 
@@ -185,8 +171,6 @@ function logoutUser(){
             location.reload();
         }
     });
-
-
 };
 
 // Esconde a modal, reseta a div e carrega todas as mensagens daquele chat
@@ -197,8 +181,6 @@ var clickableElement = false;
 (function resetAndLoad(){
 
     if (clickableElement){
-
-        console.log("Clickable Element is runnnig");
 
         // Liberar div para o chat
 
@@ -217,9 +199,7 @@ var clickableElement = false;
             data: {targetUser_id: sessionStorage.getItem('targetUser_id')},
             dataType: 'json',
             success: function(response){
-
-                console.log(response);
-                
+               
                 if (response.status != "nothing"){
                     
                     let msgResponse = response.status;
@@ -272,14 +252,12 @@ var clickableElement = false;
 
         if (clickableElement){
 
-            console.log("It's clickable")
             setTimeout(resetAndLoad, shortPollingSpeed);
 
         }
 
     } else {
 
-        console.log("Hmm...")
         setTimeout(resetAndLoad, shortPollingSpeed);
 
     }
@@ -292,8 +270,6 @@ var clickableElement = false;
 
     if (runPolling){
         
-        //("Run polling is working!");
-
         let run_ajax = true;
         let all_msgs = $('.chat_line');    
         let last_msg = 0
@@ -335,8 +311,6 @@ var clickableElement = false;
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                    //console.log("Busy database, retrying...")
-                    //console.log("textStatus --> " + textStatus);
                     setTimeout(loadNewMessages, shortPollingSpeed);
 
                 }
@@ -405,12 +379,11 @@ var clickableElement = false;
                         break;
 
                     }
-                }
-                
+                } 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
 
-                //console.log("Busy database, retrying...")
+                //
                 setTimeout(updateColorChat, shortPollingSpeed);
 
             }
@@ -570,7 +543,6 @@ function sendMessageToChat(){
     })
 }
 
-
 //Faz um post para o banco alterar a cor do usuário
 
 function changeColor(){
@@ -607,14 +579,12 @@ function scrollToBottom(){
 
 };
 
-
-
 $(document).ready(function() {
 
     if (sessionStorage.getItem('targetUser_id')){
 
         sessionStorage.clear();
-        //resetAndLoad();
+
     }
 
 });
@@ -648,7 +618,6 @@ function openNewChat(user_id){
                 sessionStorage.setItem('username', response.username);
             }
         }).then(function(){
-
             
             // Envia pro backend o id do usuário clicado, para ser o userTarget
             
@@ -662,8 +631,6 @@ function openNewChat(user_id){
                     // Seta o id do usuário clicado na session para ser o receptor de mensagens
                     sessionStorage.setItem('targetUser_id', response.status);
 
-                    console.log("Setei!")
-                    
                 }
             }).then(function(){
 
