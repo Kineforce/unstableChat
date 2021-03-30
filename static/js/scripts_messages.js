@@ -211,7 +211,6 @@ function resetAndLoad(){
         url: "getMessages",
         data: {targetUser_id: sessionStorage.getItem('targetUser_id')},
         dataType: 'json',
-        async: false,
         success: function(response){
 
 
