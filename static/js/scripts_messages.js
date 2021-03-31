@@ -59,11 +59,7 @@ var pageRefresh         = false;
 									
 								}
 							}
-
-
-						}
-
-					
+						}			
 					}
 
 				},
