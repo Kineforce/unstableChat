@@ -10,8 +10,6 @@ $("#login_form").submit(function(e) {
 
     formData.set('username', username)
 
-    console.log(username);
-
     formData.append('color', color_picker.value);
 
     if (login_form == ""){
