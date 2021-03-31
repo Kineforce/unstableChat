@@ -45,11 +45,10 @@ var pageRefresh         = false;
 
 						if (all_msgs[i]?.id == msg_seen[i]?.messageid){
 							
-							let seenStatus = (msg_seen[i].wasseen == '1') ? '<<': '<<' ;
+							let seenStatus = '<<';
 							let valWasSeen = all_msgs[i].getElementsByClassName('sub_flexbox')[0].getElementsByClassName('was_seen')[0].getAttribute('value');
 
-							if (valWasSeen != msg_seen[i].wasseen){
-
+							if (valWasSeen != msg_seen[i]?.wasseen){
 
 								all_msgs[i].getElementsByClassName('was_seen')[0].innerText = seenStatus
 								all_msgs[i].getElementsByClassName('was_seen')[0].setAttribute('value', msg_seen[i].wasseen) 
