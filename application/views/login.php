@@ -24,7 +24,7 @@
 </div>
 
 <script>
-    console.log(<?=$ip?>);
+    console.log("<?=$ip?>");
 </script>
 <script src="<?php echo BASE_URL(); ?>static/js/scripts_index.js"></script>
 
