@@ -28,6 +28,8 @@ class Chat extends CI_controller {
 
             $this->session->set_userdata('user_ip_address', $user_ip);
 
+            $data['ip'] = $user_ip;
+
             $this->load->view("login", $data);
 
         }
