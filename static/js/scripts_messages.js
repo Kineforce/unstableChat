@@ -129,7 +129,7 @@ var pageRefresh         = false;
                     let sql_username = parsed_users[value].username;
                     let sql_id       = parsed_users[value].userid;
 
-                    sql_username = `<div class="line_user" onclick="openNewChat(this.getAttribute('value'))" value="${sql_id}">${sql_username}</div><div class='line'></div>`;     
+                    sql_username = `<div class="line_user" onclick="openNewChat(this.getAttribute('value'))" value="${sql_id}">${sql_username}</div>`;     
                     string_online_users = string_online_users + sql_username;
                     
                 }

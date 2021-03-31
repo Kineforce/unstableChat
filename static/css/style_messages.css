@@ -110,16 +110,23 @@
 }
 
 .line_user {
-    margin-left: 5%;
     padding: 10px;
     cursor: pointer;
+	font-weight: 700;
+    font-size: 15px;
+    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
+	height: 10%;
+	border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
-.line {
-    border-bottom: 1px solid #ccc;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: calc(100% - 5px);
+.line_user:hover {
+    background-color: rgba(128, 128, 128, 0.3);
+
+}
+
+.line_user:active {
+    background-color: rgba(128, 128, 128, 0.2);
+
 }
 
 .chat {
@@ -131,17 +138,6 @@
 .chat_line {
     margin-top: 10px;
     margin-bottom: 10px;
-
-}
-
-.line_user {
-    font-weight: 700;
-    font-size: 15px;
-    font-family: "Inter","Roobert","Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-
-.line_user:hover {
-    background-color: rgba(128, 128, 128, 0.2);
 
 }
 
