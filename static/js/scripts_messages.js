@@ -35,14 +35,6 @@ var pageRefresh         = false;
 
     }
 
-    let header_user = document.getElementsByClassName('header_user')[0];
-
-    if (document.visibilityState == 'visible' && header_user && header_user.getAttribute('style') == "" ) {
-
-        console.log("Visualizou as mensagens do chat!");
-
-    }
-
 })();
 
 // Função que recupera o status do usuário do chat ativo
