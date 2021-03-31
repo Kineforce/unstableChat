@@ -30,8 +30,6 @@ var pageRefresh         = false;
 
 		if (header_user && header_user.getAttribute('style') == "" && messages_box.length != 0) {
 
-			console.log("Visualizei?");
-
 			$.ajax({
 				url:"messageWasSeen",
 				type:"POST",
@@ -40,21 +38,32 @@ var pageRefresh         = false;
 				success:function(response){
 
 					let msg_seen    = response.msg_seen;
-					let all_msgs    = document.getElementsByClassName('chat_line');
+					let all_msgs    = document.getElementsByClassName('right');
 
+					
 					for (i = 0; i < all_msgs.length; i++){
 
-						for (j = 0; j < msg_seen.length; j++){
+						if (all_msgs[i]?.id == msg_seen[i]?.messageid){
+							
+							let seenStatus = (msg_seen[i].wasseen == '1') ? '<<': '<<' ;
+							let valWasSeen = all_msgs[i].getElementsByClassName('sub_flexbox')[0].getElementsByClassName('was_seen')[0].getAttribute('value');
 
-							if (msg_seen[i].messageid == all_msgs[j].id){
-								
-								let seenStatus = (msg_seen[i].wasseen == '1') ? '<<': '<' ;
+							if (valWasSeen != msg_seen[i].wasseen){
 
-								all_msgs[j].getElementsByClassName('was_seen')[0].innerText = seenStatus
 
+								all_msgs[i].getElementsByClassName('was_seen')[0].innerText = seenStatus
+								all_msgs[i].getElementsByClassName('was_seen')[0].setAttribute('value', msg_seen[i].wasseen) 
+	
+								if (msg_seen[i].wasseen == '1'){
+	
+									all_msgs[i].getElementsByClassName('was_seen')[0].setAttribute('style', 'color: blue');
+									
+								}
 							}
 
-						} 
+
+						}
+
 					
 					}
 

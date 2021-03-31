@@ -285,9 +285,7 @@ class Chat_model extends CI_Model {
         $query = "  SELECT      messageid, wasseen
                     FROM        stored_messages      AS stor
                     JOIN        users                AS users ON stor.username = users.username
-                    WHERE       (users.userid         = $user_id AND stor.targetuser = $targetUser_id
-                    OR          users.userid         = $targetUser_id AND stor.targetuser = $user_id)
-                    ORDER BY    messageStamp;
+                    WHERE       (users.userid         = $user_id AND stor.targetuser = $targetUser_id)                    ORDER BY    messageStamp;
                 ";
 
         $result = $this->db->query($query);

@@ -282,15 +282,33 @@
     max-width: 60%;
 }
 
-.right .msg_wrapper .msg_stamp,
+.right .sub_flexbox {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+
+}
+
+.left .sub_flexbox {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+
+}
+
+/* .right .msg_wrapper .msg_stamp,
 .right .msg_wrapper .username {
+    text-align: left;
+}
+
+.right .msg_wrapper .msg_stamp {
     text-align: right;
 }
 
 .left .msg_wrapper .msg_stamp,
 .left .msg_wrapper .username {
     text-align: left;
-}
+} */
 
 .modal {
     position: relative;

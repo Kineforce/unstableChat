@@ -416,8 +416,10 @@ class Chat extends CI_controller {
                     $message_div .=     "<div class='msg_wrapper'>";
                     $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['username'])."</span>";
                     $message_div .=         "<span class='msg' style='color:black'>".htmlspecialchars($data['messagetext'])."</span>";
-                    $message_div .=         "<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span>";
-					$message_div .=         "<span class='was_seen'></span>";
+					$message_div .=         "<div class='sub_flexbox'>";
+                    $message_div .=         	"<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span>";
+					$message_div .=         	"<span class='was_seen'></span>";
+					$message_div .=			"</div>";
                     $message_div .=     "</div>";
                     $message_div .= "</div>";
     
