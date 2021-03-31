@@ -23,11 +23,53 @@ var pageRefresh         = false;
                 setTimeout(isTabActive, shortPollingSpeed);
 
             }
-        }).done(function(){
-
-            setTimeout(isTabActive, shortPollingSpeed);
-
         })
+
+		let header_user  = document.getElementsByClassName('header_user')[0];
+		let messages_box = document.getElementsByClassName('chat_line');
+
+		if (header_user && header_user.getAttribute('style') == "" && messages_box.length != 0) {
+
+			console.log("Visualizei?");
+
+			$.ajax({
+				url:"messageWasSeen",
+				type:"POST",
+				data:{wasSeen: "1"},
+				dataType:"JSON",
+				success:function(response){
+
+					let msg_seen    = response.msg_seen;
+					let all_msgs    = document.getElementsByClassName('chat_line');
+
+					for (i = 0; i < all_msgs.length; i++){
+
+						for (j = 0; j < msg_seen.length; j++){
+
+							if (msg_seen[i].messageid == all_msgs[j].id){
+								
+								let seenStatus = (msg_seen[i].wasseen == '1') ? '<<': '<' ;
+
+								all_msgs[j].getElementsByClassName('was_seen')[0].innerText = seenStatus
+
+							}
+
+						} 
+					
+					}
+
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+	
+					// setTimeout(isTabActive, shortPollingSpeed);
+	
+				}
+			})
+
+		}
+
+		setTimeout(isTabActive, shortPollingSpeed);
+
 
     } else {
 

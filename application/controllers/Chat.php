@@ -281,6 +281,37 @@ class Chat extends CI_controller {
 
     }
 
+	/**
+     * Usuário visualizou as mensagens do usertarget
+     */
+    public function messageWasSeen(){
+
+        if ($this->session->userdata('isAuthenticated') == 1){
+
+			header('Content-Type: application/json');
+
+            $wasSeen 		= $this->input->post('wasSeen');
+
+            if ($wasSeen){
+
+				$username 		= $this->session->userdata('username');
+				$targetUser_id 	= $this->session->userdata('targetUser_id');
+				$result  		= $this->Chat_model->updateSeenStatus($username, $targetUser_id);
+				$messageStatus  = $this->Chat_model->checkMessageStatus($username, $targetUser_id);
+
+				$response_array['msg_seen']	= $messageStatus->result_array();
+                echo json_encode($response_array);
+
+            } 
+
+        } else {
+
+            customRedir('');
+
+        }
+
+    }
+
     /**
      * Seta na sessão o userTarget
      */
@@ -386,6 +417,7 @@ class Chat extends CI_controller {
                     $message_div .=         "<span class='username' ".$loop_style.">".htmlspecialchars($data['username'])."</span>";
                     $message_div .=         "<span class='msg' style='color:black'>".htmlspecialchars($data['messagetext'])."</span>";
                     $message_div .=         "<span class='msg_stamp' style='color:black'>".htmlspecialchars($hour_msg)."</span>";
+					$message_div .=         "<span class='was_seen'></span>";
                     $message_div .=     "</div>";
                     $message_div .= "</div>";
     
@@ -666,7 +698,8 @@ class Chat extends CI_controller {
 
                     array_push($user_colors, array(
                         'username' => htmlspecialchars($data['username']),
-                        'color'    => htmlspecialchars($data['usercolor'])
+                        'color'    => htmlspecialchars($data['usercolor']),
+						
                     ));
 
                 }

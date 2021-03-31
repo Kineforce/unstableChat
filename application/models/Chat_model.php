@@ -157,6 +157,31 @@ class Chat_model extends CI_Model {
 
     }
 
+	 /**
+     * Atualiza o valor que verifica se o usuário visualizou as mensagens do targetUser
+     */
+    public function updateSeenStatus($username, $targetUser_id){
+
+        $username 		= $this->db->escape($username);
+		$targetUser_id  = $this->db->escape($targetUser_id);
+	
+        $query    = "   UPDATE STORED_MESSAGES 	 SET WASSEEN = '1'
+												
+
+						WHERE  username = (	SELECT USERNAME
+											FROM USERS
+											WHERE userid = $targetUser_id)
+						AND 	targetuser = ( 	SELECT userid
+												FROM USERS
+												WHERE username = $username)";
+
+
+        $result = $this->db->query($query);
+
+        return $result;
+
+    }
+
     /**
      * Retorna todos os usuários cadastrados
     */
@@ -233,6 +258,37 @@ class Chat_model extends CI_Model {
         $userIp = $this->db->escape($userIp);
 
         $query = "SELECT userIp FROM USERS WHERE userIp = $userIp";
+
+        $result = $this->db->query($query);
+
+        return $result;
+
+    }
+
+	/**
+     * Retorna o status de wasseen das mensagens do chat atual
+    */
+    public function checkMessageStatus($username, $targetUser_id){
+
+		$username = $this->db->escape($username);
+		$targetUser_id = $this->db->escape($targetUser_id);
+
+        
+        $get_user_id =     "SELECT  userid
+                            FROM    USERS AS US
+                            WHERE   US.USERNAME = $username";
+
+        $res_user_id = $this->db->query($get_user_id);
+        $res_user_id = $res_user_id->result_array();
+        $user_id     = $res_user_id[0]['userid'];
+
+        $query = "  SELECT      messageid, wasseen
+                    FROM        stored_messages      AS stor
+                    JOIN        users                AS users ON stor.username = users.username
+                    WHERE       (users.userid         = $user_id AND stor.targetuser = $targetUser_id
+                    OR          users.userid         = $targetUser_id AND stor.targetuser = $user_id)
+                    ORDER BY    messageStamp;
+                ";
 
         $result = $this->db->query($query);
 

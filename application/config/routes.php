@@ -78,4 +78,4 @@ $route['setNewMessage'] = 'Chat/setNewMessage';
 $route['setUserColor'] = 'Chat/setUserColor';
 $route['updateUserStatus'] = 'Chat/updateUserStatus';
 $route['setUserTarget'] = 'Chat/setUserTarget';
-
+$route['messageWasSeen'] = 'Chat/messageWasSeen';
