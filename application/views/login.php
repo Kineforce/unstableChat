@@ -14,7 +14,7 @@
 <div id="container">
     <div class="box">
         <form id="login_form" method="post" action="./login.php">
-            <label id="label_login" for="login_input"><h1>Enter your login</h1><?='Your IP Address - '.$_SERVER['REMOTE_ADDR']?></label>
+            <label id="label_login" for="login_input"><h1>Enter your login</h1></label>
             <input type="text" name="username" id="login_input" placeholder="type your username here" autocomplete="off" maxlength="20">
             <input type="submit" id="submit_login" value="->"><br>
             <span id="feedback_message"></span><br>
