@@ -21,14 +21,32 @@ class Chat extends CI_controller {
             customRedir('everyone');
 
         } else {
+
+            $api_response = file_get_contents("https://www.cloudflare.com/cdn-cgi/trace");
+
+            $get_lines = explode("\n", $api_response);
             
-            // Armazena o IP do usuário
+            $api_array = array();
+            
+            foreach ($get_lines as $line){
+            
+                $inner_explode = explode('=', $line);
+            
+                if ($inner_explode[0] == 'ip'){
+    
+                    $api_array[$inner_explode[0]] = $inner_explode[1];
+    
+                }
+            }
+    
+            $data = array();
 
-            $user_ip = $_SERVER['REMOTE_ADDR'];
+            if (count($api_array) > 0){
 
-            $this->session->set_userdata('user_ip_address', $user_ip);
+                $data['ip'] = $api_array['ip'];
+                $this->session->set_userdata('user_ip_address', $data['ip']);
 
-            $data['ip'] = $user_ip;
+            }
 
             $this->load->view("login", $data);
 
