@@ -119,6 +119,12 @@
 	border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
+.line_user:nth-child(1){
+
+	border-top: 1px solid rgba(128, 128, 128, 0.2);
+
+}
+
 .line_user:hover {
     background-color: rgba(128, 128, 128, 0.3);
 
