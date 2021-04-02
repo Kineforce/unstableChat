@@ -4,7 +4,7 @@ var longPollingSpeed    = 10000;
 var canTrackStatus      = false;
 var pageRefresh         = false;
 
-// Função que atualiza o status de online do usuário
+// Função que atualiza o status de online do usuário da sessão
 
 (function isTabActive(){
 
