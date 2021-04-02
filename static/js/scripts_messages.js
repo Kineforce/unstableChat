@@ -402,7 +402,7 @@ var clickableElement = false;
 
 })();
 
-// Atualiza a cor do chat baseado em um json vindo do backend
+// Atualiza a cor do chat baseado em um json vindo do servidor
 
 (function updateColorChat(){
 
