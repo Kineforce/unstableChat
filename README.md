@@ -6,3 +6,5 @@ In the future, i'll implement more stuff, sending images, audios, profile pictur
 I've used Codeigniter to help me with this task, but i think i need to use better his resources, like his own validation methods, in this case i built my own and let it as it was.
 
 Feel free to use any part of this code, i'm only developing this to study purposes.
+
+You can try here: https://unstablechat.herokuapp.com/
